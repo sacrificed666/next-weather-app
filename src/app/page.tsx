@@ -1,10 +1,15 @@
+"use client";
+
 import Weather from "@/components/weather/Weather";
 import ForecastList from "@/components/forecast/ForecastList";
+import useWeather from "@/hooks/useWeather";
 
 const Page = () => {
+  const { weatherData, weatherLoading, weatherError } = useWeather("Lviv");
+
   return (
     <>
-      <Weather />
+      {weatherData && <Weather weatherData={weatherData} />}
       <ForecastList />
     </>
   );
