@@ -6,8 +6,8 @@ interface DataItemProps {
 
 const DataItem = ({ icon, alt, data }: DataItemProps) => {
   return (
-    <li className="">
-      <img src={icon} alt={alt} className="" />
+    <li className="flex justify-between items-center border-b">
+      <img src={icon} alt={alt} className="size-8" />
       <span>{data}</span>
     </li>
   );

@@ -15,19 +15,21 @@ const Weather = ({ weatherData }: { weatherData: WeatherData }) => {
   const countryCode = country.toLowerCase();
 
   return (
-    <div className="">
-      <div className="">
-        <img src={`${METEOCONS_BASE_URL}cloudy.svg`} alt={description} className="" />
+    <div className="w-full p-4 grid grid-cols-3 border rounded">
+      <div className="flex justify-center items-center">
+        <img src={`${METEOCONS_BASE_URL}cloudy.svg`} alt={description} className="max-w-32" />
       </div>
-      <div className="">
-        <img src={`${FLAGCDN_BASE_URL}${countryCode}.svg`} alt={country} className="" />
+      <div className="flex justify-center items-center gap-1">
+        <img src={`${FLAGCDN_BASE_URL}${countryCode}.svg`} alt={country} className="h-8 rounded" />
         <span className="">{name}</span>
       </div>
-      <DataList>
-        <DataItem icon={`${METEOCONS_BASE_URL}thermometer-celsius.svg`} alt="Current temperature" data={`${Math.round(temp)}°`} />
-        <DataItem icon={`${METEOCONS_BASE_URL}humidity.svg`} alt="Current humidity" data={`${humidity} %`} />
-        <DataItem icon={`${METEOCONS_BASE_URL}wind.svg`} alt="Current wind speed" data={`${Math.round(speed)} m/s`} />
-      </DataList>
+      <div className="flex justify-center items-center">
+        <DataList>
+          <DataItem icon={`${METEOCONS_BASE_URL}thermometer-celsius.svg`} alt="Current temperature" data={`${Math.round(temp)}°`} />
+          <DataItem icon={`${METEOCONS_BASE_URL}humidity.svg`} alt="Current humidity" data={`${humidity} %`} />
+          <DataItem icon={`${METEOCONS_BASE_URL}wind.svg`} alt="Current wind speed" data={`${Math.round(speed)} m/s`} />
+        </DataList>
+      </div>
     </div>
   );
 };
