@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { ForecastList } from "@/types/forecast";
+import { ForecastDataList } from "@/types/forecast";
 import { OPENWEATHERMAP_BASE_URL } from "@/constants/api";
 
 const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY;
 
-const useForecast = (city: string) => {
-  const [forecastData, setForecastData] = useState<ForecastList | null>(null);
+const useForecastList = (city: string) => {
+  const [forecastDataList, setForecastData] = useState<ForecastDataList | null>(null);
   const [forecastLoading, setForecastLoading] = useState<boolean>(false);
   const [forecastError, setForecastError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ const useForecast = (city: string) => {
         if (!response.ok) {
           throw new Error("Failed to fetch forecast data");
         }
-        const data: ForecastList = await response.json();
+        const data: ForecastDataList = await response.json();
         setForecastData(data);
       } catch (error: unknown) {
         setForecastError(error instanceof Error ? error.message : "An unknown error occurred");
@@ -33,7 +33,7 @@ const useForecast = (city: string) => {
     fetchForecast();
   }, [city]);
 
-  return { forecastData, forecastLoading, forecastError };
+  return { forecastDataList, forecastLoading, forecastError };
 };
 
-export default useForecast;
+export default useForecastList;

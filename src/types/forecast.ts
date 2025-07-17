@@ -1,4 +1,4 @@
-export interface ForecastList {
+export interface ForecastDataList {
   list: ForecastData[];
 }
 
