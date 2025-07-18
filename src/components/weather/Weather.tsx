@@ -15,13 +15,13 @@ const Weather = ({ weatherData }: { weatherData: WeatherData }) => {
   const countryCode = country.toLowerCase();
 
   return (
-    <div className="w-full p-4 grid grid-cols-3 border rounded">
+    <div className="w-full p-4 md:p-5 grid md:grid-cols-3 border border-white/5 rounded-xl bg-white/5 backdrop-blur-md shadow-md">
       <div className="flex justify-center items-center">
-        <img src={`${METEOCONS_BASE_URL}cloudy.svg`} alt={description} className="max-w-32" />
+        <img src={`${METEOCONS_BASE_URL}cloudy.svg`} alt={description} className="max-w-32 md:max-w-40" />
       </div>
       <div className="flex justify-center items-center gap-1">
-        <img src={`${FLAGCDN_BASE_URL}${countryCode}.svg`} alt={country} className="h-8 rounded" />
-        <span className="">{name}</span>
+        <img src={`${FLAGCDN_BASE_URL}${countryCode}.svg`} alt={country} className="h-5 rounded" />
+        <span className="text-xl font-bold">{name}</span>
       </div>
       <div className="flex justify-center items-center">
         <DataList>

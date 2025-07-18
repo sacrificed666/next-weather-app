@@ -16,10 +16,10 @@ const ForecastItem = ({ forecastData }: { forecastData: ForecastData }) => {
   const date = new Date(dt * 1000).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit" });
 
   return (
-    <li className="p-4 flex flex-1 flex-col justify-center items-center border rounded">
-      <span className="">{day}</span>
-      <span className="">{date}</span>
-      <img src={`${METEOCONS_BASE_URL}cloudy.svg`} alt={description} className="max-w-32" />
+    <li className="p-4 md:p-5 flex flex-1 flex-col justify-center items-center border border-white/5 rounded-xl bg-white/5 backdrop-blur-md shadow-md">
+      <span className="font-bold">{day}</span>
+      <span className="text-white/50">{date}</span>
+      <img src={`${METEOCONS_BASE_URL}cloudy.svg`} alt={description} className="max-w-32 md:max-w-40" />
       <DataList>
         <DataItem icon={`${METEOCONS_BASE_URL}thermometer-celsius.svg`} alt={`Temperature on ${date}`} data={`${Math.round(max)}°/${Math.round(min)}°`} />
         <DataItem icon={`${METEOCONS_BASE_URL}humidity.svg`} alt={`Humidity on ${date}`} data={`${humidity} %`} />
