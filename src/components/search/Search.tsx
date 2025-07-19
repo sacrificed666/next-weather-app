@@ -24,10 +24,10 @@ const Search = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         type="text"
-        placeholder="Lviv"
+        placeholder="Lviv, UA"
         className="min-w-0 flex-1 h-8 md:h-10 p-4 md:p-5 outline-none placeholder:text-white/50"
       />
-      <button type="submit" className="size-8 md:size-10 border border-white/5 rounded-full bg-white/5 backdrop-blur-md shadow-md"></button>
+      <button type="submit" className="size-8 md:size-10 border border-white/5 rounded-full bg-white/5 backdrop-blur-md shadow-md cursor-pointer active:scale-90 transition-all"></button>
     </form>
   );
 };
