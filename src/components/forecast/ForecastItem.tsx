@@ -2,7 +2,6 @@ import DataList from "../data/DataList";
 import DataItem from "../data/DataItem";
 import useIcon from "@/hooks/useIcon";
 import { ForecastData } from "@/types/forecast";
-import { METEOCONS_BASE_URL } from "@/constants/cdn";
 
 const ForecastItem = ({ forecastData }: { forecastData: ForecastData }) => {
   const {
@@ -22,9 +21,9 @@ const ForecastItem = ({ forecastData }: { forecastData: ForecastData }) => {
       <span className="text-white/50">{date}</span>
       <img src={`${useIcon(description)}`} alt={description} className="max-w-32 md:max-w-40" />
       <DataList>
-        <DataItem icon={`${METEOCONS_BASE_URL}thermometer-celsius.svg`} alt={`Temperature on ${date}`} data={`${Math.round(max)}°/${Math.round(min)}°`} />
-        <DataItem icon={`${METEOCONS_BASE_URL}humidity.svg`} alt={`Humidity on ${date}`} data={`${humidity} %`} />
-        <DataItem icon={`${METEOCONS_BASE_URL}wind.svg`} alt={`Wind speed on ${date}`} data={`${Math.round(speed)} m/s`} />
+        <DataItem icon="thermometer-celsius" alt={`Temperature on ${date}`} data={`${Math.round(max)}°/${Math.round(min)}°`} />
+        <DataItem icon="humidity" alt={`Humidity on ${date}`} data={`${humidity} %`} />
+        <DataItem icon="wind" alt={`Wind speed on ${date}`} data={`${Math.round(speed)} m/s`} />
       </DataList>
     </li>
   );

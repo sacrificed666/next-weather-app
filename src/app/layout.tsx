@@ -8,10 +8,11 @@ import "./globals.css";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Weather App",
+  title: "Weather App",
   description: "A modern weather application built with Next.js, Redux Toolkit, and Tailwind CSS.",
   icons: {
     icon: `${METEOCONS_BASE_URL}partly-cloudy-day.svg`,
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body className="min-h-svh flex flex-col justify-center items-center text-center text-white/90 bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat">
+      <body className="min-h-svh flex flex-col justify-center items-center text-center text-white/90 bg-[url('/bg.webp')] bg-cover bg-center bg-no-repeat">
         <ReduxProvider>
           <Header />
           <main className="max-w-7xl w-full p-4 md:p-5 flex flex-1 flex-col justify-center items-center gap-1">{children}</main>

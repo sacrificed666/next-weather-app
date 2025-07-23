@@ -24,7 +24,7 @@ const Search = () => {
 
   return (
     <form onSubmit={handleSubmit} role="search" className="max-w-md w-full p-1 flex justify-center items-center border border-white/5 rounded-full bg-white/5 backdrop-blur-md shadow-md">
-      <input value={input} onChange={handleChange} type="text" placeholder="Lviv, UA" aria-label="Enter city name" className="min-w-0 h-8 md:h-10 p-4 md:p-5 flex-1 outline-none placeholder:text-white/50" />
+      <input value={input} onChange={handleChange} type="text" name="city" placeholder="Lviv, UA" aria-label="Enter city name" className="min-w-0 h-8 md:h-10 p-4 md:p-5 flex-1 outline-none placeholder:text-white/50" />
       <button type="submit" aria-label="Submit city search" className="size-8 md:size-10 p-1 md:p-2 flex justify-center items-center border border-white/5 rounded-full bg-white/5 backdrop-blur-md shadow-md cursor-pointer active:scale-90 transition-all">
         <img src="/search.svg" alt="Search" className="size-6 opacity-50" />
       </button>
