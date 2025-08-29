@@ -22,10 +22,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body className="min-h-svh flex flex-col justify-center items-center text-center text-white/90 bg-[url('/bg.webp')] bg-cover bg-center bg-no-repeat">
+      <body className="min-h-svh center flex-col text-center text-white/90 bg-[url('/bg.webp')] bg-cover bg-center bg-no-repeat">
         <ReduxProvider>
           <Header />
-          <main className="max-w-7xl w-full p-4 md:p-5 flex flex-1 flex-col justify-center items-center gap-1">{children}</main>
+          <main className="max-w-7xl w-full p-4 md:p-5 center flex-1 flex-col gap-1">{children}</main>
           <Footer />
         </ReduxProvider>
       </body>

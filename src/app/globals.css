@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --shadow-blur: 0 0 1rem 0 rgb(255 255 255 / 0.05);
+}
+
+.base {
+  @apply flex justify-center items-center border-white/5 bg-white/5 backdrop-blur-md shadow-blur;
+}
+
+.center {
+  @apply flex justify-center items-center;
+}
+
+.glassmorphism {
+  @apply backdrop-blur-md shadow-blur;
+}

@@ -7,6 +7,10 @@
 ![Redux](https://skillicons.dev/icons?i=redux)
 ![Tailwind](https://skillicons.dev/icons?i=tailwind)
 
+## ⚙️ Back-end
+
+![Node.js](https://skillicons.dev/icons?i=nodejs)
+
 ## ✍️ Author
 
 [Illia Movchko](https://github.com/sacrificed666)

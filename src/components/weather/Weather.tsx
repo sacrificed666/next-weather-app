@@ -27,17 +27,17 @@ const Weather = ({ weatherData }: { weatherData: WeatherData }) => {
   } = weatherData;
 
   return (
-    <div className="w-full p-4 md:p-5 flex flex-col justify-center items-center border border-white/5 rounded-xl bg-white/5 backdrop-blur-md shadow-md">
+    <div className="base w-full p-4 md:p-5 flex-col border rounded-xl">
       <span className="font-bold">Today, {time}</span>
       <div className="w-full grid md:grid-cols-3">
-        <div className="flex justify-center items-center">
+        <div className="center">
           <img src={`${useIcon(description)}`} alt={description} fetchPriority="high" className="max-w-32 md:max-w-40" />
         </div>
-        <div className="flex justify-center items-center gap-1">
+        <div className="center gap-1">
           <img src={`${FLAGCDN_BASE_URL}${country.toLowerCase()}.svg`} alt={country} className="h-5 rounded" />
           <span className="text-xl font-bold">{name}</span>
         </div>
-        <div className="flex justify-center items-center">
+        <div className="center">
           <DataList>
             <DataItem icon="thermometer-celsius" alt="Current temperature" data={`${Math.round(temp)}°`} />
             <DataItem icon="humidity" alt="Current humidity" data={`${humidity} %`} />

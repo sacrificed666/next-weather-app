@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 import { ForecastDataList } from "@/types/forecast";
-import { OPENWEATHERMAP_BASE_URL } from "@/constants/api";
-
-const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY;
 
 const useForecastList = (city: string) => {
   const [forecastDataList, setForecastData] = useState<ForecastDataList | null>(null);
@@ -17,7 +14,7 @@ const useForecastList = (city: string) => {
       setForecastError(null);
 
       try {
-        const response = await fetch(`${OPENWEATHERMAP_BASE_URL}forecast/daily?q=${city}&appid=${API_KEY}&cnt=7&units=metric`);
+        const response = await fetch(`/api/forecast?city=${encodeURIComponent(city)}`);
         if (!response.ok) {
           throw new Error("Failed to fetch forecast data");
         }

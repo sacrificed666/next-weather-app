@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 import { WeatherData } from "@/types/weather";
-import { OPENWEATHERMAP_BASE_URL } from "@/constants/api";
-
-const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY;
 
 const useWeather = (city: string) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -17,7 +14,7 @@ const useWeather = (city: string) => {
       setWeatherError(null);
 
       try {
-        const response = await fetch(`${OPENWEATHERMAP_BASE_URL}weather?q=${city}&appid=${API_KEY}&units=metric`);
+        const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
         if (!response.ok) {
           throw new Error("Failed to fetch weather data");
         }

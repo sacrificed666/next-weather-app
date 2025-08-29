@@ -16,7 +16,7 @@ const ForecastItem = ({ forecastData }: { forecastData: ForecastData }) => {
   const date = new Date(dt * 1000).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit" });
 
   return (
-    <li className="p-4 md:p-5 flex flex-1 flex-col justify-center items-center border border-white/5 rounded-xl bg-white/5 backdrop-blur-md shadow-md">
+    <li className="base p-4 md:p-5 flex-1 flex-col border rounded-xl">
       <span className="font-bold">{day}</span>
       <span className="text-white/50">{date}</span>
       <img src={`${useIcon(description)}`} alt={description} className="max-w-32 md:max-w-40" />
