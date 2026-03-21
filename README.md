@@ -13,8 +13,12 @@
 
 ## ✍️ Author
 
-[Illia Movchko](https://github.com/sacrificed666)
+**[Illia Movchko](https://github.com/sacrificed666)**
+
+## ✨ Credits
+
+**[Bas Milius](https://github.com/basmilius)** - *[Meteocons](https://bas.dev/work/meteocons)*
 
 ## 📝 License
 
-[MIT License](https://choosealicense.com/licenses/mit/)
+This project is licensed under the **[MIT License](https://choosealicense.com/licenses/mit/)**.
