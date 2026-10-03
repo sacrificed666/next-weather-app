@@ -1,34 +1,55 @@
-import { Metadata } from "next";
-import { Montserrat } from "next/font/google";
-import ReduxProvider from "@/components/providers/ReduxProvider";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import "./globals.css";
+import "@fontsource-variable/montserrat";
+import "./globals.scss";
+import type { Metadata, Viewport } from "next";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
+import I18nProvider from "@/features/i18n/ui/I18nProvider/I18nProvider";
+import { getLocalization } from "@/features/preferences/model/server";
+import OfflineNotice from "@/features/preferences/ui/OfflineNotice/OfflineNotice";
+import Footer from "@/widgets/Footer/Footer";
+import Header from "@/widgets/Header/Header";
 
-export const metadata: Metadata = {
-  title: "Weather App",
-  description: "A modern weather application built with Next.js, Redux Toolkit, and Tailwind CSS.",
-  keywords: ["Weather", "Forecast", "Next.js", "Redux Toolkit", "Tailwind CSS"],
-  authors: [{ name: "Illia Movchko", url: "https://github.com/sacrificed666" }],
-  creator: "Illia Movchko",
-  publisher: "Illia Movchko",
+import styles from "./layout.module.scss";
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { t } = await getLocalization();
+  return {
+    title: { default: t("app.name"), template: `%s · ${t("app.name")}` },
+    description: t("app.description"),
+    applicationName: t("app.name"),
+    authors: [{ name: "Illia Movchko", url: "https://github.com/sacrificed666" }],
+    creator: "Illia Movchko",
+    formatDetection: { telephone: false, address: false, email: false },
+    openGraph: { type: "website", title: t("app.name"), description: t("app.description") },
+  };
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#dbe5f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1020" },
+  ],
+};
+
+const RootLayout = async ({ children }: LayoutProps<"/">) => {
+  const { preferences, messages, t } = await getLocalization();
   return (
-    <html lang="en" className={montserrat.className}>
-      <body className="min-h-svh center flex-col text-center text-white/90 bg-[url('/ui/bg.webp')] bg-cover bg-center bg-no-repeat">
-        <ReduxProvider>
-          <Header />
-          <main className="max-w-7xl w-full p-4 md:p-5 center flex-1 flex-col gap-1">{children}</main>
-          <Footer />
-        </ReduxProvider>
+    <html lang={preferences.locale} data-theme={preferences.theme}>
+      <body>
+        <I18nProvider locale={preferences.locale} messages={messages}>
+          <a className="skip-link" href="#forecast">
+            {t("app.skip")}
+          </a>
+          <Header preferences={preferences} t={t} />
+          <main className={styles.main} id="forecast" tabIndex={-1}>
+            {children}
+          </main>
+          <Footer t={t} />
+          <OfflineNotice />
+        </I18nProvider>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

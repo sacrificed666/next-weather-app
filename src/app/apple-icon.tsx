@@ -1,0 +1,12 @@
+import { ImageResponse } from "next/og";
+
+import { readAppIcon } from "./appIcon";
+
+export const size = { width: 180, height: 180 };
+
+export const contentType = "image/png";
+
+const AppleIcon = async () =>
+  new ImageResponse(<img src={await readAppIcon()} width={size.width} height={size.height} alt="" />, size);
+
+export default AppleIcon;

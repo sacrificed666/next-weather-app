@@ -1,0 +1,54 @@
+.hours {
+  display: grid;
+  grid-auto-columns: minmax(4.25rem, 1fr);
+  grid-auto-flow: column;
+  gap: 0.25rem;
+  margin: 0 -0.5rem;
+  padding: 0 0.5rem 0.25rem;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-fill-strong) transparent;
+}
+
+.hour {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.25rem;
+  border-radius: var(--radius-md);
+  scroll-snap-align: start;
+
+  &:first-child {
+    background: var(--color-fill);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+
+    .time {
+      color: var(--color-text);
+      font-weight: 700;
+    }
+  }
+}
+
+.time {
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.temperature {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.chance {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-block-size: 1.1rem;
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+}

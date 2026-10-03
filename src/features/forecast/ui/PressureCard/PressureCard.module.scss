@@ -1,0 +1,35 @@
+.pressure {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.gauge {
+  flex: none;
+  inline-size: 6.5rem;
+  overflow: visible;
+}
+
+.track,
+.fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: var(--track);
+}
+
+.fill {
+  stroke: var(--color-accent);
+}
+
+.marker {
+  fill: #fff;
+  stroke: var(--color-accent);
+  stroke-width: 3;
+}

@@ -1,0 +1,31 @@
+@use "@/shared/styles/mixins" as *;
+
+.notice {
+  @include glass(var(--radius-full), var(--glass-tint-overlay), var(--glass-blur-thick));
+
+  position: fixed;
+  inset-block-end: max(1rem, env(safe-area-inset-bottom));
+  inset-inline-start: 50%;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  inline-size: max-content;
+  max-inline-size: calc(100vw - 2 * var(--gutter));
+  padding: 0.7rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  translate: -50% 0;
+  animation: rise var(--duration-slow) var(--ease-spring);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: -50% 1rem;
+  }
+}
