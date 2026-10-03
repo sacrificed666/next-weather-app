@@ -1,0 +1,6 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "sortImports": true,
+  "ignorePatterns": [".next", "coverage", "public", "next-env.d.ts", "package-lock.json"]
+}
