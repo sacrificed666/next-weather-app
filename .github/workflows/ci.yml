@@ -1,0 +1,102 @@
+name: 🚀 Weather App | CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  verify:
+    name: 🔍 Verify | Lint, format, types and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 📥 Git | Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: 🟢 Node | Set up environment
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: 📦 NPM | Install dependencies
+        run: npm ci
+
+      - name: 🔏 NPM | Verify registry signatures
+        run: npm audit signatures
+
+      - name: 🧹 Oxlint | Lint code
+        run: npm run lint -- --format github
+
+      - name: 🎨 Oxfmt | Check formatting
+        run: npm run format:check
+
+      - name: 🧠 TypeScript | Check types
+        run: npm run typecheck
+
+      - name: 🧪 Vitest | Run tests with coverage
+        run: npm run test:coverage
+
+      - name: 📊 Coverage | Publish summary
+        if: ${{ !cancelled() && hashFiles('coverage/coverage-summary.json') != '' }}
+        run: node scripts/coverage-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 📤 Coverage | Upload report
+        if: ${{ !cancelled() && hashFiles('coverage/index.html') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 7
+
+  build:
+    name: 🛠️ Build | Production bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 📥 Git | Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: 🟢 Node | Set up environment
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: 📦 NPM | Install dependencies
+        run: npm ci
+
+      - name: 🛠️ Next.js | Build project
+        run: npm run build
+
+  dependency-review:
+    name: 🛡️ Security | Review dependency changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 📥 Git | Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: 🛡️ GitHub | Review dependencies
+        uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: high
