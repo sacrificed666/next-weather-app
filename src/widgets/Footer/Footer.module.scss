@@ -1,0 +1,68 @@
+@use "@/shared/styles/mixins" as *;
+
+.footer {
+  padding: 2rem var(--gutter) max(1.5rem, env(safe-area-inset-bottom));
+}
+
+.bar {
+  @include glass(var(--radius-lg), var(--glass-tint), var(--glass-blur));
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-inline-size: var(--layout-width);
+  margin-inline: auto;
+  padding: 1rem 1.25rem;
+}
+
+.credits {
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+
+  a {
+    color: var(--color-text);
+    text-decoration-color: var(--color-text-tertiary);
+    text-underline-offset: 0.2em;
+
+    @include hover {
+      color: var(--color-accent);
+    }
+  }
+}
+
+.socials {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social {
+  @include pressable;
+
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: var(--radius-full);
+  background: var(--color-fill);
+  color: var(--color-text-secondary);
+
+  @include hover {
+    background: var(--color-fill-strong);
+    color: var(--color-text);
+  }
+}

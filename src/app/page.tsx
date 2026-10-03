@@ -1,37 +1,38 @@
-"use client";
+import type { Metadata } from "next";
+import { Suspense } from "react";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import Weather from "@/components/weather/Weather";
-import ForecastList from "@/components/forecast/ForecastList";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import useAPI from "@/hooks/useAPI";
-import { WeatherData } from "@/types/weather";
-import { ForecastDataList } from "@/types/forecast";
+import { getForecast } from "@/features/forecast/model/getForecast";
+import ForecastSkeleton from "@/features/forecast/ui/ForecastSkeleton/ForecastSkeleton";
+import { locationKey, parseLocation } from "@/features/places/model/location";
+import { placeKey } from "@/features/places/model/place";
+import SavedPlaces from "@/features/places/ui/SavedPlaces/SavedPlaces";
+import { getLocalization } from "@/features/preferences/model/server";
+import Forecast from "@/widgets/Forecast/Forecast";
 
-const Page = () => {
-  const city = useSelector((state: RootState) => state.city.value);
+export const generateMetadata = async ({ searchParams }: PageProps<"/">): Promise<Metadata> => {
+  const query = parseLocation(await searchParams);
+  const { preferences, t, format } = await getLocalization();
+  const result = query ? await getForecast(query, preferences.locale) : null;
+  if (!result) return { title: t("error.notFound.title") };
+  if (!result.ok) return result.failure === "not-found" ? { title: t("error.notFound.title") } : {};
 
-  const { data: weatherData, loading: weatherLoading, error: weatherError } = useAPI<WeatherData>("weather", city);
-  const { data: forecastDataList, loading: forecastLoading, error: forecastError } = useAPI<ForecastDataList>("forecast", city);
+  const { place, current } = result.forecast;
+  const summary = `${format.temperature(current.temperature)} · ${format.sentence(current.condition.description)}`;
+  return {
+    title: `${place.name} ${summary}`,
+    description: `${place.name}: ${summary}. ${t("app.description")}`,
+  };
+};
 
-  const isLoading = weatherLoading || forecastLoading;
-  const isError = weatherError || forecastError;
-  const isReady = !isLoading && !isError && weatherData && forecastDataList;
-
+const Page = async ({ searchParams }: PageProps<"/">) => {
+  const query = parseLocation(await searchParams);
+  const { t } = await getLocalization();
   return (
     <>
-      {isLoading && <Loading />}
-
-      {isError && <Error />}
-
-      {isReady && (
-        <>
-          <Weather weatherData={weatherData} />
-          <ForecastList forecastDataList={forecastDataList} />
-        </>
-      )}
+      <SavedPlaces activeKey={query?.kind === "coordinates" ? placeKey(query) : null} />
+      <Suspense key={locationKey(query)} fallback={<ForecastSkeleton label={t("loading.forecast")} />}>
+        <Forecast query={query} />
+      </Suspense>
     </>
   );
 };
