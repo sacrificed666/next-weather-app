@@ -31,11 +31,17 @@ export const it: Messages = {
   "settings.units": "Unità",
   "settings.units.metric": "°C, m/s",
   "settings.units.imperial": "°F, mph",
+  "settings.effects": "Effetti",
+  "settings.effects.auto": "Auto",
+  "settings.effects.full": "Completi",
+  "settings.effects.reduced": "Ridotti",
+  "settings.effects.device": "Su questo dispositivo: {mode}",
   "settings.language": "Lingua",
   "settings.close": "Chiudi",
 
   "places.title": "Luoghi salvati",
   "places.save": "Salva {name}",
+  "places.full": "I luoghi salvati sono al completo. Rimuovine uno per salvare {name}",
   "places.remove": "Rimuovi {name} dai luoghi salvati",
 
   "current.title": "Meteo attuale",

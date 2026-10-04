@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { KYIV, openSettings } from "./helpers";
+import { choosePreference, endlessAnimations, KYIV, MAC_USER_AGENT, openSettings } from "./helpers";
 
 test("shows the weather for the default city", async ({ page }) => {
   await page.goto("/en");
@@ -66,15 +66,46 @@ test("opens the forecast for the current position", async ({ page, context }) =>
 test("changes units and theme without leaving the page", async ({ page }) => {
   await page.goto(KYIV);
   await openSettings(page);
-  await page.getByText("°F, mph").click();
-  await expect(page.getByText("Clear sky", { exact: true })).toBeVisible();
+  await choosePreference(page, "°F, mph");
+  await expect(page.getByText("Clear sky", { exact: true }).first()).toBeVisible();
   await expect(page.locator("p").filter({ hasText: /^Current weather: 63°$/u })).toBeVisible();
-  await page.getByText("Dark", { exact: true }).click();
+  await choosePreference(page, "Dark");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator("p").filter({ hasText: /^Current weather: 63°$/u })).toBeVisible();
+});
+
+test("keeps the sky still where it could stutter and lets the visitor choose", async ({ page }) => {
+  await page.goto("/en?city=Bangkok");
+  await expect(page.locator("html")).toHaveAttribute("data-effects", "reduced");
+  await expect(page.getByRole("img", { name: "Thunderstorm" }).first()).toHaveAttribute(
+    "src",
+    /^\/icons\/weather-static\/thunderstorms/u,
+  );
+  expect(await endlessAnimations(page)).toBe(0);
+
+  await openSettings(page);
+  await expect(page.getByRole("group", { name: "Effects" })).toHaveAccessibleDescription("On this device: Reduced");
+  await choosePreference(page, "Full");
+  await expect(page.locator("html")).toHaveAttribute("data-effects", "full");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-effects", "full");
+  await expect(page.getByRole("img", { name: "Thunderstorm" }).first()).toHaveAttribute(
+    "src",
+    /^\/icons\/weather\/thunderstorms/u,
+  );
+});
+
+test.describe("on an Apple device", () => {
+  test.use({ userAgent: MAC_USER_AGENT });
+
+  test("shows the living sky and animated icons", async ({ page }) => {
+    await page.goto("/en?city=Bangkok");
+    await expect(page.locator("html")).toHaveAttribute("data-effects", "full");
+    expect(await endlessAnimations(page)).toBeGreaterThan(0);
+  });
 });
 
 test("switches the language and remembers it", async ({ page }) => {

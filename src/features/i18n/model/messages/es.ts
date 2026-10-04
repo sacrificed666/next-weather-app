@@ -31,11 +31,17 @@ export const es: Messages = {
   "settings.units": "Unidades",
   "settings.units.metric": "°C, m/s",
   "settings.units.imperial": "°F, mph",
+  "settings.effects": "Efectos",
+  "settings.effects.auto": "Auto",
+  "settings.effects.full": "Completos",
+  "settings.effects.reduced": "Reducidos",
+  "settings.effects.device": "En este dispositivo: {mode}",
   "settings.language": "Idioma",
   "settings.close": "Cerrar",
 
   "places.title": "Lugares guardados",
   "places.save": "Guardar {name}",
+  "places.full": "Ya no caben más lugares guardados. Quita uno para guardar {name}",
   "places.remove": "Quitar {name} de los lugares guardados",
 
   "current.title": "Tiempo actual",

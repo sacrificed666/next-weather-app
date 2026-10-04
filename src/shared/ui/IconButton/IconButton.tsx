@@ -22,7 +22,7 @@ const IconButton = ({ icon, label, busy = false, className, ...props }: IconButt
     title={label}
     aria-busy={busy || undefined}
   >
-    <Icon name={busy ? "loader" : icon} size={19} className={busy ? styles.spinner : undefined} />
+    <Icon name={busy ? "loader" : icon} size={20} className={busy ? styles.spinner : undefined} />
   </button>
 );
 

@@ -31,10 +31,10 @@ The HTML coverage report is written to `coverage/index.html`, the Playwright rep
 
 ```mermaid
 flowchart TB
-  E2E["🎭 End to end · ~43 tests per screen<br/>languages and redirects, search, saved places, location, settings, no-JS search, CSP and headers, axe, forced colours, reflow, SEO, Lighthouse"]
-  UI["🖥️ Components · ~57 tests<br/>forecast cards, search combobox, location, saved places, settings, widgets, JSON-LD"]
-  Server["🖧 Server · ~50 tests<br/>getForecast, geocoding, /api/places, /flags, proxy, cookies and route language, server action, robots, sitemap"]
-  Model["🧠 Model and helpers · ~148 tests<br/>normalization, aggregation, icons, insights, SEO, formatting, units, locales, messages, site address"]
+  E2E["🎭 End to end · ~47 tests per screen<br/>languages and redirects, search, saved places, location, settings, effects, no-JS search, CSP and headers, axe, forced colours, reflow, SEO, Lighthouse"]
+  UI["🖥️ Components · ~61 tests<br/>forecast cards, search combobox, location, saved places, settings, widgets, JSON-LD"]
+  Server["🖧 Server · ~52 tests<br/>getForecast, geocoding, /api/places, /flags, proxy, cookies, effects and route language, server action, robots, sitemap"]
+  Model["🧠 Model and helpers · ~154 tests<br/>normalization, aggregation, icons, insights, SEO, formatting, units, locales, messages, site address"]
   E2E --> UI --> Server --> Model
 ```
 
@@ -44,17 +44,17 @@ Most behaviour is pinned down by fast tests of pure functions; component tests r
 
 Tests sit next to the code they cover as `*.test.ts(x)`:
 
-| Area              | Files                                                                                                                      | Covers                                                                                                        |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 🌦️ Forecast model | `normalize`, `getForecast`, `conditions`, `insights`                                                                       | Parsing every endpoint, defaults and clamping, the free-key fallback and when it is remembered, every icon    |
-| 🖼️ Forecast UI    | `ForecastViews.test.tsx`, `ForecastStates.test.tsx`                                                                        | Every card in metric and imperial, polar days, missing data, the live clock, errors with references, skeleton |
-| 📍 Places         | `place`, `location`, `geocoding`, `storedPlaces`, `PlacesUi.test.tsx`                                                      | URL parsing, links in every language, canonical queries, local names, the combobox, geolocation outcomes      |
-| ⚙️ Preferences    | `preferences`, `server`, `actions`, `PreferencesUi.test.tsx`                                                               | Cookies, the language of the route and of a request, the server action, language links, offline notice        |
-| 🔎 SEO            | `features/seo/**/*.test.ts(x)`                                                                                             | Titles, alternates, Open Graph and X fields, escaped JSON-LD, the place schema                                |
-| 🌍 i18n           | `locales`, `translate`, `messages`, `useI18n`                                                                              | `Accept-Language` matching, path helpers, placeholders, identical keys in all eight languages                 |
-| 🚀 App            | `api/places/route`, `flags/[code]/route`, `robots`, `sitemap`, `proxy`                                                     | Same-origin check, limits, rate limiting, flags, robots rules, the sitemap, redirects and the nonce policy    |
-| 🧰 Shared         | `format`, `units`, `time`, `guards`, `rateLimit`, `storedList`, `contentSecurityPolicy`, `site`, `openWeather`, `SharedUi` | Intl formatting, conversions, storage failures, the public address, the API address, primitives               |
-| 🧩 Widgets        | `Widgets.test.tsx`                                                                                                         | Header, footer and the async Forecast widget with its structured data                                         |
+| Area              | Files                                                                                                                      | Covers                                                                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌦️ Forecast model | `normalize`, `getForecast`, `conditions`, `insights`                                                                       | Parsing every endpoint, defaults and clamping, the free-key fallback and when it is remembered, every icon                                              |
+| 🖼️ Forecast UI    | `ForecastViews.test.tsx`, `ForecastStates.test.tsx`                                                                        | Every card in metric and imperial, polar days, missing data, the live clock, errors with references, skeleton                                           |
+| 📍 Places         | `place`, `location`, `geocoding`, `storedPlaces`, `PlacesUi.test.tsx`                                                      | URL parsing, links in every language, canonical queries, local names, the combobox, geolocation outcomes                                                |
+| ⚙️ Preferences    | `preferences`, `server`, `actions`, `PreferencesUi.test.tsx`                                                               | Cookies, the effects level for each device, the language of the route and of a request, the server action, the settings, language links, offline notice |
+| 🔎 SEO            | `features/seo/**/*.test.ts(x)`                                                                                             | Titles, alternates, Open Graph and X fields, escaped JSON-LD, the place schema                                                                          |
+| 🌍 i18n           | `locales`, `translate`, `messages`, `useI18n`                                                                              | `Accept-Language` matching, path helpers, placeholders, identical keys in all eight languages                                                           |
+| 🚀 App            | `api/places/route`, `flags/[code]/route`, `robots`, `sitemap`, `proxy`                                                     | Same-origin check, limits, rate limiting, flags, robots rules, the sitemap, redirects and the nonce policy                                              |
+| 🧰 Shared         | `format`, `units`, `time`, `guards`, `rateLimit`, `storedList`, `contentSecurityPolicy`, `site`, `openWeather`, `SharedUi` | Intl formatting, conversions, storage failures, the public address, the API address, primitives                                                         |
+| 🧩 Widgets        | `Widgets.test.tsx`                                                                                                         | Header, footer and the async Forecast widget with its structured data                                                                                   |
 
 ## 🧪 Fixtures and helpers
 
@@ -98,14 +98,27 @@ flowchart LR
 > [!TIP]
 > Locally both servers are reused when they are already running, so after the first run a repeated `npx playwright test e2e/accessibility.spec.ts` takes seconds. Start them yourself with the environment from `playwright.config.ts` to keep them between runs.
 
-| Spec                       | Checks                                                                                                                                                                                         |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🌦️ `forecast.spec.ts`      | The default city, the week from the free forecast, keyboard search, an unknown city, saved places, geolocation, units and theme after a reload, switching languages, search without JavaScript |
-| 🧭 `routing.spec.ts`       | Redirect to the browser language, the saved language winning, the city kept, lowercase languages, translated 404s with status 404, broken coordinates                                          |
-| ♿ `accessibility.spec.ts` | axe on six pages in five languages, the dark theme, the settings and the suggestions, the skip link, forced colours mode and no sideways scrolling at 320 px                                   |
-| 🛡️ `security.spec.ts`      | No console errors or CSP violations while searching, saving settings and opening three languages, a fresh nonce per request, every header, the search API guards                               |
-| 🔎 `seo.spec.ts`           | Titles, canonical and `hreflang` links, `og:locale`, the canonical of the default city, JSON-LD, `noindex` for failures, the sitemap, robots, share images, manifest                           |
-| 🚦 `lighthouse.spec.ts`    | The Lighthouse budget below                                                                                                                                                                    |
+| Spec                       | Checks                                                                                                                                                                                                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 🌦️ `forecast.spec.ts`      | The default city, the week from the free forecast, keyboard search, an unknown city, saved places, geolocation, units and theme after a reload, the still sky by default and the moving one on Apple devices, the Effects setting after a reload, switching languages, search without JavaScript |
+| 🧭 `routing.spec.ts`       | Redirect to the browser language, the saved language winning, the city kept, lowercase languages, translated 404s with status 404, broken coordinates                                                                                                                                            |
+| ♿ `accessibility.spec.ts` | axe on six pages in five languages, the dark theme, the full effects of Apple devices in both themes, the settings and the suggestions, the skip link, forced colours mode and no sideways scrolling at 320 px                                                                                   |
+| 🛡️ `security.spec.ts`      | No console errors or CSP violations while searching, saving settings and opening three languages, a fresh nonce per request, every header, the search API guards                                                                                                                                 |
+| 🔎 `seo.spec.ts`           | Titles, canonical and `hreflang` links, `og:locale`, the canonical of the default city, JSON-LD, `noindex` for failures, the sitemap, robots, share images, manifest                                                                                                                             |
+| 🚦 `lighthouse.spec.ts`    | The Lighthouse budget below                                                                                                                                                                                                                                                                      |
+
+`e2e/helpers.ts` holds what several specs share:
+
+| Helper                          | Purpose                                                                                   |
+| ------------------------------- | ----------------------------------------------------------------------------------------- |
+| `watchProblems(page)`           | Collects console errors and CSP violations and returns a check that expects none          |
+| `openSettings(page)`            | Opens the settings panel                                                                  |
+| `choosePreference(page, label)` | Picks a setting and waits for the server action, so a reload already sees the new cookie  |
+| `endlessAnimations(page)`       | Counts the running animations that never end, the ones that keep the sky and icons moving |
+| `MAC_USER_AGENT`, `KYIV`        | A Mac `User-Agent` for the full effects and the address of Kyiv                           |
+
+> [!NOTE]
+> The test browsers report Linux, so **Auto** gives them the reduced effects. Specs that need the moving sky set `test.use({ userAgent: MAC_USER_AGENT })`.
 
 Every spec except SEO and Lighthouse runs twice: in **Desktop Chrome** and on a **Pixel 7** screen. The accessibility checks run with reduced motion, so transitions never catch axe halfway.
 
@@ -123,7 +136,7 @@ Every spec except SEO and Lighthouse runs twice: in **Desktop Chrome** and on a 
 | ☀️ `/uk?city=Kyiv`      | 🖥️ Desktop  |      ≥ 0.90 |             1 |              1 |   1 |    ≤ 450 KB |
 | ❄️ `/de?city=Reykjavik` | 📱 Mobile   |      ≥ 0.80 |             1 |              1 |   1 |    ≤ 450 KB |
 
-Every weighted audit of the accessibility and best practices categories must pass as well. Each run attaches the full Lighthouse HTML report to its test in the Playwright report, so a failed budget can be inspected in CI.
+Every accessibility audit must pass as well, including the ones Lighthouse does not weigh into the score, and so must every weighted best practices audit (unweighted ones such as `valid-source-maps` cannot pass in a production build without source maps). Each run attaches the full Lighthouse HTML report to its test in the Playwright report, so a failed budget can be inspected in CI.
 
 ## 📐 Conventions
 

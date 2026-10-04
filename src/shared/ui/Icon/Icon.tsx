@@ -7,15 +7,15 @@ interface IconProps {
 }
 
 const Icon = ({ name, size = 20, className }: IconProps) => {
-  const { paths, filled = false }: IconShape = icons[name];
+  const { paths }: IconShape = icons[name];
   return (
     <svg
       className={className}
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill={filled ? "currentColor" : "none"}
-      stroke={filled ? "none" : "currentColor"}
+      fill="none"
+      stroke="currentColor"
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"

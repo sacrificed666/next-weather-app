@@ -18,7 +18,7 @@ interface Hour {
   precipitationChance: number | null;
 }
 
-const HourlyForecast = ({ forecast, t, format, className }: ForecastViewProps) => {
+const HourlyForecast = ({ forecast, t, format, animated, className }: ForecastViewProps) => {
   const { current, hourly, timezoneOffset } = forecast;
   const hours: Hour[] = [
     {
@@ -47,6 +47,7 @@ const HourlyForecast = ({ forecast, t, format, className }: ForecastViewProps) =
               name={conditionIcon(hour.condition)}
               size={48}
               label={format.sentence(hour.condition.description)}
+              animated={animated}
             />
             <span className={styles.temperature}>{format.temperature(hour.temperature)}</span>
             <span className={styles.chance}>

@@ -1,8 +1,13 @@
 import { copyFileSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
-const source = new URL("../node_modules/@meteocons/svg/fill/", import.meta.url).pathname;
-const target = new URL("../public/icons/weather/", import.meta.url).pathname;
+const sets = [
+  { source: "../node_modules/@meteocons/svg/fill/", target: "../public/icons/weather/" },
+  { source: "../node_modules/@meteocons/svg-static/fill/", target: "../public/icons/weather-static/" },
+].map(({ source, target }) => ({
+  source: new URL(source, import.meta.url).pathname,
+  target: new URL(target, import.meta.url).pathname,
+}));
 
 const icons = [
   "clear-day",
@@ -51,8 +56,10 @@ const icons = [
   "sunset",
 ];
 
-mkdirSync(target, { recursive: true });
-for (const file of readdirSync(target)) rmSync(join(target, file));
-for (const icon of icons) copyFileSync(join(source, `${icon}.svg`), join(target, `${icon}.svg`));
+for (const { source, target } of sets) {
+  mkdirSync(target, { recursive: true });
+  for (const file of readdirSync(target)) rmSync(join(target, file));
+  for (const icon of icons) copyFileSync(join(source, `${icon}.svg`), join(target, `${icon}.svg`));
+}
 
-process.stdout.write(`Copied ${icons.length} Meteocons to public/icons/weather\n`);
+process.stdout.write(`Copied ${icons.length} animated and ${icons.length} static Meteocons to public/icons\n`);

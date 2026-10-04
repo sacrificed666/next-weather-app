@@ -16,7 +16,7 @@ vi.mock("next/headers", () => ({
 
 vi.mock("next/root-params", () => ({ locale: () => Promise.resolve(request.locale) }));
 
-const { currentLocale, getLocalization, getPreferences, getRequestLocalization, requestLocale } =
+const { currentLocale, getEffects, getLocalization, getPreferences, getRequestLocalization, requestLocale } =
   await import("./server");
 
 describe("server preferences", () => {
@@ -27,13 +27,24 @@ describe("server preferences", () => {
   });
 
   it("uses defaults without cookies", async () => {
-    await expect(getPreferences()).resolves.toEqual({ theme: "system", units: "metric" });
+    await expect(getPreferences()).resolves.toEqual({ theme: "system", units: "metric", effects: "auto" });
   });
 
   it("reads saved preferences and ignores invalid ones", async () => {
     request.cookies.set("weather-theme", "dark");
     request.cookies.set("weather-units", "kelvin");
-    await expect(getPreferences()).resolves.toEqual({ theme: "dark", units: "metric" });
+    request.cookies.set("weather-effects", "lite");
+    await expect(getPreferences()).resolves.toEqual({ theme: "dark", units: "metric", effects: "auto" });
+  });
+
+  it("resolves the effects level from the choice and the device", async () => {
+    request.headers.set("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+    await expect(getEffects()).resolves.toEqual({ level: "reduced", device: "reduced" });
+    request.cookies.set("weather-effects", "full");
+    await expect(getEffects()).resolves.toEqual({ level: "full", device: "reduced" });
+    request.headers.set("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)");
+    request.cookies.set("weather-effects", "auto");
+    await expect(getEffects()).resolves.toEqual({ level: "full", device: "full" });
   });
 
   it("reads the language from the address", async () => {

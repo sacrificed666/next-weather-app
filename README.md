@@ -19,7 +19,7 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
 - 🔎 **Search and location**: suggestions in any language (`Lviv`, `Львів`, `Lemberg`), full keyboard control, recent searches and **Use my location**
 - ⭐ **Saved places**: star a city to pin it above the forecast and switch between your places in one tap
 - 🌍 **Eight languages**: English, Ukrainian, German, Spanish, French, Italian, Dutch and Polish, each under its own address, including the weather descriptions and place names
-- ⚙️ **Your way**: light, dark or automatic theme and metric (°C, m/s, hPa) or imperial (°F, mph, inHg) units, rendered by the server without a flash
+- ⚙️ **Your way**: light, dark or automatic theme, metric (°C, m/s, hPa) or imperial (°F, mph, inHg) units and full or reduced effects, rendered by the server without a flash
 - ♿ **Accessible**: landmarks, a skip link, live regions, a real combobox, reflow down to 320 px and support for reduced motion, reduced transparency, more contrast and forced colours, checked with axe in every build
 - 🔎 **Search-friendly**: canonical and `hreflang` links, a share card per language, a sitemap, robots rules and JSON-LD with the place of every forecast
 - ⚡ **Fast**: server components, a 10-minute shared cache for OpenWeatherMap responses, a streamed dashboard and a Lighthouse budget in CI
@@ -91,7 +91,8 @@ npm run build && npm start   # production build
 ## 📌 Good to know
 
 - 🔑 **A free API key is enough.** When the key does not include the daily forecast, the week is built from the free 5-day / 3-hour forecast instead.
-- 🔒 **Nothing is tracked.** Preferences are three cookies, saved places stay in your browser, and the browser only talks to the app itself.
+- 🔒 **Nothing is tracked.** Preferences are four cookies, saved places stay in your browser, and the browser only talks to the app itself.
+- 🐢 **The sky stands still on Windows and Android** by default, which keeps scrolling smooth; **Settings → Effects → Full** brings the motion back.
 - 🗃️ **Weather is cached for 10 minutes** on the server, so many visitors of one city cost one request.
 
 > [!IMPORTANT]

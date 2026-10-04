@@ -3,7 +3,7 @@ import "./globals.scss";
 import type { Metadata } from "next";
 
 import { homeHref } from "@/features/i18n/model/locales";
-import { getRequestLocalization } from "@/features/preferences/model/server";
+import { getEffects, getRequestLocalization } from "@/features/preferences/model/server";
 import { documentTitle } from "@/features/seo/model/seo";
 import Icon from "@/shared/ui/Icon/Icon";
 import WeatherIcon from "@/shared/ui/WeatherIcon/WeatherIcon";
@@ -16,13 +16,13 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 const GlobalNotFound = async () => {
-  const { locale, preferences, t } = await getRequestLocalization();
+  const [{ locale, preferences, t }, effects] = await Promise.all([getRequestLocalization(), getEffects()]);
   return (
-    <html lang={locale} data-theme={preferences.theme}>
+    <html lang={locale} data-theme={preferences.theme} data-effects={effects.level}>
       <body>
         <main className={styles.page}>
           <a className={styles.brand} href={homeHref(locale)}>
-            <WeatherIcon name="partly-cloudy-day" size={40} loading="eager" />
+            <WeatherIcon name="partly-cloudy-day" size={40} loading="eager" animated={effects.level === "full"} />
             {t("app.name")}
           </a>
           <section className={styles.notFound} aria-labelledby="not-found-title">

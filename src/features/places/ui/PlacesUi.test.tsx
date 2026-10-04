@@ -5,7 +5,7 @@ import { jsonResponse } from "@/test/fixtures";
 import { renderWithI18n } from "@/test/render";
 
 import type { Place } from "../model/place";
-import { recentPlaces, rememberPlace, savedPlaces, toggleSavedPlace } from "../model/storedPlaces";
+import { recentPlaces, rememberPlace, SAVED_PLACES_LIMIT, savedPlaces, toggleSavedPlace } from "../model/storedPlaces";
 import CitySearch from "./CitySearch/CitySearch";
 import LocateButton from "./LocateButton/LocateButton";
 import SavedPlaces from "./SavedPlaces/SavedPlaces";
@@ -198,6 +198,18 @@ describe("saved places", () => {
     expect(button).toHaveAccessibleName("Save Lviv");
     await user.click(button);
     expect(savedPlaces.getSnapshot()).toEqual([]);
+  });
+
+  it("explains a full list instead of silently ignoring the star", async () => {
+    for (let index = 0; index < SAVED_PLACES_LIMIT; index += 1) {
+      toggleSavedPlace({ ...kyiv, name: `Place ${index}`, latitude: index });
+    }
+    const { user } = renderWithI18n(<SavePlaceButton place={lviv} />);
+    const button = screen.getByRole("button", { name: "Saved places are full. Remove one to save Lviv" });
+    expect(button).toHaveAttribute("aria-disabled", "true");
+    await user.click(button);
+    expect(savedPlaces.getSnapshot()).toHaveLength(SAVED_PLACES_LIMIT);
+    expect(button).toHaveAttribute("aria-pressed", "false");
   });
 
   it("lists saved places, marks the open one and removes them", async () => {

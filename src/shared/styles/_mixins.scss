@@ -75,17 +75,30 @@ $breakpoints: (
   pointer-events: none;
 }
 
-@mixin glass($radius: var(--radius-lg), $tint: var(--glass-tint), $blur: var(--glass-blur)) {
+@mixin glass(
+  $radius: var(--radius-lg),
+  $tint: var(--glass-tint),
+  $blur: var(--glass-blur),
+  $content: false,
+  $shadow: var(--glass-shadow)
+) {
   position: relative;
   border-radius: $radius;
   background: linear-gradient(170deg, var(--glass-sheen), transparent 40%), $tint;
   backdrop-filter: blur($blur) saturate(var(--glass-saturate));
   box-shadow:
     inset 0 1px 0 var(--glass-highlight),
-    var(--glass-shadow);
+    $shadow;
 
   &::before {
     @include rim;
+  }
+
+  @if $content {
+    :where(:root[data-effects="reduced"]) & {
+      background: linear-gradient(170deg, var(--glass-sheen), transparent 40%), var(--glass-tint-content);
+      backdrop-filter: none;
+    }
   }
 
   @media (prefers-reduced-transparency: reduce) {

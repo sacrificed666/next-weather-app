@@ -183,6 +183,15 @@ export const includeCurrent = (
   return [{ ...first, low, high }, ...rest];
 };
 
+export const todayForecast = (
+  days: readonly DailyForecast[],
+  current: CurrentWeather,
+  timezoneOffset: number,
+): DailyForecast | null => {
+  const today = localDayKey(current.time, timezoneOffset);
+  return days.find((day) => localDayKey(day.time, timezoneOffset) === today) ?? null;
+};
+
 export const upcomingHours = (slots: readonly ForecastSlot[], now: number, count = 8): HourlyForecast[] =>
   slots
     .filter((slot) => slot.time > now)

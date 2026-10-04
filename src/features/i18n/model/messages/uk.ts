@@ -31,11 +31,17 @@ export const uk: Messages = {
   "settings.units": "Одиниці",
   "settings.units.metric": "°C, м/с",
   "settings.units.imperial": "°F, mph",
+  "settings.effects": "Ефекти",
+  "settings.effects.auto": "Авто",
+  "settings.effects.full": "Повні",
+  "settings.effects.reduced": "Спрощені",
+  "settings.effects.device": "На цьому пристрої: {mode}",
   "settings.language": "Мова",
   "settings.close": "Закрити",
 
   "places.title": "Збережені місця",
   "places.save": "Зберегти {name}",
+  "places.full": "Список збережених місць заповнено. Приберіть одне, щоб зберегти {name}",
   "places.remove": "Прибрати {name} зі збережених",
 
   "current.title": "Погода зараз",

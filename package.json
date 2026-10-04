@@ -36,6 +36,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@meteocons/svg": "^0.1.0",
+    "@meteocons/svg-static": "^0.1.0",
     "@playwright/test": "^1.63.0",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
@@ -58,5 +59,9 @@
   },
   "engines": {
     "node": ">=24.15.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher": false,
+    "fsevents": false
   }
 }

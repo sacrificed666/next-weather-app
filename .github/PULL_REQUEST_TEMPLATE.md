@@ -10,7 +10,7 @@ What changes and why:
 - [ ] New behaviour is covered by tests
 - [ ] Texts are added to every language in `src/features/i18n/model/messages/`
 - [ ] Documentation in `docs/` is updated
-- [ ] The UI was checked in light and dark mode, at 320 px, in a long language such as German and with the keyboard
+- [ ] The UI was checked in light and dark mode, in forced colours mode, at 320 px, in a long language such as German and with the keyboard
 
 ## 📸 Screenshots
 

@@ -22,7 +22,7 @@
 }
 
 .card {
-  @include glass;
+  @include glass($content: true);
 
   display: grid;
   align-content: start;

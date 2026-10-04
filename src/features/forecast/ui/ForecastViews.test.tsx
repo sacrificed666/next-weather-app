@@ -42,6 +42,13 @@ describe("CurrentConditions", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Ocean" })).toBeInTheDocument();
     expect(screen.queryByText(/^H:/u)).not.toBeInTheDocument();
   });
+
+  it("never shows tomorrow's range as today's when the forecast starts tomorrow", () => {
+    const [, tomorrow] = view().forecast.daily;
+    renderWithI18n(<CurrentConditions {...view({ daily: tomorrow ? [tomorrow] : [] })} />);
+    expect(screen.queryByText("H: 21°")).not.toBeInTheDocument();
+    expect(screen.getByText("Feels like 11°")).toBeInTheDocument();
+  });
 });
 
 describe("LocalClock", () => {

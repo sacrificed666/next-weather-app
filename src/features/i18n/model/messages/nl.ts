@@ -31,11 +31,17 @@ export const nl: Messages = {
   "settings.units": "Eenheden",
   "settings.units.metric": "°C, m/s",
   "settings.units.imperial": "°F, mph",
+  "settings.effects": "Effecten",
+  "settings.effects.auto": "Auto",
+  "settings.effects.full": "Volledig",
+  "settings.effects.reduced": "Beperkt",
+  "settings.effects.device": "Op dit apparaat: {mode}",
   "settings.language": "Taal",
   "settings.close": "Sluiten",
 
   "places.title": "Bewaarde plaatsen",
   "places.save": "{name} bewaren",
+  "places.full": "Je bewaarde plaatsen zijn vol. Verwijder er een om {name} te bewaren",
   "places.remove": "{name} verwijderen uit bewaarde plaatsen",
 
   "current.title": "Actueel weer",

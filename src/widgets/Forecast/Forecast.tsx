@@ -16,7 +16,7 @@ import VisibilityCard from "@/features/forecast/ui/VisibilityCard/VisibilityCard
 import WindCard from "@/features/forecast/ui/WindCard/WindCard";
 import { homeHref } from "@/features/i18n/model/locales";
 import { forecastSearch, type LocationQuery } from "@/features/places/model/location";
-import { getLocalization } from "@/features/preferences/model/server";
+import { getEffects, getLocalization } from "@/features/preferences/model/server";
 import { describeForecast, forecastSchema } from "@/features/seo/model/seo";
 import JsonLd from "@/features/seo/ui/JsonLd/JsonLd";
 import { siteUrl } from "@/shared/lib/site";
@@ -31,7 +31,8 @@ const Forecast = async ({ query }: { query: LocationQuery | null }) => {
   if (!result.ok) return <ForecastError kind={result.failure} t={t} home={homeHref(locale)} />;
 
   const { forecast } = result;
-  const view = { forecast, t, format };
+  const { level } = await getEffects();
+  const view = { forecast, t, format, animated: level === "full" };
   const page = {
     ...describeForecast(forecast, t, format),
     path: `${homeHref(locale)}${forecastSearch(query, forecast.place)}`,

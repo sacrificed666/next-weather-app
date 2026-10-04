@@ -31,13 +31,13 @@ for (const budget of BUDGETS) {
       }
       expect(report?.runtimeError).toBeUndefined();
       const score = (category: string) => report?.categories[category]?.score ?? 0;
-      const failing = (category: string) =>
+      const failing = (category: string, includeUnweighted = false) =>
         (report?.categories[category]?.auditRefs ?? [])
-          .filter((ref) => ref.weight > 0 && report?.audits[ref.id]?.score === 0)
+          .filter((ref) => (includeUnweighted || ref.weight > 0) && report?.audits[ref.id]?.score === 0)
           .map((ref) => ref.id);
       expect.soft(score("performance"), "performance").toBeGreaterThanOrEqual(budget.performance);
       expect.soft(score("accessibility"), "accessibility").toBe(1);
-      expect.soft(failing("accessibility"), "accessibility audits").toEqual([]);
+      expect.soft(failing("accessibility", true), "accessibility audits").toEqual([]);
       expect.soft(score("best-practices"), "best practices").toBe(1);
       expect.soft(failing("best-practices"), "best practices audits").toEqual([]);
       expect.soft(score("seo"), "seo").toBe(1);

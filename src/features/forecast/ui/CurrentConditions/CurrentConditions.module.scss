@@ -1,7 +1,7 @@
 @use "@/shared/styles/mixins" as *;
 
 .current {
-  @include glass;
+  @include glass($content: true);
 
   display: flex;
   flex-direction: column;

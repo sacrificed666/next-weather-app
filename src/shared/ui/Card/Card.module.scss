@@ -1,7 +1,7 @@
 @use "@/shared/styles/mixins" as *;
 
 .card {
-  @include glass;
+  @include glass($content: true);
 
   display: flex;
   flex-direction: column;

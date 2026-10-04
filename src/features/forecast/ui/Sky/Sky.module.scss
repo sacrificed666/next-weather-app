@@ -115,6 +115,13 @@
   }
 }
 
+:root[data-effects="reduced"] {
+  .glow,
+  .texture {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glow,
   .texture {

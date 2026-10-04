@@ -35,7 +35,7 @@ const localFormat = (locale: string, options: Intl.DateTimeFormatOptions) => {
 
 export const createFormatter = (locale: string, units: UnitSystem): Formatter => {
   const imperial = units === "imperial";
-  const integer = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+  const integer = new Intl.NumberFormat(locale, { maximumFractionDigits: 0, signDisplay: "negative" });
   const decimal = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
   const percent = new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 0 });
   const speed = unitFormat(locale, imperial ? "mile-per-hour" : "meter-per-second");

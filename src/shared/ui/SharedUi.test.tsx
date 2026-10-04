@@ -10,18 +10,13 @@ import SegmentedControl from "./SegmentedControl/SegmentedControl";
 import WeatherIcon from "./WeatherIcon/WeatherIcon";
 
 describe("shared UI", () => {
-  it("draws decorative icons, outlined or filled", () => {
-    const { container } = render(
-      <>
-        <Icon name="search" />
-        <Icon name="github" size={32} />
-      </>,
-    );
-    const [outlined, filled] = container.querySelectorAll("svg");
-    expect(outlined).toHaveAttribute("aria-hidden", "true");
-    expect(outlined).toHaveAttribute("fill", "none");
-    expect(filled).toHaveAttribute("fill", "currentColor");
-    expect(filled).toHaveAttribute("width", "32");
+  it("draws decorative outlined icons in the requested size", () => {
+    const { container } = render(<Icon name="search" size={32} />);
+    const icon = container.querySelector("svg");
+    expect(icon).toHaveAttribute("aria-hidden", "true");
+    expect(icon).toHaveAttribute("fill", "none");
+    expect(icon).toHaveAttribute("stroke", "currentColor");
+    expect(icon).toHaveAttribute("width", "32");
   });
 
   it("labels icon buttons and shows a spinner while busy", async () => {
@@ -62,6 +57,13 @@ describe("shared UI", () => {
     expect(onChange).toHaveBeenCalledWith("imperial");
   });
 
+  it("shows still icons when the effects are reduced", () => {
+    render(<WeatherIcon name="snow" size={40} label="Snow" animated={false} />);
+    const weather = screen.getByRole("img", { name: "Snow" });
+    expect(weather).toHaveAttribute("src", "/icons/weather-static/snow.svg");
+    expect(weather.closest("picture")).toBeNull();
+  });
+
   it("loads weather icons and flags from the app itself", () => {
     render(
       <>
@@ -72,6 +74,8 @@ describe("shared UI", () => {
     const weather = screen.getByRole("img", { name: "Rain" });
     expect(weather).toHaveAttribute("src", "/icons/weather/rain.svg");
     expect(weather).toHaveAttribute("loading", "eager");
+    expect(weather.parentElement?.querySelector("source")).toHaveAttribute("srcset", "/icons/weather-static/rain.svg");
+    expect(weather.parentElement?.querySelector("source")).toHaveAttribute("media", "(prefers-reduced-motion: reduce)");
     const flag = document.querySelector("img[src='/flags/UA']");
     expect(flag).toHaveAttribute("width", "24");
     expect(flag).toHaveAttribute("alt", "");

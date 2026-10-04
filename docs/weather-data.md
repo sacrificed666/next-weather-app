@@ -82,12 +82,15 @@ The daily endpoint belongs to paid plans and answers `401` on a free key. In tha
 
 `includeCurrent()` then removes days that have already ended in the city and widens today's range to include the current temperature.
 
+> [!NOTE]
+> Late in the evening the free 5-day forecast has no slots left for today, so the week starts tomorrow. `todayForecast()` then finds no day for the city's current date, and the current weather card leaves out the high and low instead of showing tomorrow's range under today's name.
+
 ## 🧼 Normalization
 
 Responses are treated as untrusted input. `normalize.ts` reads them with the guards in `shared/lib/guards.ts` (`readNumber`, `readString`, `readRecord`, `readArray`), which accept only finite numbers, non-empty strings and plain objects:
 
 - 🧱 Required fields missing → the entry is skipped (slots, days) or the response is rejected (current weather).
-- 📐 Ranges are clamped: humidity and cloud cover to 0–100 %, precipitation chances to 0–1, wind speed to ≥ 0.
+- 📐 Ranges are clamped: humidity and cloud cover to 0-100 %, precipitation chances to 0-1, wind speed to ≥ 0.
 - 🌓 Day or night comes from the icon suffix (`10d`, `10n`); without an icon, from sunrise and sunset or the slot's `pod`.
 - 🌅 A sunrise or sunset of `0` (polar day or night) becomes `null`, and the Sun card explains it.
 - 🌍 Places go through `parsePlace()`: names up to 80 characters, `[A-Z]{2}` country codes, valid latitudes and longitudes.
@@ -102,20 +105,20 @@ Responses are treated as untrusted input. `normalize.ts` reads them with the gua
 
 | Codes   | Group        | Icons                                                                                        |
 | ------- | ------------ | -------------------------------------------------------------------------------------------- |
-| 200–232 | Thunderstorm | `thunderstorms-{day,night}`, `thunderstorms`, `thunderstorms-extreme`, with `-rain` variants |
-| 300–321 | Drizzle      | `partly-cloudy-{day,night}-drizzle`, `drizzle`, `extreme-drizzle`                            |
-| 500–531 | Rain         | `partly-cloudy-{day,night}-rain`, `rain`, `extreme-rain`, `sleet` for freezing rain          |
-| 600–622 | Snow         | `partly-cloudy-{day,night}-snow`, `snow`, `extreme-snow`, `sleet`                            |
-| 701–781 | Atmosphere   | `mist`, `smoke`, `haze-*`, `dust-*`, `fog-*`, `smoke-particles`, `wind`, `tornado`           |
+| 200-232 | Thunderstorm | `thunderstorms-{day,night}`, `thunderstorms`, `thunderstorms-extreme`, with `-rain` variants |
+| 300-321 | Drizzle      | `partly-cloudy-{day,night}-drizzle`, `drizzle`, `extreme-drizzle`                            |
+| 500-531 | Rain         | `partly-cloudy-{day,night}-rain`, `rain`, `extreme-rain`, `sleet` for freezing rain          |
+| 600-622 | Snow         | `partly-cloudy-{day,night}-snow`, `snow`, `extreme-snow`, `sleet`                            |
+| 701-781 | Atmosphere   | `mist`, `smoke`, `haze-*`, `dust-*`, `fog-*`, `smoke-particles`, `wind`, `tornado`           |
 | 800     | Clear        | `clear-day`, `clear-night`                                                                   |
-| 801–804 | Clouds       | `mostly-clear-*`, `partly-cloudy-*`, `overcast-*`, `overcast`                                |
+| 801-804 | Clouds       | `mostly-clear-*`, `partly-cloudy-*`, `overcast-*`, `overcast`                                |
 
 Unknown codes fall back to `not-available`. A test checks that every code, by day and by night, maps to a file that exists in `public/icons/weather/`.
 
 > [!WARNING]
-> Icons are committed copies. After updating `@meteocons/svg`, run `npm run icons`, or the app keeps serving the old files.
+> Icons are committed copies. After updating `@meteocons/svg` or `@meteocons/svg-static`, run `npm run icons`, or the app keeps serving the old files.
 
-The icons are copied from the `@meteocons/svg` package by `npm run icons` (`scripts/sync-icons.mjs`) and committed, so the app serves them itself. To use a new icon, add its name to the list in the script and run it.
+The animated icons are copied from `@meteocons/svg` to `public/icons/weather/` and their still twins from `@meteocons/svg-static` to `public/icons/weather-static/` by `npm run icons` (`scripts/sync-icons.mjs`), and both are committed, so the app serves them itself. To use a new icon, add its name to the list in the script and run it.
 
 `conditionSky()` maps the same codes to the eight [skies](./design.md#-skies).
 
@@ -129,7 +132,7 @@ The icons are copied from the `@meteocons/svg` package by `npm run icons` (`scri
 | Visibility    | m         | `3.2 km`       | `2 mi`           |
 | Precipitation | mm        | `0.4 mm`       | `0.02 in`        |
 
-`createFormatter(locale, units)` in `shared/lib/format.ts` converts and formats with `Intl.NumberFormat` units, so separators and unit names follow the language (`1 009 гПа`, `5 м/с`). The dew point is computed from the temperature and humidity with the Magnus formula.
+`createFormatter(locale, units)` in `shared/lib/format.ts` converts and formats with `Intl.NumberFormat` units, so separators and unit names follow the language (`1 009 гПа`, `5 м/с`). Temperatures are rounded to whole degrees, and a value just below zero such as `-0.4 °C` is shown as `0°`, never as `-0°`. The dew point is computed from the temperature and humidity with the Magnus formula.
 
 ## 🧠 Insights
 

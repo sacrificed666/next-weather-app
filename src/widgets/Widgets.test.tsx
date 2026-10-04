@@ -21,17 +21,31 @@ vi.mock("@/features/preferences/model/server", async () => {
   const { t: translate, format } = createView();
   return {
     getLocalization: () =>
-      Promise.resolve({ locale: "en", preferences: { theme: "system", units: "metric" }, t: translate, format }),
+      Promise.resolve({
+        locale: "en",
+        preferences: { theme: "system", units: "metric", effects: "auto" },
+        t: translate,
+        format,
+      }),
+    getEffects: () => Promise.resolve({ level: "full", device: "full" }),
   };
 });
 
 describe("Header", () => {
   it("links home and offers search, location and settings", () => {
-    renderWithI18n(<Header locale="en" preferences={{ theme: "system", units: "metric" }} t={t} />);
+    renderWithI18n(
+      <Header
+        locale="en"
+        preferences={{ theme: "system", units: "metric", effects: "auto" }}
+        effects={{ level: "reduced", device: "reduced" }}
+        t={t}
+      />,
+    );
     expect(screen.getByRole("link", { name: "Weather" })).toHaveAttribute("href", "/en");
     expect(document.querySelector('search form[action="/en"]')).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Use my location" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
+    expect(document.querySelector("header img")).toHaveAttribute("src", "/icons/weather-static/partly-cloudy-day.svg");
   });
 });
 
@@ -40,7 +54,11 @@ describe("Footer", () => {
     renderWithI18n(<Footer t={t} />);
     expect(screen.getByRole("link", { name: "OpenWeatherMap" })).toHaveAttribute("href", "https://openweathermap.org");
     expect(screen.getByRole("link", { name: "Meteocons" })).toHaveAttribute("rel", "noreferrer");
-    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute("href", "https://github.com/sacrificed666");
+    expect(screen.getByRole("link", { name: "Source code" })).toHaveAttribute(
+      "href",
+      "https://github.com/sacrificed666/next-weather-app",
+    );
+    expect(screen.getAllByRole("link")).toHaveLength(3);
     expect(screen.getByText(`© ${new Date().getFullYear()} Illia Movchko`)).toBeInTheDocument();
   });
 });

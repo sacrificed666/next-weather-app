@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import { isLocale, locales } from "@/features/i18n/model/locales";
 import I18nProvider from "@/features/i18n/ui/I18nProvider/I18nProvider";
-import { getLocalization } from "@/features/preferences/model/server";
+import { getEffects, getLocalization } from "@/features/preferences/model/server";
 import OfflineNotice from "@/features/preferences/ui/OfflineNotice/OfflineNotice";
 import { social } from "@/features/seo/model/seo";
 import { isIndexable, site, siteUrl } from "@/shared/lib/site";
@@ -50,15 +50,15 @@ export const viewport: Viewport = {
 
 const LocaleLayout = async ({ children, params }: LayoutProps<"/[locale]">) => {
   if (!isLocale((await params).locale)) notFound();
-  const { locale, preferences, messages, t } = await getLocalization();
+  const [{ locale, preferences, messages, t }, effects] = await Promise.all([getLocalization(), getEffects()]);
   return (
-    <html lang={locale} data-theme={preferences.theme}>
+    <html lang={locale} data-theme={preferences.theme} data-effects={effects.level}>
       <body>
         <I18nProvider locale={locale} messages={messages}>
           <a className="skip-link" href="#forecast">
             {t("app.skip")}
           </a>
-          <Header locale={locale} preferences={preferences} t={t} />
+          <Header locale={locale} preferences={preferences} effects={effects} t={t} />
           <main className={styles.main} id="forecast" tabIndex={-1}>
             {children}
           </main>

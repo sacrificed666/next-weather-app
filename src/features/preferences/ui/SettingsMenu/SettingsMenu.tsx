@@ -11,7 +11,7 @@ import IconButton from "@/shared/ui/IconButton/IconButton";
 import SegmentedControl from "@/shared/ui/SegmentedControl/SegmentedControl";
 
 import { savePreference } from "../../model/actions";
-import type { PreferenceName, Preferences } from "../../model/preferences";
+import type { Effects, EffectsLevel, PreferenceName, Preferences } from "../../model/preferences";
 
 import styles from "./SettingsMenu.module.scss";
 
@@ -22,7 +22,12 @@ const rememberLocale = (locale: Locale) => {
   document.cookie = `${localeCookie}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax${secure}`;
 };
 
-const SettingsMenu = ({ preferences }: { preferences: Preferences }) => {
+interface SettingsMenuProps {
+  preferences: Preferences;
+  deviceEffects: EffectsLevel;
+}
+
+const SettingsMenu = ({ preferences, deviceEffects }: SettingsMenuProps) => {
   const { locale, t } = useI18n();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -37,7 +42,6 @@ const SettingsMenu = ({ preferences }: { preferences: Preferences }) => {
   }));
 
   const update = <Name extends PreferenceName>(name: Name, value: Preferences[Name]) => {
-    if (name === "theme") document.documentElement.dataset.theme = value;
     startSaving(async () => {
       setCurrent({ [name]: value });
       await savePreference(name, value);
@@ -67,7 +71,10 @@ const SettingsMenu = ({ preferences }: { preferences: Preferences }) => {
           legend={t("settings.theme")}
           name="theme"
           value={current.theme}
-          onChange={(value) => update("theme", value)}
+          onChange={(value) => {
+            document.documentElement.dataset.theme = value;
+            update("theme", value);
+          }}
           options={[
             { value: "system", label: t("settings.theme.system"), icon: "auto" },
             { value: "light", label: t("settings.theme.light"), icon: "sun" },
@@ -83,6 +90,26 @@ const SettingsMenu = ({ preferences }: { preferences: Preferences }) => {
           options={[
             { value: "metric", label: t("settings.units.metric") },
             { value: "imperial", label: t("settings.units.imperial") },
+          ]}
+        />
+
+        <SegmentedControl
+          legend={t("settings.effects")}
+          name="effects"
+          value={current.effects}
+          description={
+            current.effects === "auto"
+              ? t("settings.effects.device", { mode: t(`settings.effects.${deviceEffects}`) })
+              : undefined
+          }
+          onChange={(value: Effects) => {
+            document.documentElement.dataset.effects = value === "auto" ? deviceEffects : value;
+            update("effects", value);
+          }}
+          options={[
+            { value: "auto", label: t("settings.effects.auto") },
+            { value: "full", label: t("settings.effects.full") },
+            { value: "reduced", label: t("settings.effects.reduced") },
           ]}
         />
 

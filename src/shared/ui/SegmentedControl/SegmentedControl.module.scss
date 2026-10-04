@@ -73,3 +73,9 @@
 .input {
   @include visually-hidden;
 }
+
+.description {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}

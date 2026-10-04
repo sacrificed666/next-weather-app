@@ -25,8 +25,7 @@ next-env.d.ts
 .claude/
 CLAUDE.local.md
 
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea/
 .fleet/
 .zed/

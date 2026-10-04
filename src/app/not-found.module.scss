@@ -24,7 +24,7 @@
 }
 
 .notFound {
-  @include glass;
+  @include glass($content: true);
 
   display: grid;
   justify-items: center;

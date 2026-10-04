@@ -120,6 +120,7 @@ export const view = (overrides: Partial<Forecast> = {}) => ({
   forecast: { ...forecast, ...overrides },
   t,
   format: createFormatter("en-GB", "metric"),
+  animated: true,
 });
 
 export const jsonResponse = (body: unknown, status = 200) =>

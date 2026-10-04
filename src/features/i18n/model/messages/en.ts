@@ -29,11 +29,17 @@ export const en = {
   "settings.units": "Units",
   "settings.units.metric": "°C, m/s",
   "settings.units.imperial": "°F, mph",
+  "settings.effects": "Effects",
+  "settings.effects.auto": "Auto",
+  "settings.effects.full": "Full",
+  "settings.effects.reduced": "Reduced",
+  "settings.effects.device": "On this device: {mode}",
   "settings.language": "Language",
   "settings.close": "Close",
 
   "places.title": "Saved places",
   "places.save": "Save {name}",
+  "places.full": "Saved places are full. Remove one to save {name}",
   "places.remove": "Remove {name} from saved places",
 
   "current.title": "Current weather",

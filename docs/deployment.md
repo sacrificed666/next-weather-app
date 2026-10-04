@@ -120,7 +120,7 @@ Pages themselves are rendered per request, because they depend on the URL, the c
 - ⚙️ GitHub Actions updates are grouped into a single pull request;
 - 📝 commit messages follow the project convention (`chore(deps): …`, `ci(deps): …`).
 
-When `@meteocons/svg` is updated, run `npm run icons` and commit the changed icons.
+When `@meteocons/svg` or `@meteocons/svg-static` is updated, run `npm run icons` and commit the changed icons.
 
 ## 🖐️ Checking a build locally
 

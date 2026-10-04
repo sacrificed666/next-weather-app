@@ -17,16 +17,16 @@ The goal is **WCAG 2.2 AA**: the forecast works with a keyboard, reads well with
 
 Every control is a native element or follows an ARIA pattern exactly:
 
-| Control            | Element                                                           | Keys                                                                              |
-| ------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| 🔎 City search     | ARIA 1.2 combobox with a listbox and `aria-activedescendant`      | Arrows to move, <kbd>Enter</kbd> to open, <kbd>Esc</kbd> to close, again to clear |
-| 📍 Use my location | `button`                                                          | <kbd>Enter</kbd> or <kbd>Space</kbd>                                              |
-| ⚙️ Settings        | `button` that opens a native `<dialog popover>`                   | <kbd>Enter</kbd> to open, <kbd>Esc</kbd> or the close button to close             |
-| 🌗 Theme and units | Radio groups inside a `fieldset` with a `legend`                  | <kbd>Tab</kbd> to the group, arrows to choose                                     |
-| 🌍 Language        | A list of links to the same place in every language               | <kbd>Tab</kbd>, <kbd>Enter</kbd>                                                  |
-| ⭐ Save a place    | Toggle `button` with `aria-pressed` and a name that never changes | <kbd>Enter</kbd> or <kbd>Space</kbd>                                              |
-| 🏷️ Saved places    | A link per place and a remove `button` per chip                   | <kbd>Tab</kbd>, <kbd>Enter</kbd>                                                  |
-| 🕒 Hourly forecast | A focusable, labelled list that scrolls sideways on phones        | <kbd>Tab</kbd> to the list, arrows to scroll                                      |
+| Control                  | Element                                                                                         | Keys                                                                              |
+| ------------------------ | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 🔎 City search           | ARIA 1.2 combobox with a listbox and `aria-activedescendant`                                    | Arrows to move, <kbd>Enter</kbd> to open, <kbd>Esc</kbd> to close, again to clear |
+| 📍 Use my location       | `button`                                                                                        | <kbd>Enter</kbd> or <kbd>Space</kbd>                                              |
+| ⚙️ Settings              | `button` that opens a native `<dialog popover>`                                                 | <kbd>Enter</kbd> to open, <kbd>Esc</kbd> or the close button to close             |
+| 🌗 Theme, units, effects | Radio groups inside a `fieldset` with a `legend`; Effects explains Auto with `aria-describedby` | <kbd>Tab</kbd> to the group, arrows to choose                                     |
+| 🌍 Language              | A list of links to the same place in every language                                             | <kbd>Tab</kbd>, <kbd>Enter</kbd>                                                  |
+| ⭐ Save a place          | Toggle `button` with `aria-pressed` and a name that never changes                               | <kbd>Enter</kbd> or <kbd>Space</kbd>                                              |
+| 🏷️ Saved places          | A link per place and a remove `button` per chip                                                 | <kbd>Tab</kbd>, <kbd>Enter</kbd>                                                  |
+| 🕒 Hourly forecast       | A focusable, labelled list that scrolls sideways on phones                                      | <kbd>Tab</kbd> to the list, arrows to scroll                                      |
 
 Focus is always visible: a 2 px ring in `--color-focus` with an offset, drawn inside the hourly list so the card never clips it.
 
@@ -46,19 +46,19 @@ Focus is always visible: a 2 px ring in `--color-focus` with an offset, drawn in
 
 ## 🎨 Colour and contrast
 
-- 📏 Text reaches **4.5:1** and large values and graphical marks **3:1** against the glass in both themes, over the brightest and the darkest sky. Secondary text is 74–78 % and tertiary text 62–64 % of the text colour, tuned with axe on every sky.
+- 📏 Text reaches **4.5:1** and large values and graphical marks **3:1** against the glass in both themes, over the brightest and the darkest sky. Secondary text is 74-78 % and tertiary text 62-64 % of the text colour, tuned with axe on every sky.
 - 🌡️ Colour never carries meaning alone: temperature bars print their low and high, the air quality scale prints the level in words, the pressure gauge prints its value and _Low_, _Normal_ or _High_.
 - 🧪 The accessibility tests run axe on pages with clear, rainy, snowy and stormy skies in light and dark mode.
 
 ## 🌊 Motion and preferences
 
-| Preference                        | Response                                                                                               |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| 🐢 `prefers-reduced-motion`       | Rain, snow, drifting clouds and the sky glow stand still; every transition lasts 1 ms                  |
-| 🌫️ `prefers-reduced-transparency` | Glass becomes solid without blur                                                                       |
-| 🔆 `prefers-contrast: more`       | Glass becomes solid with a visible outline, secondary text gets almost the full text colour            |
-| 🌗 `prefers-color-scheme`         | The **Auto** theme follows it live                                                                     |
-| 🖥️ `forced-colors: active`        | Every glass card gets a real border, the chosen option and the current language get a `Highlight` ring |
+| Preference                        | Response                                                                                                 |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 🐢 `prefers-reduced-motion`       | Rain, snow, drifting clouds, the sky glow and the weather icons stand still; every transition lasts 1 ms |
+| 🌫️ `prefers-reduced-transparency` | Glass becomes solid without blur                                                                         |
+| 🔆 `prefers-contrast: more`       | Glass becomes solid with a visible outline, secondary text gets almost the full text colour              |
+| 🌗 `prefers-color-scheme`         | The **Auto** theme follows it live                                                                       |
+| 🖥️ `forced-colors: active`        | Every glass card gets a real border, the chosen option and the current language get a `Highlight` ring   |
 
 > [!TIP]
 > Chrome DevTools can emulate all of these: open **Rendering** and choose `prefers-reduced-motion`, `prefers-contrast`, `prefers-reduced-transparency` or `forced-colors`, or a vision deficiency such as deuteranopia.
@@ -80,7 +80,7 @@ The layout reflows down to **320 px**, the width of a 1280 px window zoomed to 4
 - ⌨️ A keyboard test checks that the first <kbd>Tab</kbd> reaches the skip link and that it moves focus to `main`.
 - 🖥️ A forced colours test checks that the chosen option and the card borders stay visible with system colours.
 - 📱 Five pages in five languages are checked for sideways scrolling at 320 px.
-- 🚦 **Lighthouse** must score 1 for accessibility on every page of the budget, and every weighted audit must pass.
+- 🚦 **Lighthouse** must score 1 for accessibility on every page of the budget, and every accessibility audit must pass, including the ones without weight.
 - 🧪 Component tests find elements by role and accessible name, so a missing label fails a test.
 
 See [Testing](./testing.md#-end-to-end-tests) for how to run them.

@@ -16,7 +16,13 @@ const sunPosition = (share: number) => {
   };
 };
 
-const SunCard = ({ forecast: { current, timezoneOffset, generatedAt }, t, format, className }: ForecastViewProps) => {
+const SunCard = ({
+  forecast: { current, timezoneOffset, generatedAt },
+  t,
+  format,
+  animated,
+  className,
+}: ForecastViewProps) => {
   const { sunrise, sunset } = current;
 
   if (sunrise === null || sunset === null) {
@@ -40,14 +46,14 @@ const SunCard = ({ forecast: { current, timezoneOffset, generatedAt }, t, format
       </svg>
       <div className={styles.times}>
         <div className={styles.time}>
-          <WeatherIcon name="sunrise" size={40} />
+          <WeatherIcon name="sunrise" size={40} animated={animated} />
           <dl>
             <dt>{t("sun.sunrise")}</dt>
             <dd>{format.time(sunrise, timezoneOffset)}</dd>
           </dl>
         </div>
         <div className={styles.time}>
-          <WeatherIcon name="sunset" size={40} />
+          <WeatherIcon name="sunset" size={40} animated={animated} />
           <dl>
             <dt>{t("sun.sunset")}</dt>
             <dd>{format.time(sunset, timezoneOffset)}</dd>

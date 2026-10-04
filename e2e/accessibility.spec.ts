@@ -1,13 +1,14 @@
 import { AxeBuilder } from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-import { KYIV, openSettings } from "./helpers";
+import { KYIV, MAC_USER_AGENT, openSettings } from "./helpers";
 
 const PAGES = ["/en", "/uk?city=Kyiv", "/de?city=Reykjavik", "/pl?city=Bangkok", "/en?city=Atlantis", "/fr/nulle-part"];
 
 test.use({ reducedMotion: "reduce" });
 
 const violations = async (page: Page) => {
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   const results = await new AxeBuilder({ page })
     .options({ rules: { "label-content-name-mismatch": { enabled: true } } })
     .analyze();
@@ -30,6 +31,19 @@ test("keeps the dark theme accessible", async ({ page, context, baseURL }) => {
   await page.goto(KYIV);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(await violations(page)).toEqual([]);
+});
+
+test.describe("with the full effects of Apple devices", () => {
+  test.use({ userAgent: MAC_USER_AGENT });
+
+  for (const theme of ["light", "dark"]) {
+    test(`keeps the glass readable in the ${theme} theme`, async ({ page, context, baseURL }) => {
+      await context.addCookies([{ name: "weather-theme", value: theme, url: baseURL ?? "" }]);
+      await page.goto("/en?city=Reykjavik");
+      await expect(page.locator("html")).toHaveAttribute("data-effects", "full");
+      expect(await violations(page)).toEqual([]);
+    });
+  }
 });
 
 test("keeps the settings and the suggestions accessible", async ({ page }) => {
@@ -67,8 +81,9 @@ test.describe("in forced colours mode", () => {
   test("keeps the chosen option and the cards visible", async ({ page }) => {
     await page.goto("/en");
     await openSettings(page);
-    const chosen = page.locator("label").filter({ has: page.getByRole("radio", { name: "Auto" }) });
-    const other = page.locator("label").filter({ has: page.getByRole("radio", { name: "Dark" }) });
+    const appearance = page.getByRole("group", { name: "Appearance" });
+    const chosen = appearance.locator("label").filter({ has: page.getByRole("radio", { name: "Auto" }) });
+    const other = appearance.locator("label").filter({ has: page.getByRole("radio", { name: "Dark" }) });
     const style = (element: typeof chosen) =>
       element.evaluate((node) => {
         const computed = getComputedStyle(node);

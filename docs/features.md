@@ -7,7 +7,7 @@ The first card answers "what is it like outside?":
 - 📍 **Place**: the city in the interface language when OpenWeatherMap knows a local name (`Львів`, `Lemberg`), its region and country, and the country's flag.
 - 🕰️ **Local time**: the date and time **of the city**, not of your device, updated every minute.
 - 🌡️ **Temperature** with a Meteocon for the condition, by day or by night, and the description from OpenWeatherMap in your language.
-- ↕️ **High and low** of today, stretched to include the current temperature, and the apparent temperature.
+- ↕️ **High and low** of today, stretched to include the current temperature (shown while the forecast still covers today), and the apparent temperature.
 - 🔄 **Updated at**: the time of the observation, in the city's time zone.
 - ⭐ **Save**: pins the city to the saved places row.
 
@@ -26,7 +26,7 @@ The page background follows the weather in the city you are looking at:
 | ❄️ Snow         | Snow and sleet                               | Falling snow             |
 | 🌫️ Fog          | Mist, smoke, haze, dust, sand, fog and ash   | Slow bands of haze       |
 
-Each sky has a light and a dark palette, so the theme you choose is respected. With reduced motion the sky stands still.
+Each sky has a light and a dark palette, so the theme you choose is respected. With reduced motion or reduced effects the sky and the weather icons stand still.
 
 ## 🕒 Hourly forecast
 
@@ -66,17 +66,23 @@ The arrow button asks the browser for your position, rounds it to about a kilome
 
 The star in the current weather card saves the city. Saved places appear as chips above the forecast; the open one is outlined, and the cross removes a place. They are stored in this browser only and stay in sync between tabs.
 
+> [!NOTE]
+> Up to 12 places can be saved. With a full list the star is unavailable and says _Saved places are full. Remove one to save Lviv_, instead of silently doing nothing.
+
 ## ⚙️ Settings
 
 The sliders button opens a panel (a bottom sheet on phones):
 
-| Setting       | Options                                                                       |
-| ------------- | ----------------------------------------------------------------------------- |
-| 🌗 Appearance | Auto (follows the system), Light, Dark. The page switches at once             |
-| 📏 Units      | °C, m/s, hPa, km, mm or °F, mph, inHg, mi, in                                 |
-| 🌍 Language   | English, Українська, Deutsch, Español, Français, Italiano, Nederlands, Polski |
+| Setting       | Options                                                                            |
+| ------------- | ---------------------------------------------------------------------------------- |
+| 🌗 Appearance | Auto (follows the system), Light, Dark. The page switches at once                  |
+| 📏 Units      | °C, m/s, hPa, km, mm or °F, mph, inHg, mi, in                                      |
+| ✨ Effects    | Auto (says which level this device gets), Full, Reduced. The page switches at once |
+| 🌍 Language   | English, Українська, Deutsch, Español, Français, Italiano, Nederlands, Polski      |
 
-Theme and units are saved in cookies, so the server renders the next page in the right theme and units without a flash. Each language is a link to the same place in that language (`/en?city=Kyiv` → `/uk?city=Kyiv`), and the choice is remembered for addresses without a language. On the first visit the language follows your browser.
+**Full** keeps the moving sky and the animated weather icons. **Reduced** stills them and draws the cards without blur, which is much lighter for the graphics of many Windows and Android devices. **Auto** picks Full on Apple devices and Reduced everywhere else. See [Effects and performance](./design.md#-effects-and-performance) for the numbers.
+
+Theme, units and effects are saved in cookies, so the server renders the next page in the right theme, units and effects without a flash. Each language is a link to the same place in that language (`/en?city=Kyiv` → `/uk?city=Kyiv`), and the choice is remembered for addresses without a language. On the first visit the language follows your browser.
 
 > [!TIP]
 > The theme switches the moment you choose it, before the server has saved it, so even a slow connection never shows the old colours.
@@ -115,7 +121,7 @@ Invalid coordinates or an unknown name show **City not found** with a link back 
 - 🗣️ The search is an ARIA combobox with an announced number of suggestions; loading, errors and the offline notice are live regions.
 - 🔢 Charts are decorative and their numbers are also in the text, for example "from 6° to 18°" for each day.
 - 🎯 Every control is reachable with the keyboard and shows a focus ring; radio groups power the segmented controls.
-- 🐢 `prefers-reduced-motion` stops the sky and every transition, `prefers-reduced-transparency` and `prefers-contrast: more` make the glass solid, and `forced-colors` adds real borders and highlights.
+- 🐢 `prefers-reduced-motion` stops the sky, the weather icons and every transition, `prefers-reduced-transparency` and `prefers-contrast: more` make the glass solid, and `forced-colors` adds real borders and highlights.
 - 📱 The layout fits a 320 px screen without scrolling sideways, in every language.
 
 The details and how they are tested are in [Accessibility](./accessibility.md).

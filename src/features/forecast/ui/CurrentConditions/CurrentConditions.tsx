@@ -6,15 +6,16 @@ import Flag from "@/shared/ui/Flag/Flag";
 import WeatherIcon from "@/shared/ui/WeatherIcon/WeatherIcon";
 
 import { conditionIcon } from "../../model/conditions";
+import { todayForecast } from "../../model/normalize";
 import LocalClock from "../LocalClock/LocalClock";
 import type { ForecastViewProps } from "../props";
 
 import styles from "./CurrentConditions.module.scss";
 
-const CurrentConditions = ({ forecast, t, format, className }: ForecastViewProps) => {
+const CurrentConditions = ({ forecast, t, format, animated, className }: ForecastViewProps) => {
   const headingId = useId();
   const { place, current, daily, timezoneOffset, generatedAt } = forecast;
-  const today = daily[0];
+  const today = todayForecast(daily, current, timezoneOffset);
   const description = format.sentence(current.condition.description);
   const location = [place.region, place.country ? format.country(place.country) : null].filter(Boolean).join(", ");
 
@@ -35,7 +36,13 @@ const CurrentConditions = ({ forecast, t, format, className }: ForecastViewProps
       </div>
 
       <div className={styles.body}>
-        <WeatherIcon className={styles.icon} name={conditionIcon(current.condition)} size={168} priority />
+        <WeatherIcon
+          className={styles.icon}
+          name={conditionIcon(current.condition)}
+          size={168}
+          animated={animated}
+          priority
+        />
         <div className={styles.reading}>
           <p className={styles.temperature}>
             <span className="visually-hidden">{t("current.title")}: </span>

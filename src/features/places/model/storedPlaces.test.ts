@@ -2,11 +2,13 @@ import { describe, expect, it } from "vitest";
 
 import type { Place } from "./place";
 import {
+  canSavePlace,
   clearRecentPlaces,
   isSaved,
   recentPlaces,
   rememberPlace,
   removeSavedPlace,
+  SAVED_PLACES_LIMIT,
   savedPlaces,
   toggleSavedPlace,
 } from "./storedPlaces";
@@ -29,6 +31,20 @@ describe("stored places", () => {
     toggleSavedPlace(kyiv);
     removeSavedPlace(kyiv);
     expect(savedPlaces.getSnapshot()).toEqual([]);
+  });
+
+  it("refuses a new place once the list is full but still lets saved ones go", () => {
+    for (let index = 0; index < SAVED_PLACES_LIMIT; index += 1) toggleSavedPlace(place(`City ${index}`, index));
+    const extra = place("Extra", 80);
+    expect(canSavePlace(savedPlaces.getSnapshot(), extra)).toBe(false);
+    toggleSavedPlace(extra);
+    expect(savedPlaces.getSnapshot()).toHaveLength(SAVED_PLACES_LIMIT);
+    expect(isSaved(savedPlaces.getSnapshot(), extra)).toBe(false);
+
+    const first = place("City 0", 0);
+    expect(canSavePlace(savedPlaces.getSnapshot(), first)).toBe(true);
+    toggleSavedPlace(first);
+    expect(canSavePlace(savedPlaces.getSnapshot(), extra)).toBe(true);
   });
 
   it("keeps the five most recent places, newest first and without duplicates", () => {

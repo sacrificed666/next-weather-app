@@ -38,13 +38,13 @@ flowchart TB
 | ✨ Features | `src/features`            | One folder per capability with a `model/` and a `ui/`          | other features, shared |
 | 🧰 Shared   | `src/shared`              | Domain-agnostic HTTP client, helpers, UI primitives and styles | shared only            |
 
-| Feature          | Model                                                                                                   | UI                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 🌦️ `forecast`    | `getForecast()`, response parsers, daily aggregation, condition icons and skies, insights, domain types | `CurrentConditions`, `HourlyForecast`, `DailyForecast`, nine detail cards, `Sky`, `LocalClock`, skeleton, error |
-| 📍 `places`      | `Place`, URL locations, geocoding, saved and recent places                                              | `CitySearch`, `LocateButton`, `SavePlaceButton`, `SavedPlaces`                                                  |
-| ⚙️ `preferences` | Theme and units in cookies, the `savePreference` server action, the route language, `getLocalization()` | `SettingsMenu`, `OfflineNotice`                                                                                 |
-| 🌍 `i18n`        | Locales, `matchLocale()`, path helpers, message catalogs, `createTranslator()`, `useI18n()`             | `I18nProvider`                                                                                                  |
-| 🔎 `seo`         | `alternates()`, `social()`, `documentTitle()`, `describeForecast()`, JSON-LD schemas, share card assets | `JsonLd`                                                                                                        |
+| Feature          | Model                                                                                                            | UI                                                                                                              |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 🌦️ `forecast`    | `getForecast()`, response parsers, daily aggregation, condition icons and skies, insights, domain types          | `CurrentConditions`, `HourlyForecast`, `DailyForecast`, nine detail cards, `Sky`, `LocalClock`, skeleton, error |
+| 📍 `places`      | `Place`, URL locations, geocoding, saved and recent places                                                       | `CitySearch`, `LocateButton`, `SavePlaceButton`, `SavedPlaces`                                                  |
+| ⚙️ `preferences` | Theme, units and effects in cookies, the `savePreference` server action, the route language, `getLocalization()` | `SettingsMenu`, `OfflineNotice`                                                                                 |
+| 🌍 `i18n`        | Locales, `matchLocale()`, path helpers, message catalogs, `createTranslator()`, `useI18n()`                      | `I18nProvider`                                                                                                  |
+| 🔎 `seo`         | `alternates()`, `social()`, `documentTitle()`, `describeForecast()`, JSON-LD schemas, share card assets          | `JsonLd`                                                                                                        |
 
 ## 🔀 Request flow
 
@@ -185,16 +185,18 @@ sequenceDiagram
   Next-->>Menu: re-rendered layout and page in one round trip
 ```
 
-| Cookie           | Values                                         | Default                              |
-| ---------------- | ---------------------------------------------- | ------------------------------------ |
-| `weather-theme`  | `system`, `light`, `dark`                      | `system`                             |
-| `weather-units`  | `metric`, `imperial`                           | `metric`                             |
-| `weather-locale` | `en`, `uk`, `de`, `es`, `fr`, `it`, `nl`, `pl` | The best match for `Accept-Language` |
+| Cookie            | Values                                         | Default                              |
+| ----------------- | ---------------------------------------------- | ------------------------------------ |
+| `weather-theme`   | `system`, `light`, `dark`                      | `system`                             |
+| `weather-units`   | `metric`, `imperial`                           | `metric`                             |
+| `weather-effects` | `auto`, `full`, `reduced`                      | `auto`                               |
+| `weather-locale`  | `en`, `uk`, `de`, `es`, `fr`, `it`, `nl`, `pl` | The best match for `Accept-Language` |
 
-- 🍪 Theme and units are saved by the server action in `HttpOnly`, `SameSite=Lax` cookies, `Secure` in production, for a year. Unknown names and values are ignored, so a crafted request cannot store anything else.
+- 🍪 Theme, units and effects are saved by the server action in `HttpOnly`, `SameSite=Lax` cookies, `Secure` in production, for a year. Unknown names and values are ignored, so a crafted request cannot store anything else.
 - 🌍 The language is the address. The language links in the settings point to the same place in another language and write `weather-locale` in the browser when clicked, so the next visit to an address without a language opens it. The proxy only reads the cookie to redirect; a shared `/de` link never changes it.
-- 🖥️ `getPreferences()`, `currentLocale()` and `getLocalization()` are wrapped in React's `cache()`, so the layout, the page and the metadata read them once per request.
+- 🖥️ `getPreferences()`, `currentLocale()`, `getLocalization()` and `getEffects()` are wrapped in React's `cache()`, so the layout, the page and the metadata read them once per request.
 - 🎨 Because the server knows the theme, `<html data-theme>` is correct in the first byte: there is no inline theme script and no flash.
+- ⚡ `getEffects()` resolves the effects level from the `weather-effects` cookie and the request's `User-Agent` (Auto means Full on Apple devices and Reduced elsewhere), writes it to `<html data-effects>` and tells the `Forecast` widget and the header whether `WeatherIcon` should load the animated or the still Meteocons. See [Design system](./design.md#-effects-and-performance).
 
 ## ⭐ Saved and recent places
 
@@ -239,7 +241,7 @@ LocaleLayout                 app/[locale]/layout.tsx, <html lang data-theme>
 - ⚛️ **React Compiler** is enabled with `reactCompiler: true`, so components are written without `useMemo` or `useCallback`. Oxlint enables the matching rules (`purity`, `refs`, `immutability`, `set-state-in-effect` and others).
 - 🔷 **TypeScript 7** checks the project with the native compiler; `next build` runs the project's own `tsc`, and Oxlint's type-aware rules use `oxlint-tsgolint`.
 - 🧩 **Sass modules** keep styles next to their component. Turbopack resolves the `@/` alias inside `@use`, so every module imports tokens with `@use "@/shared/styles/mixins" as *`.
-- 🤖 **Agent files.** `agentRules: false` stops `next dev` from rewriting `AGENTS.md`, which is maintained by hand and points to the documentation bundled with Next.js.
+- 🤖 **No agent files.** `agentRules: false` keeps `next dev` from adding AI agent instruction files to the repository.
 - 📴 **Offline detection** uses the experimental `useOffline` flag of Next.js 16.3, which also retries navigations and server actions once the connection is back.
 - 🧭 **Global 404** uses the experimental `globalNotFound` flag, the recommended way to answer unmatched addresses when the root layout lives in a dynamic segment.
 - 🛰️ **Configurable API address.** `OPENWEATHERMAP_API_URL` points the server at another OpenWeatherMap-compatible host; the end-to-end tests use it for their mock server.

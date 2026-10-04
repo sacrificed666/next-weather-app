@@ -11,7 +11,7 @@ import styles from "./DailyForecast.module.scss";
 
 const VISIBLE_CHANCE = 0.1;
 
-const DailyForecast = ({ forecast, t, format, className }: ForecastViewProps) => {
+const DailyForecast = ({ forecast, t, format, animated, className }: ForecastViewProps) => {
   const { daily, current, timezoneOffset } = forecast;
   const today = localDayKey(current.time, timezoneOffset);
   const scaleMin = Math.min(...daily.map((day) => day.low));
@@ -34,6 +34,7 @@ const DailyForecast = ({ forecast, t, format, className }: ForecastViewProps) =>
                   name={conditionIcon(day.condition)}
                   size={40}
                   label={format.sentence(day.condition.description)}
+                  animated={animated}
                 />
                 {day.precipitationChance >= VISIBLE_CHANCE && (
                   <span className={styles.chance}>

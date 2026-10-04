@@ -11,7 +11,8 @@ describe("createFormatter", () => {
 
   it("rounds temperatures and converts them to Fahrenheit", () => {
     expect(metric.temperature(13.6)).toBe("14°");
-    expect(metric.temperature(-0.4)).toBe("-0°");
+    expect(metric.temperature(-0.4)).toBe("0°");
+    expect(metric.temperature(-0.6)).toBe("-1°");
     expect(imperial.temperature(20)).toBe("68°");
   });
 

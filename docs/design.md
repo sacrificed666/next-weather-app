@@ -31,7 +31,7 @@ flowchart LR
 | 🌤️ Current      | The largest card: place, local time, a 168 px icon and a light 7 rem temperature                      |
 | 📅 Daily        | Stretches to the height of the current and hourly cards on wide screens                               |
 | 📊 Details      | `auto-fill` grid with `grid-auto-flow: dense`; Air quality, Sun and Wind span two columns from 720 px |
-| 🦶 Footer       | A glass bar with credits and social links                                                             |
+| 🦶 Footer       | A glass bar with the credits and a link to the source code                                            |
 
 The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard grid lives in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up.
 
@@ -66,7 +66,7 @@ Wind rows wrap their value under the label when a language needs it, and the hou
 
 Each sky is a three-stop gradient plus a large radial **glow** in its accent colour. The palettes are one Sass map in `shared/styles/_skies.scss`; `sky-colors()` turns it into `--sky-top`, `--sky-middle`, `--sky-bottom` and `--sky-glow` for both themes.
 
-Textures are pure CSS gradients. Rain and snow move with `translate` on a layer taller than the screen, so the animation stays on the compositor; the glow drifts over 48 seconds. While a new city loads, the layout's base gradient shows and the new sky fades in.
+Textures are pure CSS gradients. Rain and snow move with `translate` on a layer taller than the screen, so the animation stays on the compositor; the glow drifts over 48 seconds. With reduced effects the sky stands still, see [Effects and performance](#-effects-and-performance). While a new city loads, the layout's base gradient shows and the new sky fades in.
 
 ## 🫧 Glass
 
@@ -86,10 +86,33 @@ The `glass()` mixin in `shared/styles/_mixins.scss` builds every surface from th
 }
 ```
 
+Content surfaces (cards, the saved place chips, errors and the footer) pass `$content: true`, so they drop the blur for a denser `--glass-tint-content` when the effects are reduced. Small surfaces pass a lighter `$shadow`: the saved place chips use `--glass-shadow-small`, which fits inside the padding of their scrolling row instead of being cut off at its edges.
+
 Overlays (search suggestions, the location message, settings, the offline notice) use `--glass-tint-overlay`, which is almost opaque. Chromium does not blur the contents of other glass cards behind a glass overlay, so a nearly solid overlay is the only way to keep it readable everywhere.
 
 > [!WARNING]
 > `backdrop-filter` only sees what is painted inside its backdrop root. A sticky or `z-index`ed ancestor (the header used to be both) made the search field and its suggestions blur nothing but the header itself. Keep glass out of such containers, or give the surface a nearly opaque tint.
+
+## ⚡ Effects and performance
+
+Every glass surface uses `backdrop-filter`, and the browser has to blur again whatever moves behind it. The animated sky and the animated Meteocons change pixels on every frame, so with the full effects all the glass on screen is recomputed sixty times a second even while nobody touches the page. Apple GPUs handle that easily; on many Windows and Android devices it makes scrolling and typing stutter. The **Effects** setting chooses how much of that work the page asks for:
+
+| Level      | Sky                         | Weather icons | Cards                                 |
+| ---------- | --------------------------- | ------------- | ------------------------------------- |
+| ✨ Full    | Drifting glow, falling rain | Animated      | Blurred glass                         |
+| 🍃 Reduced | Still                       | Still         | Denser tint without `backdrop-filter` |
+
+**Auto** resolves to Full on Apple devices (`Mac`, `iPhone`, `iPad` in the `User-Agent`) and to Reduced everywhere else. The server resolves the level from the `weather-effects` cookie and the request's `User-Agent` and writes it to `<html data-effects>`, so the first byte already has the right sky and icons. Controls such as the search field, the buttons and the settings panel keep their blur in both levels: they are small, and with Reduced the sky behind them no longer moves, so the browser blurs it once.
+
+Measured in headless Chrome without a GPU, with the CPU slowed down four times, on a thunderstorm:
+
+| Level      | Rendering work while idle | Rasterizing while idle | Scrolling |
+| ---------- | ------------------------: | ---------------------: | --------: |
+| ✨ Full    |                ≈1100 ms/s |              ≈220 ms/s |    40 fps |
+| 🍃 Reduced |                   ≈1 ms/s |                 0 ms/s |    60 fps |
+
+> [!TIP]
+> Visitors on a fast Windows or Android device can pick **Full** in the settings; visitors on an older Mac can pick **Reduced**. The choice is a cookie, so it applies before the first paint on the next visit.
 
 ## 🔤 Typography
 
@@ -101,7 +124,7 @@ Overlays (search suggestions, the location message, settings, the offline notice
 | City                | `clamp(1.5rem, 4vw, 2rem)`    | 700    |
 | Detail values       | `clamp(1.6rem, 6vw, 2.1rem)`  | 500    |
 | Card labels         | 0.75 rem, uppercase, +0.06 em | 600    |
-| Body and notes      | 0.9–1 rem                     | 500    |
+| Body and notes      | 0.9-1 rem                     | 500    |
 
 All digits are tabular (`font-variant-numeric: tabular-nums`), so the clock and the hourly row never jump.
 
@@ -142,23 +165,23 @@ Every chart is a few lines of SVG drawn on the server with attributes only (no i
 | Suggestions, messages | Scale in from 97 % and slide down 4 px                                    |
 | Settings              | A popover that scales in from the top right, a sheet that rises on phones |
 
-`--ease-spring` is a `linear()` curve sampled from a damped spring. With `prefers-reduced-motion: reduce` every animation and transition lasts 1 ms and the sky stands still.
+`--ease-spring` is a `linear()` curve sampled from a damped spring. With `prefers-reduced-motion: reduce` every animation and transition lasts 1 ms, the sky stands still and the weather icons switch to their still versions.
 
 ## ♿ Accessibility
 
 | Preference                                | Adaptation                                                                                               |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| 🐢 `prefers-reduced-motion: reduce`       | No animations, no moving sky                                                                             |
+| 🐢 `prefers-reduced-motion: reduce`       | No animations, no moving sky, still weather icons                                                        |
 | 🌫️ `prefers-reduced-transparency: reduce` | Glass becomes solid (`--glass-solid`) without blur                                                       |
 | 🔆 `prefers-contrast: more`               | Glass becomes solid with an outline, secondary text and separators get stronger (`more-contrast` tokens) |
 | 🌗 `prefers-color-scheme`                 | Followed live by the Auto theme                                                                          |
 | 🖍️ `forced-colors: active`                | Glass gains a real border, selected options get a `Highlight` ring                                       |
 
-Secondary text is 74–78 % of the text colour and tertiary text 62–64 %, tuned to stay readable on glass over the brightest and the darkest skies. See [Accessibility](./accessibility.md) for how contrast is tested.
+Secondary text is 74-78 % of the text colour and tertiary text 62-64 %, tuned to stay readable on glass over the brightest and the darkest skies. See [Accessibility](./accessibility.md) for how contrast is tested.
 
 ## 🖼️ Iconography
 
-- 🌦️ **Weather**: [Meteocons](https://bas.dev/work/meteocons) by Bas Milius, the filled style, served from `public/icons/weather/`.
+- 🌦️ **Weather**: [Meteocons](https://bas.dev/work/meteocons) by Bas Milius, the filled style. The animated set is served from `public/icons/weather/`, the still set from `public/icons/weather-static/` for reduced effects and reduced motion (through a `<picture>` source with `prefers-reduced-motion: reduce`).
 - 🧭 **Interface**: inline SVG paths on a 24 px grid with 2 px round strokes in `shared/ui/Icon/icons.ts`, based on [Lucide](https://lucide.dev). They inherit `currentColor`.
 - 🏳️ **Flags**: [country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons) in 3:2, prerendered by the `/flags/[code]` route.
 - 📱 **App icon**: the partly cloudy Meteocon on a sky-blue rounded square (`app/icon.svg`); `apple-icon` and the share card of every language render PNGs from it with `next/og`.

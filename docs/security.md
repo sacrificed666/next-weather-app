@@ -85,7 +85,7 @@ Icons and flags additionally get `Content-Security-Policy: default-src 'none'; s
 
 - 🌐 Requests whose `Sec-Fetch-Site` is not `same-origin` are rejected with `403`, so other websites cannot use the app as a free geocoding proxy from their visitors' browsers.
 - 📏 Queries shorter than two characters return no places without a call; longer than 80 characters are rejected with `400`.
-- 🚦 Each client address may search 30 times a minute (`createRateLimiter()`), then gets `429` with `Retry-After: 60`. The address comes from `X-Forwarded-For` or `X-Real-IP`, so run the app behind a proxy that sets them; the limiter keeps at most 10,000 addresses in memory and forgets expired ones.
+- 🚦 Each client address may search 30 times a minute (`createRateLimiter()`), then gets `429` with `Retry-After: 60`. The address comes from `X-Forwarded-For` or `X-Real-IP`, so run the app behind a proxy that sets them; the limiter keeps at most 10,000 addresses in memory: it forgets expired ones first and then the oldest, so a flood of new addresses can never grow the map.
 - 🧼 Results go through `parsePlace()` before they are returned.
 
 ## ✅ Input validation
@@ -107,7 +107,7 @@ React escapes every string it renders. The only `dangerouslySetInnerHTML` is the
 
 ## 🍪 Cookies and privacy
 
-- The theme and unit cookies are written by the server action: `HttpOnly`, `SameSite=Lax`, `Secure` in production. The language cookie is written by the language links in the browser with `SameSite=Lax` (and `Secure` over HTTPS), because it only tells the proxy where to redirect. Each contains one value from a fixed list, and anything else is ignored.
+- The theme, units and effects cookies are written by the server action: `HttpOnly`, `SameSite=Lax`, `Secure` in production. The language cookie is written by the language links in the browser with `SameSite=Lax` (and `Secure` over HTTPS), because it only tells the proxy where to redirect. Each contains one value from a fixed list, and anything else is ignored.
 - Saved and recent places never leave the browser.
 - Your position is rounded to about a kilometre before it becomes part of the URL, and the app asks for it only when you press **Use my location**.
 - There are no analytics, no third-party scripts and no requests from the browser to other origins.

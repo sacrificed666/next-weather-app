@@ -21,4 +21,13 @@ describe("createRateLimiter", () => {
     expect(allow("a")).toBe(true);
     expect(allow("a")).toBe(false);
   });
+
+  it("never tracks more keys than allowed, dropping the oldest windows first", () => {
+    const allow = createRateLimiter({ limit: 1, windowMs: 1000, now: () => 0, maxKeys: 2 });
+    allow("a");
+    allow("b");
+    expect(allow("c")).toBe(true);
+    expect(allow("b")).toBe(false);
+    expect(allow("a")).toBe(true);
+  });
 });

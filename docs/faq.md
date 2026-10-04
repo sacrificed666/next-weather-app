@@ -12,6 +12,13 @@ Check that `OPENWEATHERMAP_API_KEY` is set without quotes or spaces and restart 
 
 Open **Settings** (the sliders button) and choose **°F, mph**. Pressure switches to inHg, distances to miles and precipitation to inches. The choice is remembered in a cookie.
 
+### 🐢 Why does the sky stand still on my computer?
+
+On Windows, Linux and Android the app starts with **Reduced** effects: the sky and the weather icons stand still and the cards are not blurred, because the moving sky made every glass card redraw sixty times a second and scrolling stutter on many of these devices. Apple devices get the **Full** effects.
+
+> [!TIP]
+> Open **Settings** and choose **Effects: Full** to bring the moving sky back on a fast computer, or **Reduced** to calm it down on any device.
+
 ### 🗣️ Why are some descriptions or city names not translated?
 
 Descriptions come from OpenWeatherMap in the language you choose, and place names from its geocoding database, which has local names for many but not all places. The region (for example "Lviv Oblast") is only available in English.

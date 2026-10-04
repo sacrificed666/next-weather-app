@@ -17,9 +17,9 @@ The app reads these variables on the server:
 
 | Variable                 | Required | Meaning                                                                                             |
 | ------------------------ | -------- | --------------------------------------------------------------------------------------------------- |
-| `OPENWEATHERMAP_API_KEY` | ✅       | Your OpenWeatherMap key. It is never sent to the browser                                            |
-| `SITE_URL`               | —        | The public address for canonical links, the sitemap and share cards, for example on a custom domain |
-| `OPENWEATHERMAP_API_URL` | —        | Another OpenWeatherMap-compatible host; the end-to-end tests point it at their mock server          |
+| `OPENWEATHERMAP_API_KEY` | Required | Your OpenWeatherMap key. It is never sent to the browser                                            |
+| `SITE_URL`               | Optional | The public address for canonical links, the sitemap and share cards, for example on a custom domain |
+| `OPENWEATHERMAP_API_URL` | Optional | Another OpenWeatherMap-compatible host; the end-to-end tests point it at their mock server          |
 
 ```bash
 cp .env.example .env.local
@@ -47,22 +47,22 @@ Open <http://localhost:3000>. It redirects to your browser's language, for examp
 
 ## 📜 npm scripts
 
-| Script                  | What it does                                                                           |
-| ----------------------- | -------------------------------------------------------------------------------------- |
-| `npm run dev`           | 🔥 Starts the Next.js dev server with Turbopack and hot reload                         |
-| `npm run build`         | 📦 Type-checks the project and builds the production bundle into `.next/`              |
-| `npm start`             | 👀 Serves the production build                                                         |
-| `npm run typecheck`     | 🧠 Generates the route types and runs the TypeScript 7 compiler without emitting       |
-| `npm run lint`          | 🧹 Lints with Oxlint, including type-aware, React Compiler, Next.js and a11y rules     |
-| `npm run lint:fix`      | 🩹 Applies the automatic Oxlint fixes                                                  |
-| `npm run format`        | 🎨 Formats every supported file with Oxfmt                                             |
-| `npm run format:check`  | 🔎 Fails if a file is not formatted                                                    |
-| `npm test`              | 👁️ Starts Vitest in watch mode                                                         |
-| `npm run test:run`      | 🧪 Runs the whole test suite once                                                      |
-| `npm run test:coverage` | 📊 Runs the tests with V8 coverage and enforces the coverage thresholds                |
-| `npm run test:e2e`      | 🎭 Builds the app against the mock API and runs Playwright, axe and Lighthouse         |
-| `npm run icons`         | 🌦️ Copies the Meteocons the app uses from `@meteocons/svg` into `public/icons/weather` |
-| `npm run check`         | ✅ Lint, format check, type check and tests in one go, run it before pushing           |
+| Script                  | What it does                                                                       |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| `npm run dev`           | 🔥 Starts the Next.js dev server with Turbopack and hot reload                     |
+| `npm run build`         | 📦 Type-checks the project and builds the production bundle into `.next/`          |
+| `npm start`             | 👀 Serves the production build                                                     |
+| `npm run typecheck`     | 🧠 Generates the route types and runs the TypeScript 7 compiler without emitting   |
+| `npm run lint`          | 🧹 Lints with Oxlint, including type-aware, React Compiler, Next.js and a11y rules |
+| `npm run lint:fix`      | 🩹 Applies the automatic Oxlint fixes                                              |
+| `npm run format`        | 🎨 Formats every supported file with Oxfmt                                         |
+| `npm run format:check`  | 🔎 Fails if a file is not formatted                                                |
+| `npm test`              | 👁️ Starts Vitest in watch mode                                                     |
+| `npm run test:run`      | 🧪 Runs the whole test suite once                                                  |
+| `npm run test:coverage` | 📊 Runs the tests with V8 coverage and enforces the coverage thresholds            |
+| `npm run test:e2e`      | 🎭 Builds the app against the mock API and runs Playwright, axe and Lighthouse     |
+| `npm run icons`         | 🌦️ Copies the animated and the still Meteocons the app uses into `public/icons`    |
+| `npm run check`         | ✅ Lint, format check, type check and tests in one go, run it before pushing       |
 
 ## 🗂️ Project layout
 
@@ -91,7 +91,7 @@ next-weather-app/
 │   ├── features/
 │   │   ├── forecast/                OpenWeatherMap orchestration, normalization, conditions; every forecast card
 │   │   ├── places/                  Places, locations in the URL, geocoding, saved and recent places; search, locate, star
-│   │   ├── preferences/             Theme and units in cookies, the route language, the server action; settings and offline notice
+│   │   ├── preferences/             Theme, units and effects in cookies, the route language, the server action; settings and offline notice
 │   │   ├── i18n/                    Eight message catalogs, locale matching, path helpers, the translator and its provider
 │   │   └── seo/                     Canonical links, social metadata, JSON-LD and the share card assets
 │   ├── shared/

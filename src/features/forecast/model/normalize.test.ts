@@ -5,6 +5,7 @@ import { airResponse, dailyResponse, forecastResponse, NOW, OFFSET, weatherRespo
 import {
   aggregateDaily,
   includeCurrent,
+  todayForecast,
   parseAirQuality,
   parseCurrent,
   parseDaily,
@@ -163,5 +164,25 @@ describe("upcomingHours", () => {
     const hours = upcomingHours(parseSlots(forecastResponse), 1_759_503_600, 3);
     expect(hours.map((hour) => hour.time)).toEqual([1_759_514_400, 1_759_525_200, 1_759_536_000]);
     expect(hours[0]).not.toHaveProperty("low");
+  });
+});
+
+describe("todayForecast", () => {
+  const current = parseCurrent(weatherResponse)?.current;
+  if (!current) throw new Error("fixture");
+  const day = (time: number, high: number) => ({
+    time,
+    condition: current.condition,
+    low: 1,
+    high,
+    precipitationChance: 0,
+  });
+
+  it("finds today in the city's own calendar", () => {
+    expect(todayForecast([day(NOW, 18), day(NOW + 86_400, 21)], current, OFFSET)?.high).toBe(18);
+  });
+
+  it("returns nothing late in the evening, when the forecast already starts tomorrow", () => {
+    expect(todayForecast([day(NOW + 86_400, 21)], current, OFFSET)).toBeNull();
   });
 });

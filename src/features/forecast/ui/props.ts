@@ -7,5 +7,6 @@ export interface ForecastViewProps {
   forecast: Forecast;
   t: Translate;
   format: Formatter;
+  animated: boolean;
   className?: string;
 }

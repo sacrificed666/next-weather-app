@@ -17,16 +17,32 @@ import { createTranslator } from "@/features/i18n/model/translate";
 import { createFormatter } from "@/shared/lib/format";
 import { isUnitSystem } from "@/shared/lib/units";
 
-import { defaultPreferences, isTheme, preferenceCookies, type Preferences } from "./preferences";
+import {
+  defaultPreferences,
+  isEffects,
+  isTheme,
+  preferenceCookies,
+  resolveEffects,
+  type EffectsState,
+  type Preferences,
+} from "./preferences";
 
 export const getPreferences = cache(async (): Promise<Preferences> => {
   const cookieStore = await cookies();
   const theme = cookieStore.get(preferenceCookies.theme)?.value;
   const units = cookieStore.get(preferenceCookies.units)?.value;
+  const effects = cookieStore.get(preferenceCookies.effects)?.value;
   return {
     theme: isTheme(theme) ? theme : defaultPreferences.theme,
     units: isUnitSystem(units) ? units : defaultPreferences.units,
+    effects: isEffects(effects) ? effects : defaultPreferences.effects,
   };
+});
+
+export const getEffects = cache(async (): Promise<EffectsState> => {
+  const [preferences, requestHeaders] = await Promise.all([getPreferences(), headers()]);
+  const userAgent = requestHeaders.get("user-agent");
+  return { level: resolveEffects(preferences.effects, userAgent), device: resolveEffects("auto", userAgent) };
 });
 
 export const currentLocale = cache(async (): Promise<Locale> => {
