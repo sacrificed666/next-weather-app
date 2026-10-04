@@ -1,3 +1,4 @@
+import type { Locale } from "@/features/i18n/model/locales";
 import { isRecord } from "@/shared/lib/guards";
 
 export interface Place {
@@ -19,10 +20,13 @@ export const isLongitude = (value: number) => Number.isFinite(value) && value >=
 export const placeKey = ({ latitude, longitude }: Pick<Place, "latitude" | "longitude">) =>
   `${roundCoordinate(latitude).toFixed(2)},${roundCoordinate(longitude).toFixed(2)}`;
 
-export const placeHref = (place: Pick<Place, "latitude" | "longitude">) => {
+export const placeSearch = (place: Pick<Place, "latitude" | "longitude">) => {
   const [latitude, longitude] = placeKey(place).split(",");
-  return `/?lat=${latitude}&lon=${longitude}`;
+  return `?lat=${latitude}&lon=${longitude}`;
 };
+
+export const placeHref = (locale: Locale, place: Pick<Place, "latitude" | "longitude">) =>
+  `/${locale}${placeSearch(place)}`;
 
 export const parsePlace = (value: unknown): Place | null => {
   if (!isRecord(value)) return null;

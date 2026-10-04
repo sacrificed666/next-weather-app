@@ -12,10 +12,10 @@ interface GlobalErrorProps {
 
 const t = createTranslator(en);
 
-const GlobalError = ({ retry }: GlobalErrorProps) => (
+const GlobalError = ({ error, retry }: GlobalErrorProps) => (
   <html lang="en" data-theme="system">
     <body>
-      <ForecastError kind="unexpected" t={t} onRetry={retry} />
+      <ForecastError kind="unexpected" t={t} home="/" digest={error.digest} onRetry={retry} />
     </body>
   </html>
 );

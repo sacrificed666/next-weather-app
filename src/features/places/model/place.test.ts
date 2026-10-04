@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isLatitude, isLongitude, parsePlace, placeHref, placeKey, roundCoordinate } from "./place";
+import { isLatitude, isLongitude, parsePlace, placeHref, placeKey, placeSearch, roundCoordinate } from "./place";
 
 const lviv = { name: "Lviv", region: "Lviv Oblast", country: "UA", latitude: 49.8419, longitude: 24.0315 };
 
@@ -19,7 +19,8 @@ describe("place", () => {
 
   it("builds stable keys and links", () => {
     expect(placeKey(lviv)).toBe("49.84,24.03");
-    expect(placeHref({ latitude: 50, longitude: -0.1276 })).toBe("/?lat=50.00&lon=-0.13");
+    expect(placeSearch({ latitude: 50, longitude: -0.1276 })).toBe("?lat=50.00&lon=-0.13");
+    expect(placeHref("uk", { latitude: 50, longitude: -0.1276 })).toBe("/uk?lat=50.00&lon=-0.13");
   });
 
   it("parses stored places field by field", () => {

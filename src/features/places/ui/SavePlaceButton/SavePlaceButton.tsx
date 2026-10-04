@@ -15,7 +15,7 @@ const SavePlaceButton = ({ place }: { place: Place }) => {
     <IconButton
       className={styles.button}
       icon="star"
-      label={saved ? t("places.remove", { name: place.name }) : t("places.save", { name: place.name })}
+      label={t("places.save", { name: place.name })}
       aria-pressed={saved}
       onClick={() => toggleSavedPlace(place)}
     />

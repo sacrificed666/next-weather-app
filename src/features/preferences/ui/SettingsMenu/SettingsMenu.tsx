@@ -1,8 +1,9 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
 import { useId, useOptimistic, useTransition } from "react";
 
-import { localeDetails, locales } from "@/features/i18n/model/locales";
+import { localeCookie, localeDetails, locales, switchLocale, type Locale } from "@/features/i18n/model/locales";
 import { useI18n } from "@/features/i18n/model/useI18n";
 import Flag from "@/shared/ui/Flag/Flag";
 import Icon from "@/shared/ui/Icon/Icon";
@@ -14,10 +15,21 @@ import type { PreferenceName, Preferences } from "../../model/preferences";
 
 import styles from "./SettingsMenu.module.scss";
 
+const ONE_YEAR = 60 * 60 * 24 * 365;
+
+const rememberLocale = (locale: Locale) => {
+  const secure = location.protocol === "https:" ? "; secure" : "";
+  document.cookie = `${localeCookie}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax${secure}`;
+};
+
 const SettingsMenu = ({ preferences }: { preferences: Preferences }) => {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const search = searchParams.size > 0 ? `?${searchParams.toString()}` : "";
   const panelId = useId();
   const titleId = useId();
+  const languagesId = useId();
   const [saving, startSaving] = useTransition();
   const [current, setCurrent] = useOptimistic(preferences, (state, change: Partial<Preferences>) => ({
     ...state,
@@ -74,25 +86,28 @@ const SettingsMenu = ({ preferences }: { preferences: Preferences }) => {
           ]}
         />
 
-        <fieldset className={styles.languages}>
-          <legend className={styles.legend}>{t("settings.language")}</legend>
-          <div className={styles.grid}>
-            {locales.map((locale) => (
-              <label key={locale} className={styles.language} lang={locale}>
-                <input
-                  className={styles.input}
-                  type="radio"
-                  name="locale"
-                  value={locale}
-                  checked={current.locale === locale}
-                  onChange={() => update("locale", locale)}
-                />
-                <Flag country={localeDetails[locale].flag} height={14} />
-                {localeDetails[locale].name}
-              </label>
+        <div className={styles.languages}>
+          <h3 className={styles.legend} id={languagesId}>
+            {t("settings.language")}
+          </h3>
+          <ul className={styles.grid} aria-labelledby={languagesId}>
+            {locales.map((entry) => (
+              <li key={entry}>
+                <a
+                  className={styles.language}
+                  href={`${switchLocale(pathname, entry)}${search}`}
+                  hrefLang={entry}
+                  lang={entry}
+                  aria-current={entry === locale ? "true" : undefined}
+                  onClick={() => rememberLocale(entry)}
+                >
+                  <Flag country={localeDetails[entry].flag} height={14} />
+                  {localeDetails[entry].name}
+                </a>
+              </li>
             ))}
-          </div>
-        </fieldset>
+          </ul>
+        </div>
       </dialog>
     </>
   );

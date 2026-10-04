@@ -6,14 +6,17 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self), payment=(), usb=()" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(self), payment=(), usb=(), browsing-topics=()",
+  },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   ...(isProduction ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" }] : []),
 ];
 
 const imageHeaders = [
   { key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; sandbox" },
-  { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+  { key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=2592000" },
 ];
 
 const nextConfig: NextConfig = {
@@ -21,6 +24,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   agentRules: false,
   experimental: {
+    globalNotFound: true,
     useOffline: true,
   },
   async headers() {

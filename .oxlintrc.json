@@ -15,7 +15,7 @@
     "node": true,
     "es2024": true
   },
-  "ignorePatterns": [".next", "coverage", "public", "next-env.d.ts"],
+  "ignorePatterns": [".next", "coverage", "playwright-report", "test-results", "public", "next-env.d.ts"],
   "rules": {
     "local/no-comments": "error",
     "eqeqeq": "error",
@@ -149,6 +149,18 @@
       "rules": {
         "jsx-a11y/prefer-tag-over-role": "off",
         "jsx-a11y/click-events-have-key-events": "off"
+      }
+    },
+    {
+      "files": ["src/app/global-not-found.tsx"],
+      "rules": {
+        "nextjs/no-html-link-for-pages": "off"
+      }
+    },
+    {
+      "files": ["src/features/forecast/ui/HourlyForecast/**"],
+      "rules": {
+        "jsx-a11y/no-noninteractive-tabindex": "off"
       }
     }
   ]

@@ -2,6 +2,9 @@
 
 All weather comes from [OpenWeatherMap](https://openweathermap.org). The browser never talks to it: the Next.js server calls the API with the key from `OPENWEATHERMAP_API_KEY`, normalizes the answers into the types in `features/forecast/model/types.ts` and renders them.
 
+> [!NOTE]
+> `OPENWEATHERMAP_API_URL` replaces `https://api.openweathermap.org` with another host that speaks the same API. The end-to-end tests point it at `e2e/openweather-api.ts`, a small mock with four cities.
+
 ## 📡 Endpoints
 
 | Endpoint                   | Used for                                       | Parameters                           | Cached for |
@@ -72,7 +75,10 @@ The daily endpoint belongs to paid plans and answers `401` on a free key. In tha
 2. Each day gets the lowest `temp_min`, the highest `temp_max` and the highest precipitation chance of its slots.
 3. The icon is the **most severe** condition between 06:00 and 21:00 local time (storm > snow > rain > drizzle > atmosphere > clouds > clear), so a sunny day with an afternoon storm shows the storm.
 4. Today is always kept; later days need at least four slots, which drops the incomplete sixth day. A free key therefore shows five or six days.
-5. The `401` is remembered for an hour in the server process, so the paid endpoint is not called on every request.
+5. The `401` is remembered for an hour in the server process, so the paid endpoint is not called on every request. It is remembered only when the current weather succeeded with the same key: a key that is rejected everywhere (new, mistyped, revoked) must not block the daily forecast for an hour after it is fixed.
+
+> [!TIP]
+> To see the five or six aggregated days locally, use a free key, or run the mock server, which answers the daily endpoint with `401` unless `E2E_DAILY_PLAN=1`.
 
 `includeCurrent()` then removes days that have already ended in the city and widens today's range to include the current temperature.
 
@@ -105,6 +111,9 @@ Responses are treated as untrusted input. `normalize.ts` reads them with the gua
 | 801–804 | Clouds       | `mostly-clear-*`, `partly-cloudy-*`, `overcast-*`, `overcast`                                |
 
 Unknown codes fall back to `not-available`. A test checks that every code, by day and by night, maps to a file that exists in `public/icons/weather/`.
+
+> [!WARNING]
+> Icons are committed copies. After updating `@meteocons/svg`, run `npm run icons`, or the app keeps serving the old files.
 
 The icons are copied from the `@meteocons/svg` package by `npm run icons` (`scripts/sync-icons.mjs`) and committed, so the app serves them itself. To use a new icon, add its name to the list in the script and run it.
 

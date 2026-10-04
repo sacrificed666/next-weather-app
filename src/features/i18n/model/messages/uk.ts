@@ -128,6 +128,7 @@ export const uk: Messages = {
   "error.unavailable.text": "Перевірте з'єднання і спробуйте ще раз.",
   "error.unexpected.title": "Щось пішло не так",
   "error.unexpected.text": "Не вдалося показати прогноз.",
+  "error.reference": "Код помилки: {digest}",
   "error.retry": "Спробувати ще",
   "error.home": "Повернутися до прогнозу",
 

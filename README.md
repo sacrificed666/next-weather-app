@@ -3,56 +3,27 @@
 [![CI](https://github.com/sacrificed666/next-weather-app/actions/workflows/ci.yml/badge.svg)](https://github.com/sacrificed666/next-weather-app/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/sacrificed666/next-weather-app/actions/workflows/codeql.yml/badge.svg)](https://github.com/sacrificed666/next-weather-app/actions/workflows/codeql.yml)
 
-The weather for any city in the world on one calm, glassy screen: what it is like outside right now, the
-next 24 hours, the coming week, the air you breathe and the sun's path across the sky.
-
-Built with Next.js 16 server components and OpenWeatherMap. The forecast is rendered on the server, your
-API key never reaches the browser, and the sky behind the cards changes with the weather.
+The weather for any city in the world on one calm, glassy screen: what it is like outside right now, the next 24 hours, the coming week, the air you breathe and the sun's path across the sky. Built with Next.js 16, React 19 and TypeScript 7 on top of OpenWeatherMap, rendered on the server, in eight languages, accessible, light or dark, and the sky behind the cards changes with the weather.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./docs/images/desktop-dark.jpg" />
   <img src="./docs/images/desktop-light.jpg" alt="The forecast for Lviv with saved places, the hourly outlook and the 5-day forecast" />
 </picture>
 
----
+## ✨ Highlights
 
-## ✨ What it does
-
-### 🌤️ Current weather
-
-Temperature, conditions, today's high and low and the apparent temperature, with the local date and time of
-the city ticking along. The background turns into a clear, cloudy, rainy, stormy, snowy or foggy sky, by day
-and by night.
-
-### 🕒 Hourly and daily forecast
-
-The next 24 hours in three-hour steps with the chance of rain, and up to seven days with temperature bars on a
-shared scale, so a warm week and a cold one look different at a glance.
-
-### 📊 Details
-
-Air quality with PM2.5, PM10, ozone and nitrogen dioxide, sunrise and sunset with the sun's position, wind with a
-compass, humidity and dew point, apparent temperature, pressure, visibility, precipitation and cloud cover, each
-with a sentence that explains the number.
-
-### 🔎 Search and location
-
-Suggestions while you type in any language (`Lviv`, `Львів` or `Lemberg`), full keyboard control, recent
-searches and **Use my location**. Every forecast has its own address, so it can be bookmarked and shared.
-
-### ⭐ Saved places
-
-Star a city to pin it above the forecast and switch between your places in one tap.
-
-### ⚙️ Your way
-
-Light, dark or automatic theme, metric (°C, m/s, hPa) or imperial (°F, mph, inHg) units and eight languages:
-English, Ukrainian, German, Spanish, French, Italian, Dutch and Polish, including the weather descriptions.
-
-### 📱 Everywhere
-
-A layout for phones, tablets and wide screens, an offline notice that retries by itself, and accessible markup
-with landmarks, a skip link, live regions and support for reduced motion and transparency.
+- 🌤️ **Current weather**: temperature, conditions, today's high and low, the apparent temperature and the city's own clock
+- 🌌 **Living sky**: a clear, cloudy, rainy, stormy, snowy or foggy sky behind the cards, by day and by night
+- 🕒 **Hourly and daily**: the next 24 hours in three-hour steps with the chance of rain, and up to seven days with temperature bars on one shared scale
+- 📊 **Details**: air quality with PM2.5, PM10, ozone and nitrogen dioxide, the sun's arc, wind with a compass, humidity and dew point, pressure, visibility, precipitation and cloud cover, each with a sentence that explains the number
+- 🔎 **Search and location**: suggestions in any language (`Lviv`, `Львів`, `Lemberg`), full keyboard control, recent searches and **Use my location**
+- ⭐ **Saved places**: star a city to pin it above the forecast and switch between your places in one tap
+- 🌍 **Eight languages**: English, Ukrainian, German, Spanish, French, Italian, Dutch and Polish, each under its own address, including the weather descriptions and place names
+- ⚙️ **Your way**: light, dark or automatic theme and metric (°C, m/s, hPa) or imperial (°F, mph, inHg) units, rendered by the server without a flash
+- ♿ **Accessible**: landmarks, a skip link, live regions, a real combobox, reflow down to 320 px and support for reduced motion, reduced transparency, more contrast and forced colours, checked with axe in every build
+- 🔎 **Search-friendly**: canonical and `hreflang` links, a share card per language, a sitemap, robots rules and JSON-LD with the place of every forecast
+- ⚡ **Fast**: server components, a 10-minute shared cache for OpenWeatherMap responses, a streamed dashboard and a Lighthouse budget in CI
+- 🛡️ **Safe**: the API key never leaves the server, a nonce-based Content Security Policy, validated input and a rate-limited search endpoint
 
 <p align="center">
   <img src="./docs/images/mobile-light.jpg" alt="The forecast on a phone in light mode" width="260" />
@@ -61,7 +32,21 @@ with landmarks, a skip link, live regions and support for reduced motion and tra
 
 ![Air quality, the sun, wind, humidity, pressure, visibility, precipitation and cloud cover](./docs/images/desktop-details.jpg)
 
----
+## ⚛️ Front-end
+
+![TypeScript](https://skillicons.dev/icons?i=ts)
+![Next.js](https://skillicons.dev/icons?i=nextjs)
+![React](https://skillicons.dev/icons?i=react)
+![SASS](https://skillicons.dev/icons?i=sass)
+
+## 🧰 Tooling
+
+![Node.js](https://skillicons.dev/icons?i=nodejs)
+![Vitest](https://skillicons.dev/icons?i=vitest)
+![GitHub Actions](https://skillicons.dev/icons?i=githubactions)
+![Vercel](https://skillicons.dev/icons?i=vercel)
+
+TypeScript 7 · Oxlint · Oxfmt · Vitest 5 · Testing Library · Playwright · axe · Lighthouse · React Compiler · CodeQL
 
 ## 🚀 Quick start
 
@@ -70,52 +55,47 @@ Requires **Node.js 24.15** or newer and a free [OpenWeatherMap API key](https://
 ```bash
 npm ci
 cp .env.example .env.local   # then paste your key into OPENWEATHERMAP_API_KEY
-npm run dev                  # http://localhost:3000
+npm run dev                  # http://localhost:3000, redirects to your language
 ```
+
+> [!NOTE]
+> OpenWeatherMap can take up to two hours to activate a new key. Until then the app explains that the key was rejected.
 
 ```bash
-npm run check                # lint, format check, type check and tests in one go
-npm run build                # production build
-npm start                    # serve the production build
+npm run check                # lint, format check, type check and unit tests in one go
+npm run test:e2e             # browsers, accessibility and Lighthouse against a mock OpenWeatherMap API
+npm run build && npm start   # production build
 ```
 
----
+> [!TIP]
+> No key yet? `node e2e/openweather-api.ts` starts the mock API from the end-to-end tests; see [Getting started](./docs/getting-started.md#-install-and-run).
 
 ## 📚 Documentation
 
-Everything else lives in [`docs/`](./docs):
-
-|                                                 |                                                             |
-| ----------------------------------------------- | ----------------------------------------------------------- |
-| 🏁 [Getting started](./docs/getting-started.md) | Requirements, the API key, scripts and project layout       |
-| ✨ [Features](./docs/features.md)               | Everything the app can do, keyboard and accessibility       |
-| 🏗️ [Architecture](./docs/architecture.md)       | Layers, rendering, routes, preferences and saved places     |
-| 🌦️ [Weather data](./docs/weather-data.md)       | OpenWeatherMap endpoints, caching, normalization and icons  |
-| 🎨 [Design system](./docs/design.md)            | Glass surfaces, skies, tokens, layout and motion            |
-| 🌍 [Localization](./docs/i18n.md)               | Messages, formatting and adding a language                  |
-| 🛡️ [Security](./docs/security.md)               | Content Security Policy, the API key, validation and limits |
-| 🧪 [Testing](./docs/testing.md)                 | Test stack, helpers, conventions and coverage               |
-| 🚀 [Deployment](./docs/deployment.md)           | CI, CodeQL, Dependabot and hosting                          |
-| 🤝 [Contributing](./docs/contributing.md)       | Workflow, code style and commit conventions                 |
-| ❓ [FAQ](./docs/faq.md)                         | Common questions                                            |
-
----
-
-## 🧱 Stack
-
-Next.js 16 (App Router, server components, server actions, Turbopack) with React 19 and the React Compiler,
-TypeScript 7, Sass modules and the self-hosted Montserrat variable font. Vitest 5 with Testing Library, Oxlint
-and Oxfmt. The interface, the charts and the compass are hand-written SVG and CSS, without a UI library.
-Checked by GitHub Actions and scanned by CodeQL.
+| Guide                                           | Topics                                                       |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| 🏁 [Getting started](./docs/getting-started.md) | Requirements, environment variables, scripts and layout      |
+| ✨ [Features](./docs/features.md)               | Everything the app can do, addresses and states              |
+| 🏗️ [Architecture](./docs/architecture.md)       | Layers, rendering, routes, languages, preferences and places |
+| 🌦️ [Weather data](./docs/weather-data.md)       | OpenWeatherMap endpoints, caching, normalization and icons   |
+| 🎨 [Design system](./docs/design.md)            | Glass surfaces, skies, tokens, layout and motion             |
+| 🌍 [Localization](./docs/i18n.md)               | Language addresses, messages, formatting, adding a language  |
+| ♿ [Accessibility](./docs/accessibility.md)     | Semantics, keyboard, screen readers, contrast and reflow     |
+| 🔎 [SEO](./docs/seo.md)                         | Metadata, canonical links, share cards and structured data   |
+| 🛡️ [Security](./docs/security.md)               | Content Security Policy, the API key, validation and limits  |
+| 🧪 [Testing](./docs/testing.md)                 | Unit and browser tests, the mock API, axe and Lighthouse     |
+| 🚀 [Deployment](./docs/deployment.md)           | CI, the build report, Vercel and self-hosting                |
+| 🤝 [Contributing](./docs/contributing.md)       | Workflow, code style and commit conventions                  |
+| ❓ [FAQ](./docs/faq.md)                         | Common questions                                             |
 
 ## 📌 Good to know
 
-- **A free API key is enough.** When the key does not include the daily forecast, the week is built from the
-  free 5-day / 3-hour forecast instead.
-- **New keys need time.** OpenWeatherMap can take up to two hours to activate a new key.
-- **Nothing is tracked.** Preferences are three cookies, saved places stay in your browser, and the browser only
-  talks to the app itself.
-- **Weather is cached for 10 minutes** on the server, so many visitors of one city cost one request.
+- 🔑 **A free API key is enough.** When the key does not include the daily forecast, the week is built from the free 5-day / 3-hour forecast instead.
+- 🔒 **Nothing is tracked.** Preferences are three cookies, saved places stay in your browser, and the browser only talks to the app itself.
+- 🗃️ **Weather is cached for 10 minutes** on the server, so many visitors of one city cost one request.
+
+> [!IMPORTANT]
+> Keep `OPENWEATHERMAP_API_KEY` on the server: never add a `NEXT_PUBLIC_` prefix, which would publish it in the JavaScript of every visitor.
 
 ## ✍️ Author
 
@@ -127,6 +107,7 @@ Checked by GitHub Actions and scanned by CodeQL.
 - **[OpenWeatherMap](https://openweathermap.org)**: weather, forecast, air quality and geocoding data
 - **[country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons)**: country flags
 - **[Lucide](https://lucide.dev)**: the shapes behind the interface icons
+- **[Montserrat](https://github.com/JulietaUla/Montserrat)**: the typeface, under the SIL Open Font License
 
 ## 📝 License
 

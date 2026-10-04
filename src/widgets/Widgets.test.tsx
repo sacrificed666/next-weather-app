@@ -12,6 +12,8 @@ const getForecast = vi.hoisted(() => vi.fn<(...args: unknown[]) => Promise<unkno
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn<(href: string) => void>(), refresh: vi.fn<() => void>() }),
+  usePathname: () => "/en",
+  useSearchParams: () => new URLSearchParams(),
 }));
 vi.mock("@/features/forecast/model/getForecast", () => ({ getForecast }));
 vi.mock("@/features/preferences/model/server", async () => {
@@ -19,15 +21,15 @@ vi.mock("@/features/preferences/model/server", async () => {
   const { t: translate, format } = createView();
   return {
     getLocalization: () =>
-      Promise.resolve({ preferences: { theme: "system", units: "metric", locale: "en" }, t: translate, format }),
+      Promise.resolve({ locale: "en", preferences: { theme: "system", units: "metric" }, t: translate, format }),
   };
 });
 
 describe("Header", () => {
   it("links home and offers search, location and settings", () => {
-    renderWithI18n(<Header preferences={{ theme: "system", units: "metric", locale: "en" }} t={t} />);
-    expect(screen.getByRole("link", { name: "Weather" })).toHaveAttribute("href", "/");
-    expect(document.querySelector('search form[action="/"]')).toBeInTheDocument();
+    renderWithI18n(<Header locale="en" preferences={{ theme: "system", units: "metric" }} t={t} />);
+    expect(screen.getByRole("link", { name: "Weather" })).toHaveAttribute("href", "/en");
+    expect(document.querySelector('search form[action="/en"]')).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Use my location" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
   });
@@ -52,6 +54,12 @@ describe("Forecast", () => {
     getForecast.mockResolvedValue({ ok: true, forecast });
     const { container } = renderWithI18n(await Forecast({ query: { kind: "city", name: "Lviv" } }));
     expect(getForecast).toHaveBeenCalledWith({ kind: "city", name: "Lviv" }, "en");
+    const schema: unknown = JSON.parse(
+      container.querySelector('script[type="application/ld+json"]')?.textContent ?? "",
+    );
+    expect(schema).toHaveProperty(["@graph", "1", "@type"], "WebPage");
+    expect(schema).toHaveProperty(["@graph", "1", "url"], "http://localhost:3000/en?lat=49.84&lon=24.03");
+    expect(schema).toHaveProperty(["@graph", "1", "about", "name"], "Lviv");
     expect(container.querySelector("[data-sky]")).toHaveAttribute("data-sky", "rain");
     for (const name of [
       "Hourly forecast",
@@ -71,6 +79,7 @@ describe("Forecast", () => {
     getForecast.mockResolvedValue({ ok: false, failure: "rate-limited" });
     renderWithI18n(await Forecast({ query: { kind: "city", name: "Lviv" } }));
     expect(screen.getByRole("heading", { name: "Too many requests" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Back to the forecast" })).toHaveAttribute("href", "/en");
   });
 
   it("treats an invalid query as an unknown city", async () => {

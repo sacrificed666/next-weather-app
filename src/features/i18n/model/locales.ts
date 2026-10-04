@@ -4,25 +4,38 @@ export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = "en";
 
+export const localeCookie = "weather-locale";
+
+export const localeHeader = "x-weather-locale";
+
 export interface LocaleDetails {
   name: string;
   intl: string;
   flag: string;
+  openGraph: string;
 }
 
 export const localeDetails: Record<Locale, LocaleDetails> = {
-  en: { name: "English", intl: "en-GB", flag: "GB" },
-  uk: { name: "Українська", intl: "uk-UA", flag: "UA" },
-  de: { name: "Deutsch", intl: "de-DE", flag: "DE" },
-  es: { name: "Español", intl: "es-ES", flag: "ES" },
-  fr: { name: "Français", intl: "fr-FR", flag: "FR" },
-  it: { name: "Italiano", intl: "it-IT", flag: "IT" },
-  nl: { name: "Nederlands", intl: "nl-NL", flag: "NL" },
-  pl: { name: "Polski", intl: "pl-PL", flag: "PL" },
+  en: { name: "English", intl: "en-GB", flag: "GB", openGraph: "en_GB" },
+  uk: { name: "Українська", intl: "uk-UA", flag: "UA", openGraph: "uk_UA" },
+  de: { name: "Deutsch", intl: "de-DE", flag: "DE", openGraph: "de_DE" },
+  es: { name: "Español", intl: "es-ES", flag: "ES", openGraph: "es_ES" },
+  fr: { name: "Français", intl: "fr-FR", flag: "FR", openGraph: "fr_FR" },
+  it: { name: "Italiano", intl: "it-IT", flag: "IT", openGraph: "it_IT" },
+  nl: { name: "Nederlands", intl: "nl-NL", flag: "NL", openGraph: "nl_NL" },
+  pl: { name: "Polski", intl: "pl-PL", flag: "PL", openGraph: "pl_PL" },
 };
 
 export const isLocale = (value: unknown): value is Locale =>
   typeof value === "string" && (locales as readonly string[]).includes(value);
+
+export const homeHref = (locale: Locale): `/${Locale}` => `/${locale}`;
+
+export const switchLocale = (pathname: string, locale: Locale) => {
+  const [, first = "", ...rest] = pathname.split("/");
+  const tail = isLocale(first) ? rest : [first, ...rest];
+  return ["", locale, ...tail.filter(Boolean)].join("/");
+};
 
 interface WeightedLanguage {
   language: string;

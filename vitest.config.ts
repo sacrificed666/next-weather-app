@@ -13,6 +13,7 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    include: ["src/**/*.test.{ts,tsx}"],
     setupFiles: ["./src/test/setup.ts"],
     restoreMocks: true,
     unstubGlobals: true,
@@ -23,14 +24,15 @@ export default defineConfig({
       exclude: [
         "src/test/**",
         "src/**/*.test.{ts,tsx}",
-        "src/app/{layout,page,error,global-error,not-found,manifest,apple-icon,opengraph-image,appIcon}.{ts,tsx}",
+        "src/app/**/{layout,page,error,global-error,global-not-found,manifest,apple-icon,opengraph-image}.{ts,tsx}",
+        "src/features/seo/og/**",
       ],
       reporter: ["text", "html", "json-summary"],
       thresholds: {
-        statements: 90,
-        branches: 90,
-        functions: 90,
-        lines: 90,
+        statements: 95,
+        branches: 95,
+        functions: 95,
+        lines: 95,
       },
     },
   },

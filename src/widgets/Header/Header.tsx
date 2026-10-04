@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { homeHref, type Locale } from "@/features/i18n/model/locales";
 import type { Translate } from "@/features/i18n/model/translate";
 import CitySearch from "@/features/places/ui/CitySearch/CitySearch";
 import LocateButton from "@/features/places/ui/LocateButton/LocateButton";
@@ -10,15 +11,16 @@ import WeatherIcon from "@/shared/ui/WeatherIcon/WeatherIcon";
 import styles from "./Header.module.scss";
 
 interface HeaderProps {
+  locale: Locale;
   preferences: Preferences;
   t: Translate;
 }
 
-const Header = ({ preferences, t }: HeaderProps) => (
+const Header = ({ locale, preferences, t }: HeaderProps) => (
   <header className={styles.header}>
     <div className={styles.bar}>
-      <Link className={styles.brand} href="/" aria-label={t("app.name")}>
-        <WeatherIcon name="partly-cloudy-day" size={40} priority />
+      <Link className={styles.brand} href={homeHref(locale)} aria-label={t("app.name")}>
+        <WeatherIcon name="partly-cloudy-day" size={40} loading="eager" />
         <span className={styles.name}>{t("app.name")}</span>
       </Link>
       <CitySearch />

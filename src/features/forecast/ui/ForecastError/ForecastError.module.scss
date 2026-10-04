@@ -33,6 +33,13 @@
   font-weight: 500;
 }
 
+.reference {
+  color: var(--color-text-tertiary);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

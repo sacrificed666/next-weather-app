@@ -18,10 +18,10 @@ The source is organised by **feature**, in four layers. A layer may only import 
 
 ```mermaid
 flowchart TB
-  app["🚀 app<br/>routes, layout, errors, API, flags, icons, manifest, proxy"]
+  app["🚀 app<br/>localized routes, 404, API, flags, icons, sitemap, robots, proxy"]
   widgets["🧩 widgets<br/>Header, Footer, Forecast"]
-  features["✨ features<br/>forecast, places, preferences, i18n"]
-  shared["🧰 shared<br/>api client, lib, ui primitives, styles"]
+  features["✨ features<br/>forecast, places, preferences, i18n, seo"]
+  shared["🧰 shared<br/>api client, lib, ui primitives, styles, fonts"]
 
   app --> widgets
   app --> features
@@ -42,8 +42,9 @@ flowchart TB
 | ---------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 🌦️ `forecast`    | `getForecast()`, response parsers, daily aggregation, condition icons and skies, insights, domain types | `CurrentConditions`, `HourlyForecast`, `DailyForecast`, nine detail cards, `Sky`, `LocalClock`, skeleton, error |
 | 📍 `places`      | `Place`, URL locations, geocoding, saved and recent places                                              | `CitySearch`, `LocateButton`, `SavePlaceButton`, `SavedPlaces`                                                  |
-| ⚙️ `preferences` | Theme, units and language, cookie reading, the `savePreference` server action, `getLocalization()`      | `SettingsMenu`, `OfflineNotice`                                                                                 |
-| 🌍 `i18n`        | Locales, `matchLocale()`, message catalogs, `createTranslator()`, `useI18n()`                           | `I18nProvider`                                                                                                  |
+| ⚙️ `preferences` | Theme and units in cookies, the `savePreference` server action, the route language, `getLocalization()` | `SettingsMenu`, `OfflineNotice`                                                                                 |
+| 🌍 `i18n`        | Locales, `matchLocale()`, path helpers, message catalogs, `createTranslator()`, `useI18n()`             | `I18nProvider`                                                                                                  |
+| 🔎 `seo`         | `alternates()`, `social()`, `documentTitle()`, `describeForecast()`, JSON-LD schemas, share card assets | `JsonLd`                                                                                                        |
 
 ## 🔀 Request flow
 
@@ -51,16 +52,18 @@ flowchart TB
 sequenceDiagram
   actor Browser
   participant Proxy as proxy.ts
-  participant Layout as app/layout.tsx
-  participant Page as app/page.tsx
+  participant Layout as app/[locale]/layout.tsx
+  participant Page as app/[locale]/page.tsx
   participant Forecast as widgets/Forecast
   participant Model as getForecast()
   participant OWM as OpenWeatherMap
 
   Browser->>Proxy: GET /?city=Kyiv
-  Proxy->>Proxy: fresh nonce, Content-Security-Policy
+  Proxy-->>Browser: 307 /uk?city=Kyiv (cookie or Accept-Language)
+  Browser->>Proxy: GET /uk?city=Kyiv
+  Proxy->>Proxy: fresh nonce, Content-Security-Policy, x-weather-locale
   Proxy->>Layout: request with the nonce
-  Layout->>Layout: getLocalization(): cookies, Accept-Language
+  Layout->>Layout: getLocalization(): route language, cookies
   Layout-->>Browser: shell: header, search, settings, footer
   Page->>Page: parseLocation(searchParams)
   Page-->>Browser: <Suspense key="city:kyiv"> skeleton
@@ -74,22 +77,43 @@ sequenceDiagram
 
 - 🧊 **Server components by default.** The forecast cards are synchronous server components that receive `{ forecast, t, format }` as props; they ship no JavaScript. Only interactive parts are client components: search, location, the star, saved places, settings, the clock, the retry button and the offline notice.
 - 🌊 **Streaming.** The layout and the page shell render at once; the forecast streams into a `Suspense` boundary. The boundary is keyed by the location (`locationKey()`), so opening another city shows the skeleton, while changing a setting keeps the current dashboard on screen until the new one is ready.
-- 🔗 **The URL is the state.** The place lives in the address (`?city=` or `?lat=&lon=`), so the back button, bookmarks and sharing work without client state. Search and location only call `router.push()` inside a transition.
-- 🏷️ **Metadata.** `generateMetadata()` names the tab after the city and its weather (`Kyiv 17° · Clear sky · Weather`). It calls `getForecast()` with the same arguments as the page, and Next.js deduplicates the identical `fetch` calls within the request.
+- 🔗 **The URL is the state.** The language is the first segment and the place lives in the query (`/uk?city=Kyiv` or `/uk?lat=50.45&lon=30.52`), so the back button, bookmarks and sharing work without client state. Search and location only call `router.push()` inside a transition.
+- 🏷️ **Metadata.** `generateMetadata()` names the tab after the city and its weather (`Kyiv 17° · Clear sky · Weather`), adds the canonical and `hreflang` links and keeps failures out of the index. It calls `getForecast()` with the same arguments as the page, and Next.js deduplicates the identical `fetch` calls within the request. See [SEO](./seo.md).
+- 🧩 **Structured data.** The `Forecast` widget renders JSON-LD for the site, the page and the place next to the dashboard, so it streams in with the forecast.
+
+> [!NOTE]
+> Without JavaScript the streamed dashboard stays hidden, because React moves it into place with a small script. The header, the search form and the title still work, and every search submits to a new address.
 
 ## 🗺️ Routes
 
-| Route                                          | Kind                       | Purpose                                                                |
-| ---------------------------------------------- | -------------------------- | ---------------------------------------------------------------------- |
-| `/`                                            | Dynamic page               | The forecast for `?city=`, `?lat=&lon=` or the default city            |
-| `/api/places?q=`                               | Route handler              | Search suggestions for the combobox, rate-limited, same-origin only    |
-| `/flags/[code]`                                | Static route handler (SSG) | 265 country flags from `country-flag-icons`, prerendered at build time |
-| `/icons/weather/*.svg`                         | Static files               | The Meteocons the app uses                                             |
-| `/icon.svg`, `/apple-icon`, `/opengraph-image` | Metadata files             | App icons and the social preview, generated with `next/og`             |
-| `/manifest.webmanifest`                        | Metadata file              | Name, colours and icons for installing the app                         |
-| Anything else                                  | `not-found.tsx`            | **Page not found** in the visitor's language                           |
+| Route                            | Kind                       | Purpose                                                                         |
+| -------------------------------- | -------------------------- | ------------------------------------------------------------------------------- |
+| `/[locale]`                      | Dynamic page               | The forecast for `?city=`, `?lat=&lon=` or the default city, in eight languages |
+| `/[locale]/opengraph-image/card` | Metadata image (SSG)       | The share card of each language, generated with `next/og` at build time         |
+| `/api/places?q=&lang=`           | Route handler              | Search suggestions for the combobox, rate-limited, same-origin only             |
+| `/flags/[code]`                  | Static route handler (SSG) | 265 country flags from `country-flag-icons`, prerendered at build time          |
+| `/icons/weather/*.svg`           | Static files               | The Meteocons the app uses                                                      |
+| `/icon.svg`, `/apple-icon`       | Metadata files             | App icons                                                                       |
+| `/manifest.webmanifest`          | Metadata file              | Name, colours and icons for installing the app                                  |
+| `/sitemap.xml`, `/robots.txt`    | Metadata files             | Every language of the home page, crawling rules                                 |
+| Anything else                    | `global-not-found.tsx`     | **Page not found** with status 404, in the language of the address              |
 
-`error.tsx` catches unexpected rendering errors below the layout and offers **Try again** (`retry()`); `global-error.tsx` covers the root layout itself.
+`[locale]/layout.tsx` is the root layout: it renders `<html lang>` from the address, and `dynamicParams = false` limits the segment to the eight languages. `error.tsx` catches unexpected rendering errors below the layout, offers **Try again** (`retry()`) and shows the error's digest as a reference; `global-error.tsx` covers the layout itself.
+
+### 🧭 Languages in the address
+
+`src/proxy.ts` runs before every page and does three things:
+
+| Request                     | Answer                                                                                                                              |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `/uk?city=Kyiv`             | Passes on with a fresh nonce, the Content Security Policy and an `x-weather-locale: uk` header                                      |
+| `/UK?city=Kyiv`             | `308` to `/uk?city=Kyiv`                                                                                                            |
+| `/?city=Kyiv`, `/somewhere` | `307` to the saved language (`weather-locale` cookie) or the best match for `Accept-Language`, with `Vary: Accept-Language, Cookie` |
+
+Server components read the language with `locale()` from `next/root-params` through `currentLocale()`, so it never has to be passed down.
+
+> [!IMPORTANT]
+> With the root layout inside a dynamic segment, a `notFound()` thrown by a page cannot fall back to a root `not-found.tsx`, and Next.js answers with an empty error shell. Unknown addresses are therefore left unmatched and rendered by `global-not-found.tsx`, which reads the language from the `x-weather-locale` header the proxy sets, then from the cookie and `Accept-Language`.
 
 ## 🗂️ Domain model
 
@@ -167,8 +191,9 @@ sequenceDiagram
 | `weather-units`  | `metric`, `imperial`                           | `metric`                             |
 | `weather-locale` | `en`, `uk`, `de`, `es`, `fr`, `it`, `nl`, `pl` | The best match for `Accept-Language` |
 
-- 🍪 Cookies are `HttpOnly`, `SameSite=Lax`, `Secure` in production and live for a year. Unknown names and values are ignored, so a crafted request cannot store anything else.
-- 🖥️ `getPreferences()` and `getLocalization()` are wrapped in React's `cache()`, so the layout, the page and the metadata read the cookies once per request.
+- 🍪 Theme and units are saved by the server action in `HttpOnly`, `SameSite=Lax` cookies, `Secure` in production, for a year. Unknown names and values are ignored, so a crafted request cannot store anything else.
+- 🌍 The language is the address. The language links in the settings point to the same place in another language and write `weather-locale` in the browser when clicked, so the next visit to an address without a language opens it. The proxy only reads the cookie to redirect; a shared `/de` link never changes it.
+- 🖥️ `getPreferences()`, `currentLocale()` and `getLocalization()` are wrapped in React's `cache()`, so the layout, the page and the metadata read them once per request.
 - 🎨 Because the server knows the theme, `<html data-theme>` is correct in the first byte: there is no inline theme script and no flash.
 
 ## ⭐ Saved and recent places
@@ -187,17 +212,18 @@ Saved and recent places are browser-only state in `localStorage` (`next-weather-
 ## 🗺️ Component map
 
 ```text
-RootLayout
+LocaleLayout                 app/[locale]/layout.tsx, <html lang data-theme>
 ├── I18nProvider             The messages of the current language for client components
 ├── Header
 │   ├── CitySearch           Combobox with suggestions from /api/places and recent places
-│   ├── LocateButton         Geolocation → /?lat=&lon=
-│   └── SettingsMenu         Popover with theme, units and language
+│   ├── LocateButton         Geolocation → /{language}?lat=&lon=
+│   └── SettingsMenu         Popover with theme, units and links to every language
 ├── main
 │   └── Page
 │       ├── SavedPlaces      Chips from localStorage
 │       └── Suspense         Keyed by the location, ForecastSkeleton as fallback
 │           └── Forecast     Async server widget
+│               ├── JsonLd               WebSite, WebPage and Place
 │               ├── Sky                  Fixed background for the condition
 │               ├── CurrentConditions    Place, LocalClock, SavePlaceButton, temperature
 │               ├── HourlyForecast
@@ -215,3 +241,8 @@ RootLayout
 - 🧩 **Sass modules** keep styles next to their component. Turbopack resolves the `@/` alias inside `@use`, so every module imports tokens with `@use "@/shared/styles/mixins" as *`.
 - 🤖 **Agent files.** `agentRules: false` stops `next dev` from rewriting `AGENTS.md`, which is maintained by hand and points to the documentation bundled with Next.js.
 - 📴 **Offline detection** uses the experimental `useOffline` flag of Next.js 16.3, which also retries navigations and server actions once the connection is back.
+- 🧭 **Global 404** uses the experimental `globalNotFound` flag, the recommended way to answer unmatched addresses when the root layout lives in a dynamic segment.
+- 🛰️ **Configurable API address.** `OPENWEATHERMAP_API_URL` points the server at another OpenWeatherMap-compatible host; the end-to-end tests use it for their mock server.
+
+> [!TIP]
+> The documentation bundled with the installed Next.js version lives in `node_modules/next/dist/docs/`. It is the reference for APIs such as `next/root-params`, `global-not-found` and `proxy.ts`, which are newer than most tutorials.

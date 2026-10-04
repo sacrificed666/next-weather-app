@@ -39,7 +39,7 @@ const HourlyForecast = ({ forecast, t, format, className }: ForecastViewProps) =
 
   return (
     <Card className={className} title={t("hourly.title")} icon="clock">
-      <ol className={styles.hours}>
+      <ol className={styles.hours} aria-label={t("hourly.title")} tabIndex={0}>
         {hours.map((hour) => (
           <li key={hour.key} className={styles.hour}>
             <span className={styles.time}>{hour.label}</span>

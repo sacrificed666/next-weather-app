@@ -130,6 +130,21 @@ describe("getForecast", () => {
     expect(dailyCalls).toHaveLength(1);
   });
 
+  it("keeps asking for the daily forecast while the whole key is rejected", async () => {
+    serve({
+      "/data/2.5/weather": () => jsonResponse({}, 401),
+      "/data/2.5/forecast/daily": () => jsonResponse({}, 401),
+    });
+    const getForecast = await load();
+    await expect(getForecast({ kind: "coordinates", latitude: 1, longitude: 2 }, "en")).resolves.toEqual({
+      ok: false,
+      failure: "invalid-key",
+    });
+    serve();
+    const second = await getForecast({ kind: "coordinates", latitude: 1, longitude: 2 }, "en");
+    expect(second.ok && second.forecast.daily).toHaveLength(7);
+  });
+
   it("works without the hourly forecast and air quality", async () => {
     serve({
       "/data/2.5/forecast": () => jsonResponse({}, 500),

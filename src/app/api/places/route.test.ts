@@ -4,14 +4,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const searchPlaces = vi.hoisted(() => vi.fn<(query: string, locale: string) => Promise<unknown>>());
 
 vi.mock("@/features/places/model/geocoding", () => ({ searchPlaces }));
-vi.mock("@/features/preferences/model/server", () => ({
-  getPreferences: () => Promise.resolve({ theme: "system", units: "metric", locale: "uk" }),
-}));
 
 const { GET } = await import("./route");
 
-const request = (query: string, headers: Record<string, string> = {}) =>
-  new NextRequest(`http://localhost/api/places?q=${encodeURIComponent(query)}`, { headers });
+const request = (query: string, headers: Record<string, string> = {}, lang = "uk") =>
+  new NextRequest(`http://localhost/api/places?q=${encodeURIComponent(query)}&lang=${lang}`, { headers });
 
 describe("GET /api/places", () => {
   beforeEach(() => {
@@ -25,6 +22,12 @@ describe("GET /api/places", () => {
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({ places });
     expect(searchPlaces).toHaveBeenCalledWith("Lv", "uk");
+  });
+
+  it("falls back to English for an unknown language", async () => {
+    searchPlaces.mockResolvedValue({ ok: true, places: [] });
+    await GET(request("Lviv", { "x-forwarded-for": "10.0.0.3" }, "xx"));
+    expect(searchPlaces).toHaveBeenCalledWith("Lviv", "en");
   });
 
   it("answers short queries without calling the service", async () => {

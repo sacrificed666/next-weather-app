@@ -41,14 +41,11 @@ const resolveLocation = async (query: LocationQuery, locale: Locale): Promise<Re
 
 const fetchDaily = async (coordinates: Readonly<Record<string, string | number>>): Promise<OpenWeatherResult> => {
   if (Date.now() < dailyEndpointBlockedUntil) return { ok: false, failure: "invalid-key" };
-  const result = await fetchOpenWeather(
-    "/data/2.5/forecast/daily",
-    { ...coordinates, cnt: 7 },
-    WEATHER_REVALIDATE_SECONDS,
-  );
-  if (!result.ok && result.failure === "invalid-key") dailyEndpointBlockedUntil = Date.now() + DAILY_ENDPOINT_RETRY_MS;
-  return result;
+  return fetchOpenWeather("/data/2.5/forecast/daily", { ...coordinates, cnt: 7 }, WEATHER_REVALIDATE_SECONDS);
 };
+
+const isOutsidePlan = (daily: OpenWeatherResult, current: OpenWeatherResult) =>
+  current.ok && !daily.ok && daily.failure === "invalid-key";
 
 export const getForecast = async (query: LocationQuery, locale: Locale): Promise<ForecastResult> => {
   const location = await resolveLocation(query, locale);
@@ -66,6 +63,7 @@ export const getForecast = async (query: LocationQuery, locale: Locale): Promise
     ),
   ]);
 
+  if (isOutsidePlan(dailyResult, currentResult)) dailyEndpointBlockedUntil = Date.now() + DAILY_ENDPOINT_RETRY_MS;
   if (!currentResult.ok) return currentResult;
   const parsed = parseCurrent(currentResult.data);
   const place = location.place ?? parsed?.place;

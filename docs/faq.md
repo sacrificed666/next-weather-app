@@ -26,7 +26,11 @@ In your browser's `localStorage`, on this device only. They sync between tabs bu
 
 ### 🔗 Can I link to a city?
 
-Yes. Every forecast has its own address, for example `/?city=Tokyo` or `/?lat=49.84&lon=24.03`. The theme, units and language of the person who opens it are their own.
+Yes. Every forecast has its own address, for example `/en?city=Tokyo` or `/uk?lat=49.84&lon=24.03`. The language travels with the link; the theme and units of the person who opens it are their own. A link without a language, such as `/?city=Tokyo`, opens in the language of whoever clicks it.
+
+### 🌍 Why did the address change to `/en` or `/uk`?
+
+Every language has its own address, so search engines can show the right one and a shared link opens in the language it was shared in. The first visit to `/` redirects to the language you chose before or, the first time, to your browser's language.
 
 ### 🕰️ Which time zone are the times in?
 
@@ -40,6 +44,14 @@ OpenWeatherMap updates current conditions about every ten minutes, and the app c
 
 A notice appears at the bottom of the page. The forecast you already see stays on screen, and Next.js retries navigations and saved settings automatically when the connection returns.
 
+### 🧪 Can I try the app without an API key?
+
+Yes. Run the mock server from the end-to-end tests with `node e2e/openweather-api.ts` and start the app with `OPENWEATHERMAP_API_KEY=e2e-key OPENWEATHERMAP_API_URL=http://127.0.0.1:4020 npm run dev`. It knows Lviv, Kyiv, Reykjavik and Bangkok.
+
+### 🔎 Why is my preview deployment not in search results?
+
+On purpose: Vercel previews send `noindex` and a robots file that disallows everything, so only production competes in search results. See [SEO](./seo.md#️-sitemap-and-robots).
+
 ### 🌍 Can I add a language?
 
 Yes: add a message file and a few lines in `locales.ts`. See [Localization](./i18n.md#-adding-a-language).
@@ -47,3 +59,6 @@ Yes: add a message file and a few lines in `locales.ts`. See [Localization](./i1
 ### 🖼️ Where do the icons come from?
 
 Weather icons are [Meteocons](https://bas.dev/work/meteocons) by Bas Milius, served by the app itself. Interface icons are based on [Lucide](https://lucide.dev) and flags come from [country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons).
+
+> [!TIP]
+> Did not find your question? Open an issue with the forms in the repository; for anything security-related, follow the [security policy](../.github/SECURITY.md) instead.

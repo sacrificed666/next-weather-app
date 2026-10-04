@@ -26,6 +26,7 @@ describe("savePreference", () => {
     await savePreference("theme", "neon");
     await savePreference("units", "dark");
     await Reflect.apply(savePreference, undefined, ["toString", "dark"]);
+    await Reflect.apply(savePreference, undefined, ["locale", "uk"]);
     expect(set).not.toHaveBeenCalled();
   });
 });

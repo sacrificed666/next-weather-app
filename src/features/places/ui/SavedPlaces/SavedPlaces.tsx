@@ -12,7 +12,7 @@ import { removeSavedPlace, savedPlaces, useStoredPlaces } from "../../model/stor
 import styles from "./SavedPlaces.module.scss";
 
 const SavedPlaces = ({ activeKey }: { activeKey: string | null }) => {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const places = useStoredPlaces(savedPlaces);
   if (places.length === 0) return null;
 
@@ -25,7 +25,7 @@ const SavedPlaces = ({ activeKey }: { activeKey: string | null }) => {
             <li key={key} className={styles.chip}>
               <Link
                 className={styles.link}
-                href={placeHref(place)}
+                href={placeHref(locale, place)}
                 aria-current={key === activeKey ? "page" : undefined}
               >
                 {place.country && <Flag country={place.country} height={12} />}

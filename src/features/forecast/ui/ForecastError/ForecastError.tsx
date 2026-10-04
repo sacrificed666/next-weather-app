@@ -23,10 +23,12 @@ const content = {
 interface ForecastErrorProps {
   kind: ErrorKind;
   t: Translate;
+  home: string;
+  digest?: string;
   onRetry?: () => void;
 }
 
-const ForecastError = ({ kind, t, onRetry }: ForecastErrorProps) => {
+const ForecastError = ({ kind, t, home, digest, onRetry }: ForecastErrorProps) => {
   const { icon, title, text, retry } = content[kind];
   return (
     <section className={styles.error} role="alert" aria-labelledby="forecast-error-title">
@@ -37,9 +39,10 @@ const ForecastError = ({ kind, t, onRetry }: ForecastErrorProps) => {
         {t(title)}
       </h1>
       <p className={styles.text}>{t(text)}</p>
+      {digest && <p className={styles.reference}>{t("error.reference", { digest })}</p>}
       <div className={styles.actions}>
         {retry && <RetryButton label={t("error.retry")} onRetry={onRetry} />}
-        <Link className={styles.link} href="/">
+        <Link className={styles.link} href={home}>
           {t("error.home")}
         </Link>
       </div>
