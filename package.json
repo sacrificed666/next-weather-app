@@ -21,6 +21,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
     "icons": "node scripts/sync-icons.mjs",
     "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:run"
   },
@@ -33,7 +34,9 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@meteocons/svg": "^0.1.0",
+    "@playwright/test": "^1.63.0",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
@@ -45,6 +48,7 @@
     "@vitest/coverage-v8": "^5.0.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "jsdom": "^30.1.1",
+    "lighthouse": "^13.5.0",
     "oxfmt": "^0.71.0",
     "oxlint": "^1.86.0",
     "oxlint-tsgolint": "^7.0.2003",
