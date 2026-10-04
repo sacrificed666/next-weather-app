@@ -129,6 +129,7 @@ export const fr: Messages = {
   "error.unavailable.text": "Vérifiez votre connexion et réessayez.",
   "error.unexpected.title": "Une erreur s’est produite",
   "error.unexpected.text": "Les prévisions n’ont pas pu être affichées.",
+  "error.reference": "Référence de l’erreur : {digest}",
   "error.retry": "Réessayer",
   "error.home": "Retour aux prévisions",
 

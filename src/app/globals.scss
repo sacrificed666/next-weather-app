@@ -122,6 +122,12 @@ svg {
   @include visually-hidden;
 }
 
+@media (prefers-contrast: more) {
+  :root[data-theme] {
+    @include tokens.more-contrast;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

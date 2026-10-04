@@ -129,6 +129,7 @@ export const nl: Messages = {
   "error.unavailable.text": "Controleer je verbinding en probeer het opnieuw.",
   "error.unexpected.title": "Er ging iets mis",
   "error.unexpected.text": "De verwachting kon niet worden getoond.",
+  "error.reference": "Foutreferentie: {digest}",
   "error.retry": "Opnieuw proberen",
   "error.home": "Terug naar de verwachting",
 

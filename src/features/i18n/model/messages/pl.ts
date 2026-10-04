@@ -128,6 +128,7 @@ export const pl: Messages = {
   "error.unavailable.text": "Sprawdź połączenie i spróbuj ponownie.",
   "error.unexpected.title": "Coś poszło nie tak",
   "error.unexpected.text": "Nie udało się wyświetlić prognozy.",
+  "error.reference": "Identyfikator błędu: {digest}",
   "error.retry": "Spróbuj ponownie",
   "error.home": "Wróć do prognozy",
 

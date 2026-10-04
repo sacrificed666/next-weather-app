@@ -12,6 +12,7 @@ import {
   useTransition,
 } from "react";
 
+import { homeHref, type Locale } from "@/features/i18n/model/locales";
 import { useI18n } from "@/features/i18n/model/useI18n";
 import { readArray } from "@/shared/lib/guards";
 import Flag from "@/shared/ui/Flag/Flag";
@@ -31,8 +32,8 @@ interface Lookup {
   places: Place[] | null;
 }
 
-const fetchPlaces = async (query: string, signal: AbortSignal): Promise<Place[] | null> => {
-  const response = await fetch(`/api/places?q=${encodeURIComponent(query)}`, { signal });
+const fetchPlaces = async (query: string, locale: Locale, signal: AbortSignal): Promise<Place[] | null> => {
+  const response = await fetch(`/api/places?q=${encodeURIComponent(query)}&lang=${locale}`, { signal });
   if (!response.ok) return null;
   const body: unknown = await response.json();
   return readArray(body, "places")
@@ -41,7 +42,7 @@ const fetchPlaces = async (query: string, signal: AbortSignal): Promise<Place[] 
 };
 
 const CitySearch = () => {
-  const { t, intlLocale } = useI18n();
+  const { locale, t, intlLocale } = useI18n();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
@@ -66,7 +67,7 @@ const CitySearch = () => {
     if (trimmed.length < MIN_QUERY_LENGTH) return;
     const controller = new AbortController();
     const timer = setTimeout(() => {
-      fetchPlaces(trimmed, controller.signal)
+      fetchPlaces(trimmed, locale, controller.signal)
         .then((places) => setLookup({ query: trimmed, places }))
         .catch(() => {
           if (!controller.signal.aborted) setLookup({ query: trimmed, places: null });
@@ -76,7 +77,7 @@ const CitySearch = () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [trimmed]);
+  }, [trimmed, locale]);
 
   const navigate = (href: string) => {
     setOpen(false);
@@ -88,14 +89,14 @@ const CitySearch = () => {
 
   const choose = (place: Place) => {
     rememberPlace(place);
-    navigate(placeHref(place));
+    navigate(placeHref(locale, place));
   };
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const option = expanded ? options[active] : undefined;
     if (option) choose(option);
-    else if (trimmed !== "") navigate(cityHref(trimmed));
+    else if (trimmed !== "") navigate(cityHref(locale, trimmed));
   };
 
   const move = (step: 1 | -1) => {
@@ -130,7 +131,7 @@ const CitySearch = () => {
 
   return (
     <search className={styles.search}>
-      <form action="/" method="get" onSubmit={submit}>
+      <form action={homeHref(locale)} method="get" onSubmit={submit}>
         <label className={styles.field}>
           <span className="visually-hidden">{t("search.label")}</span>
           <Icon

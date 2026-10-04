@@ -13,7 +13,5 @@ describe("preferences", () => {
     expect(isPreferenceValue("theme", "metric")).toBe(false);
     expect(isPreferenceValue("units", "imperial")).toBe(true);
     expect(isPreferenceValue("units", "dark")).toBe(false);
-    expect(isPreferenceValue("locale", "pl")).toBe(true);
-    expect(isPreferenceValue("locale", "xx")).toBe(false);
   });
 });

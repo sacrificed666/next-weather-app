@@ -9,7 +9,13 @@ import SettingsMenu from "./SettingsMenu/SettingsMenu";
 const savePreference = vi.hoisted(() => vi.fn<(name: string, value: string) => Promise<void>>(() => Promise.resolve()));
 const offline = vi.hoisted(() => ({ value: false }));
 
+const location = vi.hoisted(() => ({ pathname: "/en", search: "city=Kyiv" }));
+
 vi.mock("../model/actions", () => ({ savePreference }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => location.pathname,
+  useSearchParams: () => new URLSearchParams(location.search),
+}));
 vi.mock("next/offline", () => ({ useOffline: () => offline.value }));
 
 describe("SettingsMenu", () => {
@@ -19,7 +25,7 @@ describe("SettingsMenu", () => {
   });
 
   it("opens the settings panel from the toolbar button", () => {
-    renderWithI18n(<SettingsMenu preferences={{ theme: "system", units: "metric", locale: "en" }} />);
+    renderWithI18n(<SettingsMenu preferences={{ theme: "system", units: "metric" }} />);
     const button = screen.getByRole("button", { name: "Settings" });
     const panel = document.getElementById(button.getAttribute("popovertarget") ?? "");
     expect(panel?.tagName).toBe("DIALOG");
@@ -28,27 +34,41 @@ describe("SettingsMenu", () => {
   });
 
   it("applies the theme at once and saves it", async () => {
-    const { user } = renderWithI18n(<SettingsMenu preferences={{ theme: "system", units: "metric", locale: "en" }} />);
+    const { user } = renderWithI18n(<SettingsMenu preferences={{ theme: "system", units: "metric" }} />);
     expect(screen.getByRole("radio", { hidden: true, name: "Auto" })).toBeChecked();
     await user.click(screen.getByRole("radio", { hidden: true, name: "Dark" }));
     expect(document.documentElement.dataset.theme).toBe("dark");
     expect(savePreference).toHaveBeenCalledWith("theme", "dark");
   });
 
-  it("saves units and language", async () => {
-    const { user } = renderWithI18n(<SettingsMenu preferences={{ theme: "light", units: "metric", locale: "en" }} />);
+  it("saves units without touching the theme", async () => {
+    const { user } = renderWithI18n(<SettingsMenu preferences={{ theme: "light", units: "metric" }} />);
     await user.click(screen.getByRole("radio", { hidden: true, name: "°F, mph" }));
-    await user.click(screen.getByRole("radio", { hidden: true, name: "Українська" }));
-    expect(savePreference).toHaveBeenNthCalledWith(1, "units", "imperial");
-    expect(savePreference).toHaveBeenNthCalledWith(2, "locale", "uk");
+    expect(savePreference).toHaveBeenCalledWith("units", "imperial");
     expect(document.documentElement).not.toHaveAttribute("data-theme");
   });
 
+  it("links every language to the same place and remembers the choice", async () => {
+    location.pathname = "/en";
+    location.search = "city=Kyiv";
+    const { user } = renderWithI18n(<SettingsMenu preferences={{ theme: "light", units: "metric" }} />);
+    const ukrainian = screen.getByRole("link", { hidden: true, name: "Українська" });
+    expect(ukrainian).toHaveAttribute("href", "/uk?city=Kyiv");
+    expect(ukrainian).toHaveAttribute("hreflang", "uk");
+    expect(screen.getByRole("link", { hidden: true, name: "English" })).toHaveAttribute("aria-current", "true");
+    ukrainian.addEventListener("click", (event) => event.preventDefault());
+    await user.click(ukrainian);
+    expect(document.cookie).toContain("weather-locale=uk");
+  });
+
   it("speaks the current language", () => {
-    renderWithI18n(<SettingsMenu preferences={{ theme: "system", units: "imperial", locale: "uk" }} />, "uk");
+    location.pathname = "/uk/nowhere";
+    location.search = "";
+    renderWithI18n(<SettingsMenu preferences={{ theme: "system", units: "imperial" }} />, "uk");
     expect(screen.getByRole("button", { name: "Налаштування" })).toBeInTheDocument();
     expect(screen.getByRole("radio", { hidden: true, name: "°F, mph" })).toBeChecked();
-    expect(screen.getByRole("radio", { hidden: true, name: "Українська" })).toBeChecked();
+    expect(screen.getByRole("link", { hidden: true, name: "Українська" })).toHaveAttribute("aria-current", "true");
+    expect(screen.getByRole("link", { hidden: true, name: "Polski" })).toHaveAttribute("href", "/pl/nowhere");
   });
 });
 

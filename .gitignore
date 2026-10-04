@@ -15,6 +15,7 @@ next-env.d.ts
 /coverage/
 /test-results/
 /playwright-report/
+/blob-report/
 
 .env
 .env.*

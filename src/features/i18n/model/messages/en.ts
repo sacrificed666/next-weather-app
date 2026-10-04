@@ -126,6 +126,7 @@ export const en = {
   "error.unavailable.text": "Check your connection and try again.",
   "error.unexpected.title": "Something went wrong",
   "error.unexpected.text": "The forecast could not be displayed.",
+  "error.reference": "Error reference: {digest}",
   "error.retry": "Try again",
   "error.home": "Back to the forecast",
 

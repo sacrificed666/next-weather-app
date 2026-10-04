@@ -1,13 +1,37 @@
 @use "@/shared/styles/mixins" as *;
 
+.page {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  justify-items: center;
+  gap: 1rem;
+  padding: 1.25rem var(--gutter) 2rem;
+}
+
+.brand {
+  @include pressable;
+
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-inline-end: 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
 .notFound {
   @include glass;
 
   display: grid;
   justify-items: center;
   gap: 0.75rem;
+  inline-size: 100%;
   max-inline-size: 32rem;
-  margin: clamp(1rem, 8vh, 4rem) auto;
+  margin-block: clamp(1rem, 8vh, 4rem);
   padding: 2rem;
   text-align: center;
 }

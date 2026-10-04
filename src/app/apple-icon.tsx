@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { readAppIcon } from "./appIcon";
+import { readAppIcon } from "@/features/seo/og/assets";
 
 export const size = { width: 180, height: 180 };
 

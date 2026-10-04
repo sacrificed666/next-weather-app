@@ -129,6 +129,7 @@ export const de: Messages = {
   "error.unavailable.text": "Prüfe deine Verbindung und versuche es erneut.",
   "error.unexpected.title": "Etwas ist schiefgelaufen",
   "error.unexpected.text": "Die Vorhersage konnte nicht angezeigt werden.",
+  "error.reference": "Fehlerreferenz: {digest}",
   "error.retry": "Erneut versuchen",
   "error.home": "Zurück zur Vorhersage",
 

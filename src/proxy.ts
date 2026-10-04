@@ -1,12 +1,25 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { isLocale, localeCookie, localeHeader, matchLocale, type Locale } from "@/features/i18n/model/locales";
 import { contentSecurityPolicy } from "@/shared/lib/contentSecurityPolicy";
 
-export const proxy = (request: NextRequest) => {
+const preferredLocale = (request: NextRequest): Locale => {
+  const saved = request.cookies.get(localeCookie)?.value;
+  return isLocale(saved) ? saved : matchLocale(request.headers.get("accept-language"));
+};
+
+const redirectTo = (request: NextRequest, segments: readonly string[], status: 307 | 308) => {
+  const url = request.nextUrl.clone();
+  url.pathname = ["", ...segments].join("/");
+  return NextResponse.redirect(url, status);
+};
+
+const render = (request: NextRequest, locale: Locale) => {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const policy = contentSecurityPolicy(nonce, process.env.NODE_ENV === "development");
 
   const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(localeHeader, locale);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", policy);
 
@@ -15,10 +28,23 @@ export const proxy = (request: NextRequest) => {
   return response;
 };
 
+export const proxy = (request: NextRequest) => {
+  const [first = "", ...rest] = request.nextUrl.pathname.split("/").filter(Boolean);
+  if (isLocale(first)) return render(request, first);
+
+  const lowercase = first.toLowerCase();
+  if (isLocale(lowercase)) return redirectTo(request, [lowercase, ...rest], 308);
+
+  const response = redirectTo(request, [preferredLocale(request), first, ...rest].filter(Boolean), 307);
+  response.headers.set("Vary", "Accept-Language, Cookie");
+  return response;
+};
+
 export const config = {
   matcher: [
     {
-      source: "/((?!api|_next/static|_next/image|icons|flags|favicon.ico|icon.svg|apple-icon|manifest.webmanifest).*)",
+      source:
+        "/((?!(?:api|_next/static|_next/image|icons|flags)(?:/|$)|(?:favicon\\.ico|icon\\.svg|apple-icon|manifest\\.webmanifest|robots\\.txt|sitemap\\.xml)$).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },

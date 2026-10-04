@@ -36,18 +36,20 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin: 0;
 }
 
 .time {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
   align-items: center;
-  column-gap: 0.35rem;
+  gap: 0.35rem;
 
   img {
-    grid-row: span 2;
+    flex: none;
     margin: -0.35rem;
+  }
+
+  dl {
+    margin: 0;
   }
 
   dt {

@@ -129,6 +129,7 @@ export const it: Messages = {
   "error.unavailable.text": "Controlla la connessione e riprova.",
   "error.unexpected.title": "Qualcosa è andato storto",
   "error.unexpected.text": "Non è stato possibile mostrare le previsioni.",
+  "error.reference": "Riferimento dell’errore: {digest}",
   "error.retry": "Riprova",
   "error.home": "Torna alle previsioni",
 

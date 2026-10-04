@@ -15,7 +15,7 @@ type Status = "idle" | "locating" | "denied" | "failed";
 const MESSAGE_DURATION_MS = 6000;
 
 const LocateButton = () => {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
   const [navigating, startNavigation] = useTransition();
@@ -36,7 +36,7 @@ const LocateButton = () => {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         setStatus("idle");
-        startNavigation(() => router.push(placeHref(coords)));
+        startNavigation(() => router.push(placeHref(locale, coords)));
       },
       (error) => setStatus(error.code === error.PERMISSION_DENIED ? "denied" : "failed"),
       { enableHighAccuracy: false, timeout: 10_000, maximumAge: 10 * 60_000 },

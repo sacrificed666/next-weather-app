@@ -1,4 +1,6 @@
-import { isLatitude, isLongitude, MAX_NAME_LENGTH, placeKey, roundCoordinate } from "./place";
+import type { Locale } from "@/features/i18n/model/locales";
+
+import { isLatitude, isLongitude, MAX_NAME_LENGTH, placeKey, placeSearch, roundCoordinate, type Place } from "./place";
 
 export type LocationQuery =
   | { kind: "coordinates"; latitude: number; longitude: number }
@@ -6,7 +8,11 @@ export type LocationQuery =
 
 export type SearchParams = Readonly<Record<string, string | string[] | undefined>>;
 
-export const DEFAULT_LOCATION: LocationQuery = { kind: "coordinates", latitude: 49.84, longitude: 24.03 };
+export const DEFAULT_LOCATION = {
+  kind: "coordinates",
+  latitude: 49.84,
+  longitude: 24.03,
+} as const satisfies LocationQuery;
 
 const single = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
 
@@ -32,4 +38,9 @@ export const locationKey = (query: LocationQuery | null) => {
   return query.kind === "city" ? `city:${query.name.toLocaleLowerCase()}` : placeKey(query);
 };
 
-export const cityHref = (name: string) => `/?city=${encodeURIComponent(name.trim())}`;
+export const isDefaultLocation = (query: LocationQuery) => locationKey(query) === placeKey(DEFAULT_LOCATION);
+
+export const cityHref = (locale: Locale, name: string) => `/${locale}?city=${encodeURIComponent(name.trim())}`;
+
+export const forecastSearch = (query: LocationQuery, place: Pick<Place, "latitude" | "longitude">) =>
+  isDefaultLocation(query) ? "" : placeSearch(place);

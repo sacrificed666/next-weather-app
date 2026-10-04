@@ -38,18 +38,22 @@ const SunCard = ({ forecast: { current, timezoneOffset, generatedAt }, t, format
         <line className={styles.horizon} x1="4" y1="84" x2="196" y2="84" />
         {sun && <circle className={styles.sun} cx={sun.x.toFixed(2)} cy={sun.y.toFixed(2)} r="7" />}
       </svg>
-      <dl className={styles.times}>
+      <div className={styles.times}>
         <div className={styles.time}>
           <WeatherIcon name="sunrise" size={40} />
-          <dt>{t("sun.sunrise")}</dt>
-          <dd>{format.time(sunrise, timezoneOffset)}</dd>
+          <dl>
+            <dt>{t("sun.sunrise")}</dt>
+            <dd>{format.time(sunrise, timezoneOffset)}</dd>
+          </dl>
         </div>
         <div className={styles.time}>
           <WeatherIcon name="sunset" size={40} />
-          <dt>{t("sun.sunset")}</dt>
-          <dd>{format.time(sunset, timezoneOffset)}</dd>
+          <dl>
+            <dt>{t("sun.sunset")}</dt>
+            <dd>{format.time(sunset, timezoneOffset)}</dd>
+          </dl>
         </div>
-      </dl>
+      </div>
       <p className={styles.note}>{t("sun.daylight", { duration: format.duration(sunset - sunrise) })}</p>
     </Card>
   );

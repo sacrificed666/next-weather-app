@@ -6,8 +6,13 @@ export type OpenWeatherResult = { ok: true; data: unknown } | { ok: false; failu
 
 export type OpenWeatherParams = Readonly<Record<string, string | number>>;
 
-const BASE_URL = "https://api.openweathermap.org";
+const DEFAULT_BASE_URL = "https://api.openweathermap.org";
 const TIMEOUT_MS = 8000;
+
+const baseUrl = () => {
+  const configured = process.env.OPENWEATHERMAP_API_URL?.trim();
+  return configured === undefined || configured === "" ? DEFAULT_BASE_URL : configured;
+};
 
 const failureForStatus = (status: number): OpenWeatherFailure => {
   if (status === 401) return "invalid-key";
@@ -24,7 +29,7 @@ export const fetchOpenWeather = async (
   const apiKey = process.env.OPENWEATHERMAP_API_KEY?.trim();
   if (!apiKey) return { ok: false, failure: "missing-key" };
 
-  const url = new URL(path, BASE_URL);
+  const url = new URL(path, baseUrl());
   for (const [name, value] of Object.entries(params)) url.searchParams.set(name, String(value));
   url.searchParams.set("appid", apiKey);
 

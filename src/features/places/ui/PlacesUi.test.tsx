@@ -65,7 +65,7 @@ describe("CitySearch", () => {
     const options = await screen.findAllByRole("option");
     expect(options.map((option) => option.textContent)).toEqual(["KyivKyiv City, Ukraine", "LvivLviv Oblast, Ukraine"]);
     expect(fetchMock).toHaveBeenCalledWith(
-      "/api/places?q=Ky",
+      "/api/places?q=Ky&lang=en",
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
     expect(screen.getByText("Suggestions: 2")).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe("CitySearch", () => {
     expect(options[0]).toHaveAttribute("aria-selected", "true");
     await user.keyboard("{Enter}");
 
-    expect(push).toHaveBeenCalledWith("/?lat=50.45&lon=30.52");
+    expect(push).toHaveBeenCalledWith("/en?lat=50.45&lon=30.52");
     expect(recentPlaces.getSnapshot()).toEqual([kyiv]);
     expect(input).toHaveValue("");
   });
@@ -86,7 +86,7 @@ describe("CitySearch", () => {
     await user.type(screen.getByRole("combobox"), "Atlantis");
     expect(await screen.findByText("No cities match “Atlantis”.")).toBeInTheDocument();
     await user.keyboard("{Enter}");
-    expect(push).toHaveBeenCalledWith("/?city=Atlantis");
+    expect(push).toHaveBeenCalledWith("/en?city=Atlantis");
   });
 
   it("opens a suggestion on click", async () => {
@@ -94,7 +94,7 @@ describe("CitySearch", () => {
     const { user } = renderWithI18n(<CitySearch />);
     await user.type(screen.getByRole("combobox"), "Lv");
     await user.click(await screen.findByRole("option", { name: /Lviv/u }));
-    expect(push).toHaveBeenCalledWith("/?lat=49.84&lon=24.03");
+    expect(push).toHaveBeenCalledWith("/en?lat=49.84&lon=24.03");
   });
 
   it("explains when the search fails", async () => {
@@ -156,7 +156,7 @@ describe("LocateButton", () => {
     stubGeolocation((success) => success(position(50.4501, 30.5234)));
     const { user } = renderWithI18n(<LocateButton />);
     await user.click(screen.getByRole("button", { name: "Use my location" }));
-    expect(push).toHaveBeenCalledWith("/?lat=50.45&lon=30.52");
+    expect(push).toHaveBeenCalledWith("/en?lat=50.45&lon=30.52");
   });
 
   it("explains a blocked permission and hides the message after a while", async () => {
@@ -190,10 +190,12 @@ describe("LocateButton", () => {
 describe("saved places", () => {
   it("saves and unsaves the current place", async () => {
     const { user } = renderWithI18n(<SavePlaceButton place={lviv} />);
-    await user.click(screen.getByRole("button", { name: "Save Lviv" }));
+    const button = screen.getByRole("button", { name: "Save Lviv" });
+    expect(button).toHaveAttribute("aria-pressed", "false");
+    await user.click(button);
     expect(savedPlaces.getSnapshot()).toEqual([lviv]);
-    const button = screen.getByRole("button", { name: "Remove Lviv from saved places" });
     expect(button).toHaveAttribute("aria-pressed", "true");
+    expect(button).toHaveAccessibleName("Save Lviv");
     await user.click(button);
     expect(savedPlaces.getSnapshot()).toEqual([]);
   });
@@ -205,7 +207,7 @@ describe("saved places", () => {
     const navigation = screen.getByRole("navigation", { name: "Saved places" });
     expect(navigation).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Lviv" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("link", { name: "Kyiv" })).toHaveAttribute("href", "/?lat=50.45&lon=30.52");
+    expect(screen.getByRole("link", { name: "Kyiv" })).toHaveAttribute("href", "/en?lat=50.45&lon=30.52");
     await user.click(screen.getByRole("button", { name: "Remove Kyiv from saved places" }));
     expect(screen.queryByRole("link", { name: "Kyiv" })).not.toBeInTheDocument();
   });

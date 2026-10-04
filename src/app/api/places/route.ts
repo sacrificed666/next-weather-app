@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 
+import { defaultLocale, isLocale } from "@/features/i18n/model/locales";
 import { searchPlaces } from "@/features/places/model/geocoding";
 import { MAX_NAME_LENGTH } from "@/features/places/model/place";
-import { getPreferences } from "@/features/preferences/model/server";
 import type { OpenWeatherFailure } from "@/shared/api/openWeather";
 import { createRateLimiter } from "@/shared/lib/rateLimit";
 
@@ -27,6 +27,8 @@ export const GET = async (request: NextRequest) => {
   if (site && site !== "same-origin") return Response.json({ error: "forbidden" }, { status: 403 });
 
   const query = request.nextUrl.searchParams.get("q")?.trim() ?? "";
+  const language = request.nextUrl.searchParams.get("lang");
+  const locale = isLocale(language) ? language : defaultLocale;
   if (query.length > MAX_NAME_LENGTH) return Response.json({ error: "query-too-long" }, { status: 400 });
   if (query.length < MIN_QUERY_LENGTH) return Response.json({ places: [] });
 
@@ -34,7 +36,6 @@ export const GET = async (request: NextRequest) => {
     return Response.json({ error: "rate-limited" }, { status: 429, headers: { "Retry-After": "60" } });
   }
 
-  const { locale } = await getPreferences();
   const result = await searchPlaces(query, locale);
   if (!result.ok) return Response.json({ error: result.failure }, { status: statusFor(result.failure) });
   return Response.json({ places: result.places });

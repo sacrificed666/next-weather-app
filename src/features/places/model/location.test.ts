@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { cityHref, DEFAULT_LOCATION, locationKey, parseLocation } from "./location";
+import { cityHref, DEFAULT_LOCATION, forecastSearch, isDefaultLocation, locationKey, parseLocation } from "./location";
 
 describe("parseLocation", () => {
   it("opens the default city without parameters", () => {
@@ -44,8 +44,21 @@ describe("locationKey", () => {
   });
 });
 
-describe("cityHref", () => {
-  it("encodes the name", () => {
-    expect(cityHref(" São Paulo ")).toBe("/?city=S%C3%A3o%20Paulo");
+describe("links", () => {
+  it("encodes the name of a city", () => {
+    expect(cityHref("pl", " São Paulo ")).toBe("/pl?city=S%C3%A3o%20Paulo");
+  });
+
+  it("recognises the default city", () => {
+    expect(isDefaultLocation(DEFAULT_LOCATION)).toBe(true);
+    expect(isDefaultLocation({ kind: "coordinates", latitude: 49.84, longitude: 24.03 })).toBe(true);
+    expect(isDefaultLocation({ kind: "coordinates", latitude: 50.45, longitude: 30.52 })).toBe(false);
+    expect(isDefaultLocation({ kind: "city", name: "Lviv" })).toBe(false);
+  });
+
+  it("addresses a forecast by the coordinates of its place", () => {
+    const kyiv = { latitude: 50.4501, longitude: 30.5234 };
+    expect(forecastSearch({ kind: "city", name: "kyiv" }, kyiv)).toBe("?lat=50.45&lon=30.52");
+    expect(forecastSearch(DEFAULT_LOCATION, { latitude: 49.84, longitude: 24.03 })).toBe("");
   });
 });

@@ -32,6 +32,15 @@ describe("fetchOpenWeather", () => {
     expect(init?.next?.revalidate).toBe(600);
   });
 
+  it("talks to the address from OPENWEATHERMAP_API_URL", async () => {
+    vi.stubEnv("OPENWEATHERMAP_API_KEY", "secret");
+    vi.stubEnv("OPENWEATHERMAP_API_URL", " http://127.0.0.1:4020 ");
+    const fetchMock = vi.fn<(input: URL) => Promise<Response>>().mockResolvedValue(jsonResponse([]));
+    vi.stubGlobal("fetch", fetchMock);
+    await fetchOpenWeather("/geo/1.0/direct", { q: "Lviv" }, 60);
+    expect(fetchMock.mock.calls[0]?.[0].toString()).toBe("http://127.0.0.1:4020/geo/1.0/direct?q=Lviv&appid=secret");
+  });
+
   it.each([
     [401, "invalid-key"],
     [404, "not-found"],
