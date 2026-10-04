@@ -41,7 +41,7 @@ flowchart LR
 
 ## 🧱 Content Security Policy
 
-`src/proxy.ts` runs for every page request, creates a random **nonce** and sends this policy (built by `shared/lib/contentSecurityPolicy.ts`):
+`src/proxy.ts` runs for every page request with a language in its address, creates a random **nonce** and sends this policy (built by `shared/lib/contentSecurityPolicy.ts`):
 
 | Directive                                               | Value                               | Why                                                                          |
 | ------------------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------- |
@@ -57,7 +57,10 @@ flowchart LR
 
 The development server additionally allows `'unsafe-eval'` and inline styles, which React's debugging and hot reload need. Nonces require dynamic rendering, which the page uses anyway because it depends on cookies and the URL.
 
-The app has no inline scripts of its own: the theme is known on the server from the cookie, so there is no theme script to allow.
+The app has no inline scripts of its own: the theme is known on the server from the cookie, so there is no theme script to allow. The JSON-LD block is a `<script type="application/ld+json">`, a data block that browsers never execute, so the policy does not apply to it.
+
+> [!IMPORTANT]
+> Keep `script-src` free of `'unsafe-inline'` and `'unsafe-eval'` in production. If a feature seems to need either, it is the feature that has to change.
 
 ## 📨 Other headers
 
@@ -72,7 +75,9 @@ The app has no inline scripts of its own: the theme is known on the server from 
 | `Cross-Origin-Opener-Policy` | `same-origin`                                                         |
 | `Strict-Transport-Security`  | Two years, in production                                              |
 
-Icons and flags additionally get `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox`, so an SVG opened on its own cannot run anything, and a year-long immutable cache. API responses are sent with `Cache-Control: no-store`. The `X-Powered-By` header is off.
+Icons and flags additionally get `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox`, so an SVG opened on its own cannot run anything, and a week of browser cache. API responses are sent with `Cache-Control: no-store`. The `X-Powered-By` header is off.
+
+`scripts/build-report.mjs` fails the CI build when one of these headers or the proxy disappears, and `e2e/security.spec.ts` checks them on the running server, together with a fresh nonce for every request and the absence of console errors and `securitypolicyviolation` events while the app is used.
 
 ## 🔎 The search endpoint
 
@@ -87,6 +92,7 @@ Icons and flags additionally get `Content-Security-Policy: default-src 'none'; s
 
 | Input                  | Protection                                                                                       |
 | ---------------------- | ------------------------------------------------------------------------------------------------ |
+| 🧭 Language segment    | Must be one of the eight languages; anything else is redirected or answered with a 404           |
 | 🔗 `?lat=&lon=`        | Must both be numbers within ±90 and ±180; rounded to two decimals                                |
 | 🔗 `?city=`            | Trimmed, at most 80 characters; sent to OpenWeatherMap as a URL parameter, never interpolated    |
 | 🍪 Cookies             | Each value is checked against its allowed list; anything else falls back to the default          |
@@ -94,11 +100,14 @@ Icons and flags additionally get `Content-Security-Policy: default-src 'none'; s
 | ☁️ OpenWeatherMap JSON | Read field by field with type guards; numbers must be finite, ranges are clamped                 |
 | 💾 `localStorage`      | Parsed with `JSON.parse` in a `try`, every entry rebuilt by `parsePlace()`, lists capped         |
 
-React escapes every string it renders, and the app never uses `dangerouslySetInnerHTML`. City names and condition descriptions from OpenWeatherMap are therefore plain text.
+React escapes every string it renders. The only `dangerouslySetInnerHTML` is the JSON-LD block, and `serializeJsonLd()` escapes every `<` as `\u003c` first, so a city name such as `</script><script>…` stays inside the JSON. City names and condition descriptions from OpenWeatherMap are otherwise plain text.
+
+> [!CAUTION]
+> Never pass anything but the output of `serializeJsonLd()` to `dangerouslySetInnerHTML`. `JSON.stringify()` alone does not escape `<`, and a string from OpenWeatherMap could end the script tag.
 
 ## 🍪 Cookies and privacy
 
-- The three preference cookies are `HttpOnly`, `SameSite=Lax`, `Secure` in production and contain only a theme, a unit system or a language code.
+- The theme and unit cookies are written by the server action: `HttpOnly`, `SameSite=Lax`, `Secure` in production. The language cookie is written by the language links in the browser with `SameSite=Lax` (and `Secure` over HTTPS), because it only tells the proxy where to redirect. Each contains one value from a fixed list, and anything else is ignored.
 - Saved and recent places never leave the browser.
 - Your position is rounded to about a kilometre before it becomes part of the URL, and the app asks for it only when you press **Use my location**.
 - There are no analytics, no third-party scripts and no requests from the browser to other origins.
@@ -117,3 +126,4 @@ React escapes every string it renders, and the app never uses `dangerouslySetInn
 - [ ] Route every new input through a parser that checks types, lengths and ranges.
 - [ ] Do not add requests from the browser to other origins; serve assets from the app.
 - [ ] Never render HTML strings; keep `script-src` free of `'unsafe-inline'`.
+- [ ] Run `npm run test:e2e`; the security spec fails on any console error or Content Security Policy violation.

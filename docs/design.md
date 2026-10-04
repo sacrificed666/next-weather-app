@@ -35,6 +35,20 @@ flowchart LR
 
 The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard grid lives in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up.
 
+### 📱 Down to 320 px
+
+Page breakpoints (`md` 720 px, `lg` 1100 px) decide the grid; **container queries** decide what happens inside a card, because the same card is narrow both on a phone and in the right column of a wide screen:
+
+| Card     | Container        | Under  | Change                                                        |
+| -------- | ---------------- | ------ | ------------------------------------------------------------- |
+| 📅 Daily | the list of days | 18 rem | Narrower weekday, icon and temperature columns, 0.92 rem text |
+| 💨 Wind  | the card content | 17 rem | A 5.5 rem compass instead of 7.5 rem                          |
+
+Wind rows wrap their value under the label when a language needs it, and the hourly list scrolls inside its card.
+
+> [!TIP]
+> Check every layout change at 320 px in the longest languages, German and Ukrainian. The end-to-end tests fail when any page scrolls sideways at that width.
+
 ## 🌌 Skies
 
 `conditionSky()` picks one of eight skies, and `Sky` renders a fixed layer with `data-sky` behind the page:
@@ -132,18 +146,22 @@ Every chart is a few lines of SVG drawn on the server with attributes only (no i
 
 ## ♿ Accessibility
 
-| Preference                                | Adaptation                                                         |
-| ----------------------------------------- | ------------------------------------------------------------------ |
-| 🐢 `prefers-reduced-motion: reduce`       | No animations, no moving sky                                       |
-| 🌫️ `prefers-reduced-transparency: reduce` | Glass becomes solid (`--glass-solid`) without blur                 |
-| 🌗 `prefers-color-scheme`                 | Followed live by the Auto theme                                    |
-| 🖍️ `forced-colors: active`                | Glass gains a real border, selected options get a `Highlight` ring |
+| Preference                                | Adaptation                                                                                               |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 🐢 `prefers-reduced-motion: reduce`       | No animations, no moving sky                                                                             |
+| 🌫️ `prefers-reduced-transparency: reduce` | Glass becomes solid (`--glass-solid`) without blur                                                       |
+| 🔆 `prefers-contrast: more`               | Glass becomes solid with an outline, secondary text and separators get stronger (`more-contrast` tokens) |
+| 🌗 `prefers-color-scheme`                 | Followed live by the Auto theme                                                                          |
+| 🖍️ `forced-colors: active`                | Glass gains a real border, selected options get a `Highlight` ring                                       |
 
-Secondary text is 74–78 % of the text colour and tertiary text 62–64 %, tuned to stay readable on glass over the brightest and the darkest skies.
+Secondary text is 74–78 % of the text colour and tertiary text 62–64 %, tuned to stay readable on glass over the brightest and the darkest skies. See [Accessibility](./accessibility.md) for how contrast is tested.
 
 ## 🖼️ Iconography
 
 - 🌦️ **Weather**: [Meteocons](https://bas.dev/work/meteocons) by Bas Milius, the filled style, served from `public/icons/weather/`.
 - 🧭 **Interface**: inline SVG paths on a 24 px grid with 2 px round strokes in `shared/ui/Icon/icons.ts`, based on [Lucide](https://lucide.dev). They inherit `currentColor`.
 - 🏳️ **Flags**: [country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons) in 3:2, prerendered by the `/flags/[code]` route.
-- 📱 **App icon**: the partly cloudy Meteocon on a sky-blue rounded square (`app/icon.svg`); `apple-icon` and `opengraph-image` render PNGs from it with `next/og`.
+- 📱 **App icon**: the partly cloudy Meteocon on a sky-blue rounded square (`app/icon.svg`); `apple-icon` and the share card of every language render PNGs from it with `next/og`.
+
+> [!NOTE]
+> Share cards cannot use the interface font: `next/og` does not read WOFF2. They load Montserrat 600 and 800 as WOFF from `src/shared/assets/fonts`, see [SEO](./seo.md#️-share-cards).

@@ -11,13 +11,15 @@
 
 If you use a version manager, run `nvm use` (or `fnm use`) in the project root.
 
-## 🔑 The API key
+## 🔑 Environment variables
 
-The app reads one environment variable on the server:
+The app reads these variables on the server:
 
-| Variable                 | Meaning                                                  |
-| ------------------------ | -------------------------------------------------------- |
-| `OPENWEATHERMAP_API_KEY` | Your OpenWeatherMap key. It is never sent to the browser |
+| Variable                 | Required | Meaning                                                                                             |
+| ------------------------ | -------- | --------------------------------------------------------------------------------------------------- |
+| `OPENWEATHERMAP_API_KEY` | ✅       | Your OpenWeatherMap key. It is never sent to the browser                                            |
+| `SITE_URL`               | —        | The public address for canonical links, the sitemap and share cards, for example on a custom domain |
+| `OPENWEATHERMAP_API_URL` | —        | Another OpenWeatherMap-compatible host; the end-to-end tests point it at their mock server          |
 
 ```bash
 cp .env.example .env.local
@@ -28,6 +30,9 @@ Paste the key into `.env.local`. Next.js loads `.env*` files automatically; ever
 > [!NOTE]
 > A brand-new key can take up to two hours to start working. Until then the app shows **The API key was rejected**. Without any key it shows **The weather service is not set up**.
 
+> [!CAUTION]
+> Never prefix the key with `NEXT_PUBLIC_`. That would inline it into the JavaScript every visitor downloads.
+
 ## 📦 Install and run
 
 ```bash
@@ -35,7 +40,10 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>. Without a city in the address the app opens Lviv; `/?city=Tokyo` and `/?lat=51.51&lon=-0.13` open any other place.
+Open <http://localhost:3000>. It redirects to your browser's language, for example `/en`, and opens Lviv; `/en?city=Tokyo` and `/uk?lat=51.51&lon=-0.13` open any other place in any language.
+
+> [!TIP]
+> No key yet? Start the mock server from the end-to-end tests with `node e2e/openweather-api.ts` and run the app with `OPENWEATHERMAP_API_KEY=e2e-key OPENWEATHERMAP_API_URL=http://127.0.0.1:4020 npm run dev`. It knows Lviv, Kyiv, Reykjavik and Bangkok.
 
 ## 📜 npm scripts
 
@@ -52,6 +60,7 @@ Open <http://localhost:3000>. Without a city in the address the app opens Lviv; 
 | `npm test`              | 👁️ Starts Vitest in watch mode                                                         |
 | `npm run test:run`      | 🧪 Runs the whole test suite once                                                      |
 | `npm run test:coverage` | 📊 Runs the tests with V8 coverage and enforces the coverage thresholds                |
+| `npm run test:e2e`      | 🎭 Builds the app against the mock API and runs Playwright, axe and Lighthouse         |
 | `npm run icons`         | 🌦️ Copies the Meteocons the app uses from `@meteocons/svg` into `public/icons/weather` |
 | `npm run check`         | ✅ Lint, format check, type check and tests in one go, run it before pushing           |
 
@@ -61,31 +70,39 @@ Open <http://localhost:3000>. Without a city in the address the app opens Lviv; 
 next-weather-app/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/              Bug report and feature request forms
-│   ├── workflows/ci.yml             CI: verify, build, dependency review
+│   ├── workflows/ci.yml             CI: verify, build with a report, end-to-end tests, dependency review
 │   ├── workflows/codeql.yml         CodeQL code scanning
 │   ├── dependabot.yml               Weekly dependency and GitHub Actions updates
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   └── SECURITY.md                  How to report vulnerabilities
 ├── docs/                            This documentation and its screenshots
+├── e2e/                             Playwright specs and the mock OpenWeatherMap API
 ├── lint/no-comments.js              Custom Oxlint rule that forbids comments
 ├── public/icons/weather/            The Meteocons the app shows, served as static files
-├── scripts/                         Icon sync and the CI coverage summary
+├── scripts/                         Icon sync, the CI coverage summary and the build report
 ├── src/
-│   ├── proxy.ts                     Per-request nonce and Content Security Policy
-│   ├── app/                         Routes: layout, page, errors, /api/places, /flags, icons, manifest, global styles
+│   ├── proxy.ts                     Language redirects, per-request nonce and Content Security Policy
+│   ├── app/
+│   │   ├── [locale]/                The localized root layout, the forecast page, errors and share cards
+│   │   ├── api/places/              Search suggestions for the combobox
+│   │   ├── flags/[code]/            Prerendered country flags
+│   │   └── …                        Global 404 and error, icons, manifest, sitemap, robots, global styles
 │   ├── widgets/                     Header, Footer and the Forecast dashboard
 │   ├── features/
 │   │   ├── forecast/                OpenWeatherMap orchestration, normalization, conditions; every forecast card
 │   │   ├── places/                  Places, locations in the URL, geocoding, saved and recent places; search, locate, star
-│   │   ├── preferences/             Theme, units and language in cookies, the server action; settings and offline notice
-│   │   └── i18n/                    Eight message catalogs, locale matching, the translator and its provider
+│   │   ├── preferences/             Theme and units in cookies, the route language, the server action; settings and offline notice
+│   │   ├── i18n/                    Eight message catalogs, locale matching, path helpers, the translator and its provider
+│   │   └── seo/                     Canonical links, social metadata, JSON-LD and the share card assets
 │   ├── shared/
 │   │   ├── api/                     The OpenWeatherMap HTTP client (server only)
-│   │   ├── lib/                     Formatting, units, time, guards, rate limiting, stored lists, CSP
+│   │   ├── assets/fonts/            Montserrat for the share cards, under the SIL Open Font License
+│   │   ├── lib/                     Formatting, units, time, guards, rate limiting, stored lists, CSP, the public address
 │   │   ├── ui/                      Icon, IconButton, Card, SegmentedControl, Skeleton, WeatherIcon, Flag
 │   │   └── styles/                  Design tokens, skies, mixins and the dashboard grid
 │   └── test/                        Test setup, fixtures and render helpers
 ├── next.config.ts                   React Compiler, security headers and experiments
+├── playwright.config.ts             Browsers, the mock API and the production server for end-to-end tests
 ├── vitest.config.ts                 Test environment, aliases and coverage thresholds
 ├── .oxlintrc.json                   Lint rules and layer boundaries
 └── .oxfmtrc.json                    Formatting rules
@@ -99,6 +116,7 @@ Editor settings are not committed. For the best experience in VS Code, install:
 
 - 🦀 **Oxc**: inline Oxlint diagnostics and Oxfmt formatting on save
 - ⚡ **Vitest**: run and debug tests from the editor
+- 🎭 **Playwright Test for VS Code**: run end-to-end tests and record locators
 - 📝 **EditorConfig**: consistent whitespace settings (`.editorconfig` is part of the repository)
 
 ## 👉 Next steps
@@ -106,3 +124,4 @@ Editor settings are not committed. For the best experience in VS Code, install:
 - ✨ Learn what the app can do in [Features](./features.md).
 - 🏗️ Understand how a request becomes a forecast in [Architecture](./architecture.md).
 - 🌦️ See how OpenWeatherMap data is fetched and cleaned up in [Weather data](./weather-data.md).
+- 🧪 Run the whole suite as described in [Testing](./testing.md).
