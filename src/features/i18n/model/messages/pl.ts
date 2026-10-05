@@ -146,6 +146,7 @@ export const pl: Messages = {
   "footer.data": "Dane pogodowe",
   "footer.icons": "Ikony",
   "footer.source": "Kod źródłowy",
+  "external.newTab": "otwiera się w nowej karcie",
 
   "loading.forecast": "Ładuję prognozę…",
 };

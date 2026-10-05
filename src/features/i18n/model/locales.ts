@@ -1,33 +1,36 @@
-export const locales = ["en", "uk", "de", "es", "fr", "it", "nl", "pl"] as const;
+export const LOCALES = ["en", "uk", "cs", "de", "es", "fr", "it", "nl", "pl", "pt"] as const;
 
-export type Locale = (typeof locales)[number];
+export type Locale = (typeof LOCALES)[number];
 
-export const defaultLocale: Locale = "en";
+export const DEFAULT_LOCALE: Locale = "en";
 
-export const localeCookie = "weather-locale";
+export const LOCALE_COOKIE = "weather-locale";
 
-export const localeHeader = "x-weather-locale";
+export const LOCALE_HEADER = "x-weather-locale";
 
-export interface LocaleDetails {
+export interface LocaleInfo {
   name: string;
   intl: string;
   flag: string;
   openGraph: string;
+  openWeather: string;
 }
 
-export const localeDetails: Record<Locale, LocaleDetails> = {
-  en: { name: "English", intl: "en-GB", flag: "GB", openGraph: "en_GB" },
-  uk: { name: "Українська", intl: "uk-UA", flag: "UA", openGraph: "uk_UA" },
-  de: { name: "Deutsch", intl: "de-DE", flag: "DE", openGraph: "de_DE" },
-  es: { name: "Español", intl: "es-ES", flag: "ES", openGraph: "es_ES" },
-  fr: { name: "Français", intl: "fr-FR", flag: "FR", openGraph: "fr_FR" },
-  it: { name: "Italiano", intl: "it-IT", flag: "IT", openGraph: "it_IT" },
-  nl: { name: "Nederlands", intl: "nl-NL", flag: "NL", openGraph: "nl_NL" },
-  pl: { name: "Polski", intl: "pl-PL", flag: "PL", openGraph: "pl_PL" },
+export const LOCALE_INFO: Record<Locale, LocaleInfo> = {
+  en: { name: "English", intl: "en-GB", flag: "GB", openGraph: "en_GB", openWeather: "en" },
+  uk: { name: "Українська", intl: "uk-UA", flag: "UA", openGraph: "uk_UA", openWeather: "uk" },
+  cs: { name: "Čeština", intl: "cs-CZ", flag: "CZ", openGraph: "cs_CZ", openWeather: "cz" },
+  de: { name: "Deutsch", intl: "de-DE", flag: "DE", openGraph: "de_DE", openWeather: "de" },
+  es: { name: "Español", intl: "es-ES", flag: "ES", openGraph: "es_ES", openWeather: "es" },
+  fr: { name: "Français", intl: "fr-FR", flag: "FR", openGraph: "fr_FR", openWeather: "fr" },
+  it: { name: "Italiano", intl: "it-IT", flag: "IT", openGraph: "it_IT", openWeather: "it" },
+  nl: { name: "Nederlands", intl: "nl-NL", flag: "NL", openGraph: "nl_NL", openWeather: "nl" },
+  pl: { name: "Polski", intl: "pl-PL", flag: "PL", openGraph: "pl_PL", openWeather: "pl" },
+  pt: { name: "Português", intl: "pt-PT", flag: "PT", openGraph: "pt_PT", openWeather: "pt" },
 };
 
 export const isLocale = (value: unknown): value is Locale =>
-  typeof value === "string" && (locales as readonly string[]).includes(value);
+  typeof value === "string" && (LOCALES as readonly string[]).includes(value);
 
 export const homeHref = (locale: Locale): `/${Locale}` => `/${locale}`;
 
@@ -54,8 +57,8 @@ const parseAcceptLanguage = (header: string): WeightedLanguage[] =>
     .filter((entry) => entry.language !== "" && entry.weight > 0)
     .toSorted((a, b) => b.weight - a.weight);
 
-export const matchLocale = (acceptLanguage: string | null | undefined): Locale => {
-  if (!acceptLanguage) return defaultLocale;
+export const negotiateLocale = (acceptLanguage: string | null | undefined): Locale => {
+  if (!acceptLanguage) return DEFAULT_LOCALE;
   const match = parseAcceptLanguage(acceptLanguage).find((entry) => isLocale(entry.language));
-  return match && isLocale(match.language) ? match.language : defaultLocale;
+  return match && isLocale(match.language) ? match.language : DEFAULT_LOCALE;
 };

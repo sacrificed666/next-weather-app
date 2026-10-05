@@ -1,5 +1,5 @@
 import "server-only";
-import type { Locale } from "@/features/i18n/model/locales";
+import { LOCALE_INFO, type Locale } from "@/features/i18n/model/locales";
 import { findPlace, searchPlaces } from "@/features/places/model/geocoding";
 import type { LocationQuery } from "@/features/places/model/location";
 import type { Place } from "@/features/places/model/place";
@@ -51,7 +51,12 @@ export const getForecast = async (query: LocationQuery, locale: Locale): Promise
   const location = await resolveLocation(query, locale);
   if (!location.ok) return location;
 
-  const coordinates = { lat: location.latitude, lon: location.longitude, units: "metric", lang: locale };
+  const coordinates = {
+    lat: location.latitude,
+    lon: location.longitude,
+    units: "metric",
+    lang: LOCALE_INFO[locale].openWeather,
+  };
   const [currentResult, slotsResult, dailyResult, airResult] = await Promise.all([
     fetchOpenWeather("/data/2.5/weather", coordinates, WEATHER_REVALIDATE_SECONDS),
     fetchOpenWeather("/data/2.5/forecast", coordinates, WEATHER_REVALIDATE_SECONDS),

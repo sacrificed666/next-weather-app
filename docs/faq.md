@@ -14,7 +14,7 @@ Open **Settings** (the sliders button) and choose **°F, mph**. Pressure switche
 
 ### 🐢 Why does the sky stand still on my computer?
 
-On Windows, Linux and Android the app starts with **Reduced** effects: the sky and the weather icons stand still and the cards are not blurred, because the moving sky made every glass card redraw sixty times a second and scrolling stutter on many of these devices. Apple devices get the **Full** effects.
+On Windows, Linux and Android the app starts with **Reduced** effects: the sky and the weather icons stand still and no glass is blurred, because blurring the moving sky behind every card and control made scrolling stutter on many of these devices. Apple devices get the **Full** effects.
 
 > [!TIP]
 > Open **Settings** and choose **Effects: Full** to bring the moving sky back on a fast computer, or **Reduced** to calm it down on any device.
@@ -69,3 +69,7 @@ Weather icons are [Meteocons](https://bas.dev/work/meteocons) by Bas Milius, ser
 
 > [!TIP]
 > Did not find your question? Open an issue with the forms in the repository; for anything security-related, follow the [security policy](../.github/SECURITY.md) instead.
+
+### 🐳 Can I run it in Docker?
+
+Yes. `docker compose -f compose.yaml -f docker/development.yaml up --watch` starts the dev server in a container with the variables from `.env`, and `docker/staging.yaml` and `docker/production.yaml` build the small production image for a server. See [Deployment](./deployment.md#-docker).

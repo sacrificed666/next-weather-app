@@ -7,7 +7,7 @@
 | ⚛️ UI        | React 19.3 with the React Compiler (automatic memoization)                                           |
 | 🧭 Framework | Next.js 16 App Router: server components, server actions, route handlers, `proxy.ts`, Turbopack      |
 | 🌦️ Data      | OpenWeatherMap current weather, 5-day / 3-hour forecast, daily forecast, air pollution and geocoding |
-| 🌍 i18n      | Eight hand-written message catalogs on top of `Intl` for numbers, units, dates and country names     |
+| 🌍 i18n      | Ten hand-written message catalogs on top of `Intl` for numbers, units, dates and country names       |
 | 🎨 Styling   | Sass modules, CSS custom properties, `color-mix()`, `:has()`, `@starting-style`, native popovers     |
 | 🔷 Language  | TypeScript 7 in strict mode with `noUncheckedIndexedAccess`, `verbatimModuleSyntax` and route types  |
 | ✅ Quality   | Oxlint (type-aware, React Compiler, Next.js, a11y and layer rules), Oxfmt, Vitest 5, Testing Library |
@@ -38,13 +38,13 @@ flowchart TB
 | ✨ Features | `src/features`            | One folder per capability with a `model/` and a `ui/`          | other features, shared |
 | 🧰 Shared   | `src/shared`              | Domain-agnostic HTTP client, helpers, UI primitives and styles | shared only            |
 
-| Feature          | Model                                                                                                            | UI                                                                                                              |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 🌦️ `forecast`    | `getForecast()`, response parsers, daily aggregation, condition icons and skies, insights, domain types          | `CurrentConditions`, `HourlyForecast`, `DailyForecast`, nine detail cards, `Sky`, `LocalClock`, skeleton, error |
-| 📍 `places`      | `Place`, URL locations, geocoding, saved and recent places                                                       | `CitySearch`, `LocateButton`, `SavePlaceButton`, `SavedPlaces`                                                  |
-| ⚙️ `preferences` | Theme, units and effects in cookies, the `savePreference` server action, the route language, `getLocalization()` | `SettingsMenu`, `OfflineNotice`                                                                                 |
-| 🌍 `i18n`        | Locales, `matchLocale()`, path helpers, message catalogs, `createTranslator()`, `useI18n()`                      | `I18nProvider`                                                                                                  |
-| 🔎 `seo`         | `alternates()`, `social()`, `documentTitle()`, `describeForecast()`, JSON-LD schemas, share card assets          | `JsonLd`                                                                                                        |
+| Feature       | Model                                                                                                            | UI                                                                                                              |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 🌦️ `forecast` | `getForecast()`, response parsers, daily aggregation, condition icons and skies, insights, domain types          | `CurrentConditions`, `HourlyForecast`, `DailyForecast`, nine detail cards, `Sky`, `LocalClock`, skeleton, error |
+| 📍 `places`   | `Place`, URL locations, geocoding, saved and recent places                                                       | `CitySearch`, `LocateButton`, `SavePlaceButton`, `SavedPlaces`                                                  |
+| ⚙️ `settings` | Theme, units and effects in cookies, the `savePreference` server action, the route language, `getLocalization()` | `SettingsMenu`, `OfflineNotice`                                                                                 |
+| 🌍 `i18n`     | Locales, `negotiateLocale()`, path helpers, message catalogs, `createTranslator()`, `useI18n()`                  | `I18nProvider`                                                                                                  |
+| 🔎 `seo`      | `alternates()`, `social()`, `documentTitle()`, `describeForecast()`, JSON-LD schemas, share card assets          | `JsonLd`                                                                                                        |
 
 ## 🔀 Request flow
 
@@ -86,19 +86,19 @@ sequenceDiagram
 
 ## 🗺️ Routes
 
-| Route                            | Kind                       | Purpose                                                                         |
-| -------------------------------- | -------------------------- | ------------------------------------------------------------------------------- |
-| `/[locale]`                      | Dynamic page               | The forecast for `?city=`, `?lat=&lon=` or the default city, in eight languages |
-| `/[locale]/opengraph-image/card` | Metadata image (SSG)       | The share card of each language, generated with `next/og` at build time         |
-| `/api/places?q=&lang=`           | Route handler              | Search suggestions for the combobox, rate-limited, same-origin only             |
-| `/flags/[code]`                  | Static route handler (SSG) | 265 country flags from `country-flag-icons`, prerendered at build time          |
-| `/icons/weather/*.svg`           | Static files               | The Meteocons the app uses                                                      |
-| `/icon.svg`, `/apple-icon`       | Metadata files             | App icons                                                                       |
-| `/manifest.webmanifest`          | Metadata file              | Name, colours and icons for installing the app                                  |
-| `/sitemap.xml`, `/robots.txt`    | Metadata files             | Every language of the home page, crawling rules                                 |
-| Anything else                    | `global-not-found.tsx`     | **Page not found** with status 404, in the language of the address              |
+| Route                            | Kind                       | Purpose                                                                       |
+| -------------------------------- | -------------------------- | ----------------------------------------------------------------------------- |
+| `/[locale]`                      | Dynamic page               | The forecast for `?city=`, `?lat=&lon=` or the default city, in ten languages |
+| `/[locale]/opengraph-image/card` | Metadata image (SSG)       | The share card of each language, generated with `next/og` at build time       |
+| `/api/places?q=&lang=`           | Route handler              | Search suggestions for the combobox, rate-limited, same-origin only           |
+| `/flags/[code]`                  | Static route handler (SSG) | 265 country flags from `country-flag-icons`, prerendered at build time        |
+| `/icons/weather/*.svg`           | Static files               | The Meteocons the app uses                                                    |
+| `/icon.svg`, `/apple-icon`       | Metadata files             | App icons                                                                     |
+| `/manifest.webmanifest`          | Metadata file              | Name, colours and icons for installing the app                                |
+| `/sitemap.xml`, `/robots.txt`    | Metadata files             | Every language of the home page, crawling rules                               |
+| Anything else                    | `global-not-found.tsx`     | **Page not found** with status 404, in the language of the address            |
 
-`[locale]/layout.tsx` is the root layout: it renders `<html lang>` from the address, and `dynamicParams = false` limits the segment to the eight languages. `error.tsx` catches unexpected rendering errors below the layout, offers **Try again** (`retry()`) and shows the error's digest as a reference; `global-error.tsx` covers the layout itself.
+`[locale]/layout.tsx` is the root layout: it renders `<html lang>` from the address, and `dynamicParams = false` limits the segment to the ten languages. `error.tsx` catches unexpected rendering errors below the layout, offers **Try again** (`retry()`) and shows the error's digest as a reference; `global-error.tsx` covers the layout itself.
 
 ### 🧭 Languages in the address
 
@@ -200,7 +200,7 @@ sequenceDiagram
 
 ## ⭐ Saved and recent places
 
-Saved and recent places are browser-only state in `localStorage` (`next-weather-app/saved-places`, up to 12, and `next-weather-app/recent-places`, up to 5). `createStoredList()` in `shared/lib/storedList.ts` turns a key into an external store for `useSyncExternalStore`:
+Saved and recent places are browser-only state in `localStorage` (`weather/saved-places`, up to 12, and `weather/recent-places`, up to 5). `createStoredList()` in `shared/lib/storedList.ts` turns a key into an external store for `useSyncExternalStore`:
 
 - 🛡️ every read goes through `parsePlace()`, so broken or edited storage falls back to an empty list;
 - 🔄 the `storage` event keeps tabs in sync;
@@ -232,7 +232,7 @@ LocaleLayout                 app/[locale]/layout.tsx, <html lang data-theme>
 │               ├── DailyForecast        TemperatureRange per day
 │               └── Details              AirQuality, Sun, Wind, Humidity, FeelsLike, Pressure,
 │                                        Visibility, Precipitation, CloudCover
-├── Footer                   Credits and links
+├── Footer                   Author, version, credits and the source code
 └── OfflineNotice            next/offline
 ```
 

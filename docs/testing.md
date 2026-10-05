@@ -31,10 +31,10 @@ The HTML coverage report is written to `coverage/index.html`, the Playwright rep
 
 ```mermaid
 flowchart TB
-  E2E["🎭 End to end · ~47 tests per screen<br/>languages and redirects, search, saved places, location, settings, effects, no-JS search, CSP and headers, axe, forced colours, reflow, SEO, Lighthouse"]
+  E2E["🎭 End to end · ~49 tests per screen<br/>languages and redirects, search, saved places, location, settings, effects, no-JS search, CSP and headers, axe, forced colours, reflow, SEO, Lighthouse"]
   UI["🖥️ Components · ~61 tests<br/>forecast cards, search combobox, location, saved places, settings, widgets, JSON-LD"]
-  Server["🖧 Server · ~52 tests<br/>getForecast, geocoding, /api/places, /flags, proxy, cookies, effects and route language, server action, robots, sitemap"]
-  Model["🧠 Model and helpers · ~154 tests<br/>normalization, aggregation, icons, insights, SEO, formatting, units, locales, messages, site address"]
+  Server["🖧 Server · ~53 tests<br/>getForecast, geocoding, /api/places, /flags, proxy, cookies, effects and route language, server action, robots, sitemap"]
+  Model["🧠 Model and helpers · ~163 tests<br/>normalization, aggregation, icons, insights, SEO, formatting, units, locales, messages, site address"]
   E2E --> UI --> Server --> Model
 ```
 
@@ -42,19 +42,19 @@ Most behaviour is pinned down by fast tests of pure functions; component tests r
 
 ## 📁 Where unit tests live
 
-Tests sit next to the code they cover as `*.test.ts(x)`:
+Tests sit next to the code they cover as `*.test.ts(x)`, and every component has its own file in its folder, for example `features/forecast/ui/WindCard/WindCard.test.tsx`:
 
-| Area              | Files                                                                                                                      | Covers                                                                                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🌦️ Forecast model | `normalize`, `getForecast`, `conditions`, `insights`                                                                       | Parsing every endpoint, defaults and clamping, the free-key fallback and when it is remembered, every icon                                              |
-| 🖼️ Forecast UI    | `ForecastViews.test.tsx`, `ForecastStates.test.tsx`                                                                        | Every card in metric and imperial, polar days, missing data, the live clock, errors with references, skeleton                                           |
-| 📍 Places         | `place`, `location`, `geocoding`, `storedPlaces`, `PlacesUi.test.tsx`                                                      | URL parsing, links in every language, canonical queries, local names, the combobox, geolocation outcomes                                                |
-| ⚙️ Preferences    | `preferences`, `server`, `actions`, `PreferencesUi.test.tsx`                                                               | Cookies, the effects level for each device, the language of the route and of a request, the server action, the settings, language links, offline notice |
-| 🔎 SEO            | `features/seo/**/*.test.ts(x)`                                                                                             | Titles, alternates, Open Graph and X fields, escaped JSON-LD, the place schema                                                                          |
-| 🌍 i18n           | `locales`, `translate`, `messages`, `useI18n`                                                                              | `Accept-Language` matching, path helpers, placeholders, identical keys in all eight languages                                                           |
-| 🚀 App            | `api/places/route`, `flags/[code]/route`, `robots`, `sitemap`, `proxy`                                                     | Same-origin check, limits, rate limiting, flags, robots rules, the sitemap, redirects and the nonce policy                                              |
-| 🧰 Shared         | `format`, `units`, `time`, `guards`, `rateLimit`, `storedList`, `contentSecurityPolicy`, `site`, `openWeather`, `SharedUi` | Intl formatting, conversions, storage failures, the public address, the API address, primitives                                                         |
-| 🧩 Widgets        | `Widgets.test.tsx`                                                                                                         | Header, footer and the async Forecast widget with its structured data                                                                                   |
+| Area              | Files                                                                                                                                    | Covers                                                                                                                                                  |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌦️ Forecast model | `normalize`, `getForecast`, `conditions`, `insights`                                                                                     | Parsing every endpoint, defaults and clamping, the free-key fallback and when it is remembered, every icon                                              |
+| 🖼️ Forecast UI    | `features/forecast/ui/*/*.test.tsx`, one file per card and state                                                                         | Every card in metric and imperial, polar days, missing data, the live clock, errors with references, skeleton                                           |
+| 📍 Places         | `place`, `location`, `geocoding`, `storedPlaces`, `features/places/ui/*/*.test.tsx`                                                      | URL parsing, links in every language, canonical queries, local names, the combobox, geolocation outcomes                                                |
+| ⚙️ Settings       | `preferences`, `server`, `actions`, `SettingsMenu.test.tsx`, `OfflineNotice.test.tsx`                                                    | Cookies, the effects level for each device, the language of the route and of a request, the server action, the settings, language links, offline notice |
+| 🔎 SEO            | `features/seo/**/*.test.ts(x)`                                                                                                           | Titles, alternates, Open Graph and X fields, escaped JSON-LD, the place schema                                                                          |
+| 🌍 i18n           | `locales`, `translate`, `messages`, `useI18n`                                                                                            | `Accept-Language` matching, path helpers, placeholders, identical keys in all ten languages                                                             |
+| 🚀 App            | `api/places/route`, `flags/[code]/route`, `robots`, `sitemap`, `proxy`                                                                   | Same-origin check, limits, rate limiting, flags, robots rules, the sitemap, redirects and the nonce policy                                              |
+| 🧰 Shared         | `format`, `units`, `time`, `guards`, `rateLimit`, `storedList`, `contentSecurityPolicy`, `site`, `openWeather`, `shared/ui/*/*.test.tsx` | Intl formatting, conversions, storage failures, the public address, the API address, primitives                                                         |
+| 🧩 Widgets        | `widgets/*/*.test.tsx`                                                                                                                   | Header, footer with links that announce a new tab and the async Forecast widget with its structured data                                                |
 
 ## 🧪 Fixtures and helpers
 
@@ -78,7 +78,7 @@ Tests sit next to the code they cover as `*.test.ts(x)`:
 - ⏳ **Async server components** are awaited as functions and the returned element is rendered: `render(await Forecast({ query }))`.
 
 > [!NOTE]
-> `next/root-params` only works inside a Next.js build. Every test that reaches `getLocalization()` mocks it, or mocks `features/preferences/model/server` as a whole.
+> `next/root-params` only works inside a Next.js build. Every test that reaches `getLocalization()` mocks it, or mocks `features/settings/model/server` as a whole.
 
 ## 🎭 End-to-end tests
 
@@ -92,7 +92,7 @@ flowchart LR
 
 `playwright.config.ts` starts two servers before the tests:
 
-1. 🛰️ **The mock OpenWeatherMap API** (`e2e/openweather-api.ts`), a dependency-free Node server that answers the six endpoints the app uses. It knows four cities with different skies: Lviv (rain), Kyiv (clear), Reykjavik (snow) and Bangkok (thunderstorm), with local names in several languages and descriptions in English, Ukrainian and German. Times are relative to the moment of the request, so the clock, the hours and the days always make sense. Like a free key, it answers `401` for the daily forecast unless `E2E_DAILY_PLAN=1`.
+1. 🛰️ **The mock OpenWeatherMap API** (`e2e/openweather-api.ts`), a dependency-free Node server that answers the six endpoints the app uses. It knows four cities with different skies: Lviv (rain), Kyiv (clear), Reykjavik (snow) and Bangkok (thunderstorm), with local names in several languages and descriptions in English, Ukrainian, German and Czech. Times are relative to the moment of the request, so the clock, the hours and the days always make sense. Like a free key, it answers `401` for the daily forecast unless `E2E_DAILY_PLAN=1`.
 2. 🖥️ **A production build** of the app with `OPENWEATHERMAP_API_URL` pointing at the mock and `SITE_URL` at the test server, served on port 3100.
 
 > [!TIP]
@@ -101,7 +101,7 @@ flowchart LR
 | Spec                       | Checks                                                                                                                                                                                                                                                                                           |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 🌦️ `forecast.spec.ts`      | The default city, the week from the free forecast, keyboard search, an unknown city, saved places, geolocation, units and theme after a reload, the still sky by default and the moving one on Apple devices, the Effects setting after a reload, switching languages, search without JavaScript |
-| 🧭 `routing.spec.ts`       | Redirect to the browser language, the saved language winning, the city kept, lowercase languages, translated 404s with status 404, broken coordinates                                                                                                                                            |
+| 🧭 `routing.spec.ts`       | Redirect to the browser language (Ukrainian and Czech), the saved language winning, the city kept, lowercase languages, translated 404s with status 404, broken coordinates                                                                                                                      |
 | ♿ `accessibility.spec.ts` | axe on six pages in five languages, the dark theme, the full effects of Apple devices in both themes, the settings and the suggestions, the skip link, forced colours mode and no sideways scrolling at 320 px                                                                                   |
 | 🛡️ `security.spec.ts`      | No console errors or CSP violations while searching, saving settings and opening three languages, a fresh nonce per request, every header, the search API guards                                                                                                                                 |
 | 🔎 `seo.spec.ts`           | Titles, canonical and `hreflang` links, `og:locale`, the canonical of the default city, JSON-LD, `noindex` for failures, the sitemap, robots, share images, manifest                                                                                                                             |

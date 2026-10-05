@@ -16,7 +16,19 @@ describe("alternates", () => {
   it("links every language and a language-neutral default", () => {
     const links = alternates("uk", "?lat=50.45&lon=30.52");
     expect(links.canonical).toBe("/uk?lat=50.45&lon=30.52");
-    expect(Object.keys(links.languages)).toEqual(["en", "uk", "de", "es", "fr", "it", "nl", "pl", "x-default"]);
+    expect(Object.keys(links.languages)).toEqual([
+      "en",
+      "uk",
+      "cs",
+      "de",
+      "es",
+      "fr",
+      "it",
+      "nl",
+      "pl",
+      "pt",
+      "x-default",
+    ]);
     expect(links.languages.pl).toBe("/pl?lat=50.45&lon=30.52");
     expect(links.languages["x-default"]).toBe("/?lat=50.45&lon=30.52");
     expect(alternates("en").languages["x-default"]).toBe("/");
@@ -28,7 +40,7 @@ describe("social", () => {
     const { t } = view();
     const card = social("uk", t, { title: "Lviv", description: "Rain", url: "/uk" });
     expect(card.openGraph).toMatchObject({ locale: "uk_UA", siteName: "Weather", url: "/uk", type: "website" });
-    expect(card.openGraph?.alternateLocale).toHaveLength(7);
+    expect(card.openGraph?.alternateLocale).toHaveLength(9);
     expect(card.twitter).toEqual({ card: "summary_large_image", title: "Lviv", description: "Rain" });
     expect(social("en", t, { title: "Weather", description: "Rain" }).openGraph).not.toHaveProperty("url");
   });

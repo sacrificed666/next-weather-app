@@ -52,6 +52,8 @@ Up to seven days with the weekday (**Today** for the first one), an icon, the ch
 
 ## 🔎 Search
 
+![Suggestions for “Ky” under the search field](./images/search.jpg)
+
 - ⌨️ Type two letters to get up to five suggestions, with flags, regions and country names in your language. Local names work too: `Київ`, `Lemberg`.
 - ⬆️⬇️ Move through suggestions with the arrow keys, open one with <kbd>Enter</kbd>, close the list with <kbd>Esc</kbd> and clear the field with a second <kbd>Esc</kbd>.
 - ↩️ Pressing <kbd>Enter</kbd> without picking a suggestion opens the best match for the text (`/en?city=…`).
@@ -71,14 +73,16 @@ The star in the current weather card saves the city. Saved places appear as chip
 
 ## ⚙️ Settings
 
+![The settings panel over a thunderstorm in Bangkok: appearance, units, effects and ten languages](./images/settings.jpg)
+
 The sliders button opens a panel (a bottom sheet on phones):
 
-| Setting       | Options                                                                            |
-| ------------- | ---------------------------------------------------------------------------------- |
-| 🌗 Appearance | Auto (follows the system), Light, Dark. The page switches at once                  |
-| 📏 Units      | °C, m/s, hPa, km, mm or °F, mph, inHg, mi, in                                      |
-| ✨ Effects    | Auto (says which level this device gets), Full, Reduced. The page switches at once |
-| 🌍 Language   | English, Українська, Deutsch, Español, Français, Italiano, Nederlands, Polski      |
+| Setting       | Options                                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------------- |
+| 🌗 Appearance | Auto (follows the system), Light, Dark. The page switches at once                                 |
+| 📏 Units      | °C, m/s, hPa, km, mm or °F, mph, inHg, mi, in                                                     |
+| ✨ Effects    | Auto (says which level this device gets), Full, Reduced. The page switches at once                |
+| 🌍 Language   | English, Українська, Čeština, Deutsch, Español, Français, Italiano, Nederlands, Polski, Português |
 
 **Full** keeps the moving sky and the animated weather icons. **Reduced** stills them and draws the cards without blur, which is much lighter for the graphics of many Windows and Android devices. **Auto** picks Full on Apple devices and Reduced everywhere else. See [Effects and performance](./design.md#-effects-and-performance) for the numbers.
 

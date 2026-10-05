@@ -67,6 +67,15 @@ describe("getForecast", () => {
     expect(weather?.searchParams.get("lang")).toBe("de");
   });
 
+  it("asks for Czech with the code OpenWeatherMap expects", async () => {
+    const fetchMock = serve();
+    await (
+      await load()
+    )({ kind: "coordinates", latitude: 1, longitude: 2 }, "cs");
+    const weather = fetchMock.mock.calls.map(([url]) => url).find((url) => url.pathname === "/data/2.5/weather");
+    expect(weather?.searchParams.get("lang")).toBe("cz");
+  });
+
   it("resolves a city name to its coordinates", async () => {
     const fetchMock = serve();
     const result = await (await load())({ kind: "city", name: "Lviv" }, "en");

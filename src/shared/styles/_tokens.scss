@@ -13,6 +13,7 @@
   --color-focus: rgb(0 110 230 / 0.75);
   --color-danger: #c42b1c;
   --color-star: #c27a00;
+  --color-logo-shadow: rgb(16 30 60 / 0.4);
 
   --glass-tint: rgb(255 255 255 / 0.58);
   --glass-tint-content: rgb(255 255 255 / 0.72);
@@ -47,6 +48,7 @@
   --color-focus: rgb(140 196 255 / 0.85);
   --color-danger: #ff7a6b;
   --color-star: #ffc64a;
+  --color-logo-shadow: rgb(0 0 0 / 0.55);
 
   --glass-tint: rgb(12 18 34 / 0.4);
   --glass-tint-content: rgb(14 20 38 / 0.74);
@@ -64,6 +66,22 @@
   --skeleton: rgb(255 255 255 / 0.1);
   --backdrop-base: #0a1020;
   --track: rgb(255 255 255 / 0.14);
+}
+
+@mixin reduced-light {
+  --glass-tint: rgb(255 255 255 / 0.82);
+  --glass-tint-content: rgb(255 255 255 / 0.8);
+  --glass-hairline: rgb(10 18 36 / 0.08);
+  --glass-shadow: 0 2px 8px -2px rgb(16 30 60 / 0.16);
+  --glass-shadow-small: 0 1px 3px rgb(16 30 60 / 0.14);
+}
+
+@mixin reduced-dark {
+  --glass-tint: rgb(16 22 40 / 0.76);
+  --glass-tint-content: rgb(14 20 38 / 0.8);
+  --glass-hairline: rgb(255 255 255 / 0.1);
+  --glass-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.4);
+  --glass-shadow-small: 0 1px 3px rgb(0 0 0 / 0.35);
 }
 
 @mixin more-contrast {

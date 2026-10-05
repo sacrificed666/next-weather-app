@@ -26,12 +26,12 @@ flowchart LR
 
 | Part            | Treatment                                                                                             |
 | --------------- | ----------------------------------------------------------------------------------------------------- |
-| 🔝 Header       | The brand, a capsule search field and two round glass buttons. The brand's name hides below 720 px    |
+| 🔝 Header       | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px    |
 | ⭐ Saved places | A row of glass chips that scrolls sideways and fades out at the edge                                  |
 | 🌤️ Current      | The largest card: place, local time, a 168 px icon and a light 7 rem temperature                      |
-| 📅 Daily        | Stretches to the height of the current and hourly cards on wide screens                               |
+| 📅 Daily        | Stretches to the height of the current and hourly cards on wide screens and spreads its days evenly   |
 | 📊 Details      | `auto-fill` grid with `grid-auto-flow: dense`; Air quality, Sun and Wind span two columns from 720 px |
-| 🦶 Footer       | A glass bar with the credits and a link to the source code                                            |
+| 🦶 Footer       | A glass bar with the author, the version (a link to the changelog), the credits and the source code   |
 
 The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard grid lives in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up.
 
@@ -97,12 +97,14 @@ Overlays (search suggestions, the location message, settings, the offline notice
 
 Every glass surface uses `backdrop-filter`, and the browser has to blur again whatever moves behind it. The animated sky and the animated Meteocons change pixels on every frame, so with the full effects all the glass on screen is recomputed sixty times a second even while nobody touches the page. Apple GPUs handle that easily; on many Windows and Android devices it makes scrolling and typing stutter. The **Effects** setting chooses how much of that work the page asks for:
 
-| Level      | Sky                         | Weather icons | Cards                                 |
-| ---------- | --------------------------- | ------------- | ------------------------------------- |
-| ✨ Full    | Drifting glow, falling rain | Animated      | Blurred glass                         |
-| 🍃 Reduced | Still                       | Still         | Denser tint without `backdrop-filter` |
+| Level      | Sky                         | Weather icons | Glass                                        | Rims and shadows                    |
+| ---------- | --------------------------- | ------------- | -------------------------------------------- | ----------------------------------- |
+| ✨ Full    | Drifting glow, falling rain | Animated      | Blurred cards, controls and panels           | A masked gradient rim, deep shadows |
+| 🍃 Reduced | Still                       | Still         | A denser tint, no `backdrop-filter` anywhere | A one-pixel ring, short shadows     |
 
-**Auto** resolves to Full on Apple devices (`Mac`, `iPhone`, `iPad` in the `User-Agent`) and to Reduced everywhere else. The server resolves the level from the `weather-effects` cookie and the request's `User-Agent` and writes it to `<html data-effects>`, so the first byte already has the right sky and icons. Controls such as the search field, the buttons and the settings panel keep their blur in both levels: they are small, and with Reduced the sky behind them no longer moves, so the browser blurs it once.
+**Auto** resolves to Full on Apple devices (`Mac`, `iPhone`, `iPad` in the `User-Agent`) and to Reduced everywhere else. The server resolves the level from the `weather-effects` cookie and the request's `User-Agent` and writes it to `<html data-effects>`, so the first byte already has the right sky and icons. The reduced tokens (`reduced-light` and `reduced-dark` in `shared/styles/_tokens.scss`) only change tints and shadows, and the `glass` mixin drops the blur and the masked rim, so every component follows without its own rules.
+
+Two changes help both levels: the page background is a fixed layer instead of `background-attachment: fixed`, which made the browser repaint the page on every scroll step, and the entrance animations of the dashboard fill only `backwards`, so the four sections give their compositing layers back once they have appeared.
 
 Measured in headless Chrome without a GPU, with the CPU slowed down four times, on a thunderstorm:
 
@@ -110,6 +112,8 @@ Measured in headless Chrome without a GPU, with the CPU slowed down four times, 
 | ---------- | ------------------------: | ---------------------: | --------: |
 | ✨ Full    |                ≈1100 ms/s |              ≈220 ms/s |    40 fps |
 | 🍃 Reduced |                   ≈1 ms/s |                 0 ms/s |    60 fps |
+
+Removing the remaining blur, the masks and the leftover layers from Reduced cut the compositor's work while scrolling from 212 to 118 ms per second, and the page went from 17 composited layers to 7.
 
 > [!TIP]
 > Visitors on a fast Windows or Android device can pick **Full** in the settings; visitors on an older Mac can pick **Reduced**. The choice is a cookie, so it applies before the first paint on the next visit.
@@ -184,7 +188,7 @@ Secondary text is 74-78 % of the text colour and tertiary text 62-64 %, tuned to
 - 🌦️ **Weather**: [Meteocons](https://bas.dev/work/meteocons) by Bas Milius, the filled style. The animated set is served from `public/icons/weather/`, the still set from `public/icons/weather-static/` for reduced effects and reduced motion (through a `<picture>` source with `prefers-reduced-motion: reduce`).
 - 🧭 **Interface**: inline SVG paths on a 24 px grid with 2 px round strokes in `shared/ui/Icon/icons.ts`, based on [Lucide](https://lucide.dev). They inherit `currentColor`.
 - 🏳️ **Flags**: [country-flag-icons](https://gitlab.com/catamphetamine/country-flag-icons) in 3:2, prerendered by the `/flags/[code]` route.
-- 📱 **App icon**: the partly cloudy Meteocon on a sky-blue rounded square (`app/icon.svg`); `apple-icon` and the share card of every language render PNGs from it with `next/og`.
+- 📱 **App icon**: a white cloud in front of a yellow sun on a sky-blue gradient square with rounded corners (28 %) and a soft top sheen (`app/icon.svg`). The header draws it inline with `shared/ui/Logo`; `apple-icon` and the share card of every language render PNGs from the file with `next/og`.
 
 > [!NOTE]
 > Share cards cannot use the interface font: `next/og` does not read WOFF2. They load Montserrat 600 and 800 as WOFF from `src/shared/assets/fonts`, see [SEO](./seo.md#️-share-cards).

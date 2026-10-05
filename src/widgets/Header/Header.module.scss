@@ -20,21 +20,23 @@
   display: flex;
   flex: none;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.625rem;
   margin-inline-end: auto;
   padding-inline-end: 0.5rem;
   border-radius: var(--radius-full);
   text-decoration: none;
+}
 
-  img {
-    margin: -0.25rem;
-  }
+.logo {
+  flex: none;
+  border-radius: 28%;
+  box-shadow: 0 4px 12px -4px var(--color-logo-shadow);
 }
 
 .name {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 
   @include below("md") {
     @include visually-hidden;

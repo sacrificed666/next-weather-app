@@ -147,6 +147,7 @@ export const nl: Messages = {
   "footer.data": "Weergegevens",
   "footer.icons": "Iconen",
   "footer.source": "Broncode",
+  "external.newTab": "opent in een nieuw tabblad",
 
   "loading.forecast": "Verwachting laden…",
 };

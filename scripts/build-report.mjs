@@ -19,7 +19,7 @@ const expect = (condition, message) => {
 const readJson = (file) => JSON.parse(readFileSync(join(build, file), "utf8"));
 
 const localesSource = readFileSync(join(root, "src/features/i18n/model/locales.ts"), "utf8");
-const locales = [...(localesSource.match(/locales = \[([^\]]+)\]/u)?.[1] ?? "").matchAll(/"([a-z]{2})"/gu)].map(
+const locales = [...(localesSource.match(/LOCALES = \[([^\]]+)\]/u)?.[1] ?? "").matchAll(/"([a-z]{2})"/gu)].map(
   (match) => match[1],
 );
 expect(locales.length > 0, "the list of languages could not be read from src/features/i18n/model/locales.ts");

@@ -6,9 +6,14 @@ import { parsePlace, placeKey, type Place } from "./place";
 
 export const SAVED_PLACES_LIMIT = 12;
 
-export const savedPlaces = createStoredList("next-weather-app/saved-places", parsePlace, SAVED_PLACES_LIMIT);
+export const savedPlaces = createStoredList(
+  "weather/saved-places",
+  parsePlace,
+  SAVED_PLACES_LIMIT,
+  "next-weather-app/saved-places",
+);
 
-export const recentPlaces = createStoredList("next-weather-app/recent-places", parsePlace, 5);
+export const recentPlaces = createStoredList("weather/recent-places", parsePlace, 5, "next-weather-app/recent-places");
 
 export const useStoredPlaces = (list: StoredList<Place>) =>
   useSyncExternalStore(list.subscribe, list.getSnapshot, list.getServerSnapshot);

@@ -1,11 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { isLocale, localeCookie, localeHeader, matchLocale, type Locale } from "@/features/i18n/model/locales";
+import { isLocale, LOCALE_COOKIE, LOCALE_HEADER, negotiateLocale, type Locale } from "@/features/i18n/model/locales";
 import { contentSecurityPolicy } from "@/shared/lib/contentSecurityPolicy";
 
 const preferredLocale = (request: NextRequest): Locale => {
-  const saved = request.cookies.get(localeCookie)?.value;
-  return isLocale(saved) ? saved : matchLocale(request.headers.get("accept-language"));
+  const saved = request.cookies.get(LOCALE_COOKIE)?.value;
+  return isLocale(saved) ? saved : negotiateLocale(request.headers.get("accept-language"));
 };
 
 const redirectTo = (request: NextRequest, segments: readonly string[], status: 307 | 308) => {
@@ -19,7 +19,7 @@ const render = (request: NextRequest, locale: Locale) => {
   const policy = contentSecurityPolicy(nonce, process.env.NODE_ENV === "development");
 
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set(localeHeader, locale);
+  requestHeaders.set(LOCALE_HEADER, locale);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", policy);
 

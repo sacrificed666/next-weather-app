@@ -16,9 +16,9 @@ import VisibilityCard from "@/features/forecast/ui/VisibilityCard/VisibilityCard
 import WindCard from "@/features/forecast/ui/WindCard/WindCard";
 import { homeHref } from "@/features/i18n/model/locales";
 import { forecastSearch, type LocationQuery } from "@/features/places/model/location";
-import { getEffects, getLocalization } from "@/features/preferences/model/server";
 import { describeForecast, forecastSchema } from "@/features/seo/model/seo";
 import JsonLd from "@/features/seo/ui/JsonLd/JsonLd";
+import { getEffects, getLocalization } from "@/features/settings/model/server";
 import { siteUrl } from "@/shared/lib/site";
 
 import styles from "./Forecast.module.scss";

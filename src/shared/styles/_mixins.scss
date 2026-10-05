@@ -94,10 +94,20 @@ $breakpoints: (
     @include rim;
   }
 
-  @if $content {
-    :where(:root[data-effects="reduced"]) & {
+  // Reduced effects: flat glass without blur or masked rims
+  :where(:root[data-effects="reduced"]) & {
+    @if $content {
       background: linear-gradient(170deg, var(--glass-sheen), transparent 40%), var(--glass-tint-content);
-      backdrop-filter: none;
+    }
+
+    backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 var(--glass-highlight),
+      inset 0 0 0 1px var(--glass-hairline),
+      $shadow;
+
+    &::before {
+      display: none;
     }
   }
 

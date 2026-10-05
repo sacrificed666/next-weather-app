@@ -1,19 +1,19 @@
 import { ImageResponse } from "next/og";
 
 import { getMessages } from "@/features/i18n/model/catalog";
-import { defaultLocale, isLocale, locales } from "@/features/i18n/model/locales";
+import { DEFAULT_LOCALE, isLocale, LOCALES } from "@/features/i18n/model/locales";
 import { createTranslator } from "@/features/i18n/model/translate";
-import { ogFonts, ogSize, readAppIcon } from "@/features/seo/og/assets";
+import { OG_FONTS, OG_SIZE, readAppIcon } from "@/features/seo/og/assets";
 
-export const size = ogSize;
+export const size = OG_SIZE;
 
 export const contentType = "image/png";
 
-export const generateStaticParams = () => locales.map((locale) => ({ locale }));
+export const generateStaticParams = () => LOCALES.map((locale) => ({ locale }));
 
 const translatorFor = async (params: Promise<{ locale: string }>) => {
   const { locale } = await params;
-  return createTranslator(getMessages(isLocale(locale) ? locale : defaultLocale));
+  return createTranslator(getMessages(isLocale(locale) ? locale : DEFAULT_LOCALE));
 };
 
 export const generateImageMetadata = async ({ params }: { params: Promise<{ locale: string }> }) => {
@@ -45,7 +45,7 @@ const OpenGraphImage = async ({ params }: { params: Promise<{ locale: string }> 
         </div>
       </div>
     </div>,
-    { ...size, fonts: ogFonts },
+    { ...size, fonts: OG_FONTS },
   );
 };
 

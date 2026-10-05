@@ -1,0 +1,17 @@
+# Keep the build context small and free of secrets
+.git
+.github
+.next
+node_modules
+coverage
+playwright-report
+test-results
+blob-report
+docs
+docker
+compose.yaml
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

@@ -4,8 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { t } from "@/test/fixtures";
 import { renderWithI18n } from "@/test/render";
 
-import ForecastError from "./ForecastError/ForecastError";
-import ForecastSkeleton from "./ForecastSkeleton/ForecastSkeleton";
+import ForecastError from "./ForecastError";
 
 const refresh = vi.hoisted(() => vi.fn<() => void>());
 
@@ -43,12 +42,5 @@ describe("ForecastError", () => {
   ] as const)("explains %s", (kind, title) => {
     renderWithI18n(<ForecastError kind={kind} t={t} home="/en" />);
     expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
-  });
-});
-
-describe("ForecastSkeleton", () => {
-  it("announces that the forecast is loading", () => {
-    renderWithI18n(<ForecastSkeleton label="Loading the forecast…" />);
-    expect(screen.getByRole("status", { name: "Loading the forecast…" })).toHaveAttribute("aria-busy", "true");
   });
 });

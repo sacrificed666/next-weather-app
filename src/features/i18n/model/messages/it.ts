@@ -147,6 +147,7 @@ export const it: Messages = {
   "footer.data": "Dati meteo",
   "footer.icons": "Icone",
   "footer.source": "Codice sorgente",
+  "external.newTab": "si apre in una nuova scheda",
 
   "loading.forecast": "Caricamento delle previsioni…",
 };

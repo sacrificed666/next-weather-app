@@ -3,10 +3,10 @@ import "./globals.scss";
 import type { Metadata } from "next";
 
 import { homeHref } from "@/features/i18n/model/locales";
-import { getEffects, getRequestLocalization } from "@/features/preferences/model/server";
 import { documentTitle } from "@/features/seo/model/seo";
+import { getEffects, getRequestLocalization } from "@/features/settings/model/server";
 import Icon from "@/shared/ui/Icon/Icon";
-import WeatherIcon from "@/shared/ui/WeatherIcon/WeatherIcon";
+import Logo from "@/shared/ui/Logo/Logo";
 
 import styles from "./not-found.module.scss";
 
@@ -22,7 +22,7 @@ const GlobalNotFound = async () => {
       <body>
         <main className={styles.page}>
           <a className={styles.brand} href={homeHref(locale)}>
-            <WeatherIcon name="partly-cloudy-day" size={40} loading="eager" animated={effects.level === "full"} />
+            <Logo className={styles.logo} />
             {t("app.name")}
           </a>
           <section className={styles.notFound} aria-labelledby="not-found-title">

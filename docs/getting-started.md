@@ -22,10 +22,10 @@ The app reads these variables on the server:
 | `OPENWEATHERMAP_API_URL` | Optional | Another OpenWeatherMap-compatible host; the end-to-end tests point it at their mock server          |
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
-Paste the key into `.env.local`. Next.js loads `.env*` files automatically; every `.env*` file except `.env.example` is ignored by Git.
+Paste the key into `.env`. Next.js loads `.env*` files automatically; every `.env*` file except `.env.example` is ignored by Git.
 
 > [!NOTE]
 > A brand-new key can take up to two hours to start working. Until then the app shows **The API key was rejected**. Without any key it shows **The weather service is not set up**.
@@ -44,6 +44,14 @@ Open <http://localhost:3000>. It redirects to your browser's language, for examp
 
 > [!TIP]
 > No key yet? Start the mock server from the end-to-end tests with `node e2e/openweather-api.ts` and run the app with `OPENWEATHERMAP_API_KEY=e2e-key OPENWEATHERMAP_API_URL=http://127.0.0.1:4020 npm run dev`. It knows Lviv, Kyiv, Reykjavik and Bangkok.
+
+### 🐳 In Docker
+
+```bash
+docker compose -f compose.yaml -f docker/development.yaml up --watch
+```
+
+The same dev server runs in a container on port 3000 with the variables from `.env` (and `.env.local`, if present), and Compose Watch copies every change into it. Staging and production images are described in [Deployment](./deployment.md#-docker).
 
 ## 📜 npm scripts
 
@@ -67,19 +75,21 @@ Open <http://localhost:3000>. It redirects to your browser's language, for examp
 ## 🗂️ Project layout
 
 ```text
-next-weather-app/
+weather/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/              Bug report and feature request forms
-│   ├── workflows/ci.yml             CI: verify, build with a report, end-to-end tests, dependency review
+│   ├── workflows/ci.yml             CI: verify, build with a report, end-to-end tests, Docker image, dependency review
 │   ├── workflows/codeql.yml         CodeQL code scanning
-│   ├── dependabot.yml               Weekly dependency and GitHub Actions updates
+│   ├── workflows/release.yml        GitHub release for every version tag
+│   ├── dependabot.yml               Weekly npm, GitHub Actions and Docker updates
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   └── SECURITY.md                  How to report vulnerabilities
+├── docker/                          Multi-stage Dockerfile and the development, staging and production overlays
 ├── docs/                            This documentation and its screenshots
 ├── e2e/                             Playwright specs and the mock OpenWeatherMap API
-├── lint/no-comments.js              Custom Oxlint rule that forbids comments
-├── public/icons/weather/            The Meteocons the app shows, served as static files
-├── scripts/                         Icon sync, the CI coverage summary and the build report
+├── lint/comments.js                 Custom Oxlint rule that keeps comments to one short line
+├── public/icons/                    The animated and the still Meteocons the app shows, served as static files
+├── scripts/                         Icon sync, release notes, the CI coverage summary and the build report
 ├── src/
 │   ├── proxy.ts                     Language redirects, per-request nonce and Content Security Policy
 │   ├── app/
@@ -91,19 +101,22 @@ next-weather-app/
 │   ├── features/
 │   │   ├── forecast/                OpenWeatherMap orchestration, normalization, conditions; every forecast card
 │   │   ├── places/                  Places, locations in the URL, geocoding, saved and recent places; search, locate, star
-│   │   ├── preferences/             Theme, units and effects in cookies, the route language, the server action; settings and offline notice
-│   │   ├── i18n/                    Eight message catalogs, locale matching, path helpers, the translator and its provider
+│   │   ├── settings/                Theme, units and effects in cookies, the route language, the server action; the settings panel and offline notice
+│   │   ├── i18n/                    Ten message catalogs, locale matching, path helpers, the translator and its provider
 │   │   └── seo/                     Canonical links, social metadata, JSON-LD and the share card assets
 │   ├── shared/
 │   │   ├── api/                     The OpenWeatherMap HTTP client (server only)
 │   │   ├── assets/fonts/            Montserrat for the share cards, under the SIL Open Font License
 │   │   ├── lib/                     Formatting, units, time, guards, rate limiting, stored lists, CSP, the public address
-│   │   ├── ui/                      Icon, IconButton, Card, SegmentedControl, Skeleton, WeatherIcon, Flag
+│   │   ├── ui/                      Logo, Icon, IconButton, Card, SegmentedControl, Skeleton, WeatherIcon, Flag
 │   │   └── styles/                  Design tokens, skies, mixins and the dashboard grid
 │   └── test/                        Test setup, fixtures and render helpers
+├── CHANGELOG.md                     Every release, newest first
+├── compose.yaml                     The Docker Compose service shared by every environment
 ├── next.config.ts                   React Compiler, security headers and experiments
 ├── playwright.config.ts             Browsers, the mock API and the production server for end-to-end tests
 ├── vitest.config.ts                 Test environment, aliases and coverage thresholds
+├── .dockerignore                    Keeps dependencies, build output and secrets out of the image
 ├── .oxlintrc.json                   Lint rules and layer boundaries
 └── .oxfmtrc.json                    Formatting rules
 ```

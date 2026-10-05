@@ -1,12 +1,10 @@
 import { screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { forecast, t, view } from "@/test/fixtures";
+import { forecast, view } from "@/test/fixtures";
 import { renderWithI18n } from "@/test/render";
 
-import Footer from "./Footer/Footer";
-import Forecast from "./Forecast/Forecast";
-import Header from "./Header/Header";
+import Forecast from "./Forecast";
 
 const getForecast = vi.hoisted(() => vi.fn<(...args: unknown[]) => Promise<unknown>>());
 
@@ -16,7 +14,7 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 vi.mock("@/features/forecast/model/getForecast", () => ({ getForecast }));
-vi.mock("@/features/preferences/model/server", async () => {
+vi.mock("@/features/settings/model/server", async () => {
   const { view: createView } = await import("@/test/fixtures");
   const { t: translate, format } = createView();
   return {
@@ -29,38 +27,6 @@ vi.mock("@/features/preferences/model/server", async () => {
       }),
     getEffects: () => Promise.resolve({ level: "full", device: "full" }),
   };
-});
-
-describe("Header", () => {
-  it("links home and offers search, location and settings", () => {
-    renderWithI18n(
-      <Header
-        locale="en"
-        preferences={{ theme: "system", units: "metric", effects: "auto" }}
-        effects={{ level: "reduced", device: "reduced" }}
-        t={t}
-      />,
-    );
-    expect(screen.getByRole("link", { name: "Weather" })).toHaveAttribute("href", "/en");
-    expect(document.querySelector('search form[action="/en"]')).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Use my location" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
-    expect(document.querySelector("header img")).toHaveAttribute("src", "/icons/weather-static/partly-cloudy-day.svg");
-  });
-});
-
-describe("Footer", () => {
-  it("credits the data, the icons and the author", () => {
-    renderWithI18n(<Footer t={t} />);
-    expect(screen.getByRole("link", { name: "OpenWeatherMap" })).toHaveAttribute("href", "https://openweathermap.org");
-    expect(screen.getByRole("link", { name: "Meteocons" })).toHaveAttribute("rel", "noreferrer");
-    expect(screen.getByRole("link", { name: "Source code" })).toHaveAttribute(
-      "href",
-      "https://github.com/sacrificed666/next-weather-app",
-    );
-    expect(screen.getAllByRole("link")).toHaveLength(3);
-    expect(screen.getByText(`© ${new Date().getFullYear()} Illia Movchko`)).toBeInTheDocument();
-  });
 });
 
 describe("Forecast", () => {

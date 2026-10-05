@@ -7,23 +7,23 @@
 
 .current {
   grid-area: current;
-  animation: rise var(--duration-slow) var(--ease-spring) both;
+  animation: rise var(--duration-slow) var(--ease-spring) backwards;
 }
 
 .hourly {
   grid-area: hourly;
-  animation: rise var(--duration-slow) var(--ease-spring) 60ms both;
+  animation: rise var(--duration-slow) var(--ease-spring) 60ms backwards;
 }
 
 .daily {
   grid-area: daily;
-  animation: rise var(--duration-slow) var(--ease-spring) 120ms both;
+  animation: rise var(--duration-slow) var(--ease-spring) 120ms backwards;
 }
 
 .details {
   @include dashboard.details;
 
-  animation: rise var(--duration-slow) var(--ease-spring) 180ms both;
+  animation: rise var(--duration-slow) var(--ease-spring) 180ms backwards;
 }
 
 .wide {

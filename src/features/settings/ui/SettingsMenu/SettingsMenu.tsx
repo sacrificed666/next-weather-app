@@ -3,7 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useId, useOptimistic, useTransition } from "react";
 
-import { localeCookie, localeDetails, locales, switchLocale, type Locale } from "@/features/i18n/model/locales";
+import { LOCALE_COOKIE, LOCALE_INFO, LOCALES, switchLocale, type Locale } from "@/features/i18n/model/locales";
 import { useI18n } from "@/features/i18n/model/useI18n";
 import Flag from "@/shared/ui/Flag/Flag";
 import Icon from "@/shared/ui/Icon/Icon";
@@ -19,7 +19,7 @@ const ONE_YEAR = 60 * 60 * 24 * 365;
 
 const rememberLocale = (locale: Locale) => {
   const secure = location.protocol === "https:" ? "; secure" : "";
-  document.cookie = `${localeCookie}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax${secure}`;
+  document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax${secure}`;
 };
 
 interface SettingsMenuProps {
@@ -118,7 +118,7 @@ const SettingsMenu = ({ preferences, deviceEffects }: SettingsMenuProps) => {
             {t("settings.language")}
           </h3>
           <ul className={styles.grid} aria-labelledby={languagesId}>
-            {locales.map((entry) => (
+            {LOCALES.map((entry) => (
               <li key={entry}>
                 <a
                   className={styles.language}
@@ -128,8 +128,8 @@ const SettingsMenu = ({ preferences, deviceEffects }: SettingsMenuProps) => {
                   aria-current={entry === locale ? "true" : undefined}
                   onClick={() => rememberLocale(entry)}
                 >
-                  <Flag country={localeDetails[entry].flag} height={14} />
-                  {localeDetails[entry].name}
+                  <Flag country={LOCALE_INFO[entry].flag} height={14} />
+                  {LOCALE_INFO[entry].name}
                 </a>
               </li>
             ))}

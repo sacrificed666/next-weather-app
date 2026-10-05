@@ -1,9 +1,9 @@
-export const unitSystems = ["metric", "imperial"] as const;
+export const UNIT_SYSTEMS = ["metric", "imperial"] as const;
 
-export type UnitSystem = (typeof unitSystems)[number];
+export type UnitSystem = (typeof UNIT_SYSTEMS)[number];
 
 export const isUnitSystem = (value: unknown): value is UnitSystem =>
-  typeof value === "string" && (unitSystems as readonly string[]).includes(value);
+  typeof value === "string" && (UNIT_SYSTEMS as readonly string[]).includes(value);
 
 export const celsiusToFahrenheit = (celsius: number) => (celsius * 9) / 5 + 32;
 

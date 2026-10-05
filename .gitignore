@@ -1,6 +1,4 @@
-/node_modules
-/.pnp
-.pnp.*
+/node_modules/
 .npm/
 
 /.next/
@@ -23,8 +21,6 @@ next-env.d.ts
 *.pem
 
 .claude/
-CLAUDE.local.md
-
 .vscode/
 .idea/
 .fleet/
@@ -35,5 +31,4 @@ CLAUDE.local.md
 .DS_Store
 Thumbs.db
 
-npm-debug.log*
 *.log

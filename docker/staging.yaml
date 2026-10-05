@@ -1,0 +1,26 @@
+# Production build that search engines must not index
+name: weather-staging
+
+services:
+  app:
+    image: weather:staging
+    build:
+      target: runtime
+      args:
+        APP_ENV: staging
+      secrets:
+        - env
+    env_file: .env.staging
+    environment:
+      APP_ENV: staging
+    ports:
+      - "${APP_PORT:-3001}:3000"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+
+secrets:
+  env:
+    file: .env.staging

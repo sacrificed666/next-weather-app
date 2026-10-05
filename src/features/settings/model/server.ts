@@ -5,12 +5,12 @@ import { cache } from "react";
 
 import { getMessages } from "@/features/i18n/model/catalog";
 import {
-  defaultLocale,
+  DEFAULT_LOCALE,
   isLocale,
-  localeCookie,
-  localeDetails,
-  localeHeader,
-  matchLocale,
+  LOCALE_COOKIE,
+  LOCALE_INFO,
+  LOCALE_HEADER,
+  negotiateLocale,
   type Locale,
 } from "@/features/i18n/model/locales";
 import { createTranslator } from "@/features/i18n/model/translate";
@@ -18,10 +18,10 @@ import { createFormatter } from "@/shared/lib/format";
 import { isUnitSystem } from "@/shared/lib/units";
 
 import {
-  defaultPreferences,
+  DEFAULT_PREFERENCES,
   isEffects,
   isTheme,
-  preferenceCookies,
+  PREFERENCE_COOKIES,
   resolveEffects,
   type EffectsState,
   type Preferences,
@@ -29,13 +29,13 @@ import {
 
 export const getPreferences = cache(async (): Promise<Preferences> => {
   const cookieStore = await cookies();
-  const theme = cookieStore.get(preferenceCookies.theme)?.value;
-  const units = cookieStore.get(preferenceCookies.units)?.value;
-  const effects = cookieStore.get(preferenceCookies.effects)?.value;
+  const theme = cookieStore.get(PREFERENCE_COOKIES.theme)?.value;
+  const units = cookieStore.get(PREFERENCE_COOKIES.units)?.value;
+  const effects = cookieStore.get(PREFERENCE_COOKIES.effects)?.value;
   return {
-    theme: isTheme(theme) ? theme : defaultPreferences.theme,
-    units: isUnitSystem(units) ? units : defaultPreferences.units,
-    effects: isEffects(effects) ? effects : defaultPreferences.effects,
+    theme: isTheme(theme) ? theme : DEFAULT_PREFERENCES.theme,
+    units: isUnitSystem(units) ? units : DEFAULT_PREFERENCES.units,
+    effects: isEffects(effects) ? effects : DEFAULT_PREFERENCES.effects,
   };
 });
 
@@ -47,15 +47,15 @@ export const getEffects = cache(async (): Promise<EffectsState> => {
 
 export const currentLocale = cache(async (): Promise<Locale> => {
   const value = await rootLocale();
-  return isLocale(value) ? value : defaultLocale;
+  return isLocale(value) ? value : DEFAULT_LOCALE;
 });
 
 export const requestLocale = async (): Promise<Locale> => {
   const [requestHeaders, cookieStore] = await Promise.all([headers(), cookies()]);
-  const routed = requestHeaders.get(localeHeader);
+  const routed = requestHeaders.get(LOCALE_HEADER);
   if (isLocale(routed)) return routed;
-  const saved = cookieStore.get(localeCookie)?.value;
-  return isLocale(saved) ? saved : matchLocale(requestHeaders.get("accept-language"));
+  const saved = cookieStore.get(LOCALE_COOKIE)?.value;
+  return isLocale(saved) ? saved : negotiateLocale(requestHeaders.get("accept-language"));
 };
 
 const localize = async (locale: Locale) => {
@@ -66,7 +66,7 @@ const localize = async (locale: Locale) => {
     preferences,
     messages,
     t: createTranslator(messages),
-    format: createFormatter(localeDetails[locale].intl, preferences.units),
+    format: createFormatter(LOCALE_INFO[locale].intl, preferences.units),
   };
 };
 

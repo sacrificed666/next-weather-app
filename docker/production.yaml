@@ -1,0 +1,26 @@
+# Production build, served behind a reverse proxy that terminates TLS
+name: weather-production
+
+services:
+  app:
+    image: weather:production
+    build:
+      target: runtime
+      args:
+        APP_ENV: production
+      secrets:
+        - env
+    env_file: .env.production
+    environment:
+      APP_ENV: production
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+
+secrets:
+  env:
+    file: .env.production

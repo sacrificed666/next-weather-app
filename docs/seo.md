@@ -9,7 +9,7 @@ Every forecast is a real page with its own address in every language, a descript
 | 🏷️ Title                 | `Kyiv 17° · Clear sky · Weather`                          | `City not found · Weather`     |
 | 📝 Description           | The city, the temperature, the sky and what the app shows | The app description            |
 | 🔗 Canonical             | `/en?lat=50.45&lon=30.52`, or `/en` for the default city  | none                           |
-| 🌐 Alternates            | All eight languages and `x-default`                       | none                           |
+| 🌐 Alternates            | All ten languages and `x-default`                         | none                           |
 | 🖼️ Open Graph and X card | The share card of the language, `summary_large_image`     | The share card of the language |
 | 🤖 Robots                | `index, follow`, large image previews                     | `noindex, follow`              |
 
@@ -35,8 +35,8 @@ The defaults live in `src/app/[locale]/layout.tsx`, the forecast's metadata in `
 Each language version is a separate page with its own address, title, description and card, see [Localization](./i18n.md).
 
 - 🔗 `<link rel="canonical">` points to the page in its own language.
-- 🌐 `<link rel="alternate" hreflang>` lists all eight versions, and `x-default` points to the address without a language, which redirects by cookie or browser language.
-- 🏷️ `og:locale` names the language (`uk_UA`), `og:locale:alternate` the other seven.
+- 🌐 `<link rel="alternate" hreflang>` lists all ten versions, and `x-default` points to the address without a language, which redirects by cookie or browser language.
+- 🏷️ `og:locale` names the language (`uk_UA`), `og:locale:alternate` the other nine.
 - 📄 `<html lang>` matches the address, also on the 404 page.
 
 ## 🌍 The public address
@@ -52,14 +52,14 @@ Each language version is a separate page with its own address, title, descriptio
 
 ## 🖼️ Share cards
 
-`src/app/[locale]/opengraph-image.tsx` draws one 1200 × 630 card per language at build time with `ImageResponse` from `next/og`: the app icon, the name and the description of the app on a sky gradient. The card uses Montserrat from `src/shared/assets/fonts` in the Latin, Latin Extended and Cyrillic subsets, so Ukrainian and Polish render correctly, and has a translated `alt` text.
+`src/app/[locale]/opengraph-image.tsx` draws one 1200 × 630 card per language at build time with `ImageResponse` from `next/og`: the app icon, the name and the description of the app on a sky gradient. The card uses Montserrat from `src/shared/assets/fonts` in the Latin, Latin Extended and Cyrillic subsets, so Ukrainian, Czech and Polish render correctly, and has a translated `alt` text.
 
 > [!NOTE]
 > `next/og` reads TTF, OTF and WOFF fonts, but not WOFF2. That is why the share cards use their own WOFF files instead of the `@fontsource-variable/montserrat` package of the interface.
 
 ## 🗺️ Sitemap and robots
 
-- 🗺️ `/sitemap.xml` lists the home page in all eight languages, each with its `hreflang` alternates. Forecasts for other cities are reached through links and the search action below.
+- 🗺️ `/sitemap.xml` lists the home page in all ten languages, each with its `hreflang` alternates. Forecasts for other cities are reached through links and the search action below.
 - 🤖 `/robots.txt` allows everything except `/api/` and points to the sitemap.
 - 🙈 On Vercel preview deployments (`VERCEL_ENV=preview`) robots disallow everything and every page is marked `noindex`, so previews never compete with the real site (`isIndexable()` in `site.ts`).
 

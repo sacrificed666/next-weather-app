@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import type { Forecast } from "@/features/forecast/model/types";
-import { homeHref, localeDetails, locales, type Locale } from "@/features/i18n/model/locales";
+import { homeHref, LOCALE_INFO, LOCALES, type Locale } from "@/features/i18n/model/locales";
 import type { Translate } from "@/features/i18n/model/translate";
 import type { Formatter } from "@/shared/lib/format";
-import { site } from "@/shared/lib/site";
+import { SITE } from "@/shared/lib/site";
 
 export type Schema = Readonly<Record<string, unknown>>;
 
@@ -29,7 +29,7 @@ export const documentTitle = (title: string, t: Translate) => ({ absolute: `${ti
 export const alternates = (locale: Locale, search = ""): Alternates => ({
   canonical: `${homeHref(locale)}${search}`,
   languages: {
-    ...Object.fromEntries(locales.map((entry) => [entry, `${homeHref(entry)}${search}`])),
+    ...Object.fromEntries(LOCALES.map((entry) => [entry, `${homeHref(entry)}${search}`])),
     "x-default": `/${search}`,
   },
 });
@@ -38,8 +38,8 @@ export const social = (locale: Locale, t: Translate, page: SocialPage): Pick<Met
   openGraph: {
     type: "website",
     siteName: t("app.name"),
-    locale: localeDetails[locale].openGraph,
-    alternateLocale: locales.filter((entry) => entry !== locale).map((entry) => localeDetails[entry].openGraph),
+    locale: LOCALE_INFO[locale].openGraph,
+    alternateLocale: LOCALES.filter((entry) => entry !== locale).map((entry) => LOCALE_INFO[entry].openGraph),
     title: page.title,
     description: page.description,
     ...(page.url === undefined ? {} : { url: page.url }),
@@ -65,7 +65,7 @@ const website = (base: URL, locale: Locale, t: Translate): Schema => {
     url: home,
     description: t("app.description"),
     inLanguage: locale,
-    author: { "@type": "Person", name: site.author.name, url: site.author.url },
+    author: { "@type": "Person", name: SITE.author.name, url: SITE.author.url },
     potentialAction: {
       "@type": "SearchAction",
       target: { "@type": "EntryPoint", urlTemplate: `${home}?city={city}` },

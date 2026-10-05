@@ -3,12 +3,12 @@ import "@/app/globals.scss";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 
-import { isLocale, locales } from "@/features/i18n/model/locales";
+import { isLocale, LOCALES } from "@/features/i18n/model/locales";
 import I18nProvider from "@/features/i18n/ui/I18nProvider/I18nProvider";
-import { getEffects, getLocalization } from "@/features/preferences/model/server";
-import OfflineNotice from "@/features/preferences/ui/OfflineNotice/OfflineNotice";
 import { social } from "@/features/seo/model/seo";
-import { isIndexable, site, siteUrl } from "@/shared/lib/site";
+import { getEffects, getLocalization } from "@/features/settings/model/server";
+import OfflineNotice from "@/features/settings/ui/OfflineNotice/OfflineNotice";
+import { isIndexable, SITE, siteUrl } from "@/shared/lib/site";
 import Footer from "@/widgets/Footer/Footer";
 import Header from "@/widgets/Header/Header";
 
@@ -16,7 +16,7 @@ import styles from "./layout.module.scss";
 
 export const dynamicParams = false;
 
-export const generateStaticParams = () => locales.map((locale) => ({ locale }));
+export const generateStaticParams = () => LOCALES.map((locale) => ({ locale }));
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const { locale, t } = await getLocalization();
@@ -27,10 +27,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
     title: { default: name, template: `%s · ${name}` },
     description,
     applicationName: name,
-    keywords: [...site.keywords],
-    authors: [{ name: site.author.name, url: site.author.url }],
-    creator: site.author.name,
-    publisher: site.author.name,
+    keywords: [...SITE.keywords],
+    authors: [{ name: SITE.author.name, url: SITE.author.url }],
+    creator: SITE.author.name,
+    publisher: SITE.author.name,
     category: "weather",
     ...social(locale, t, { title: name, description }),
     robots: isIndexable()
@@ -43,8 +43,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 export const viewport: Viewport = {
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: site.themeColor.light },
-    { media: "(prefers-color-scheme: dark)", color: site.themeColor.dark },
+    { media: "(prefers-color-scheme: light)", color: SITE.themeColor.light },
+    { media: "(prefers-color-scheme: dark)", color: SITE.themeColor.dark },
   ],
 };
 

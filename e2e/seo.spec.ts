@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { locales } from "../src/features/i18n/model/locales";
+import { LOCALES } from "../src/features/i18n/model/locales";
 
 test.skip(({ isMobile }) => isMobile, "The markup for search engines is the same on every screen");
 
@@ -11,7 +11,7 @@ test("links every language version of a forecast", async ({ page, baseURL }) => 
   const languages = await page
     .locator('link[rel="alternate"][hreflang]')
     .evaluateAll((links) => links.map((link) => link.getAttribute("hreflang")));
-  expect(new Set(languages)).toEqual(new Set([...locales, "x-default"]));
+  expect(new Set(languages)).toEqual(new Set([...LOCALES, "x-default"]));
   await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute("content", "uk_UA");
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
 });
@@ -44,13 +44,13 @@ test("lists every language in the sitemap and allows crawling", async ({ request
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.ok()).toBe(true);
   const xml = await sitemap.text();
-  for (const locale of locales) expect(xml).toContain(`<loc>${baseURL}/${locale}</loc>`);
+  for (const locale of LOCALES) expect(xml).toContain(`<loc>${baseURL}/${locale}</loc>`);
   const robots = await (await request.get("/robots.txt")).text();
   expect(robots).toContain(`Sitemap: ${baseURL}/sitemap.xml`);
   expect(robots).toContain("Disallow: /api/");
 });
 
-for (const path of ["/en", "/uk?city=Kyiv", "/pl"]) {
+for (const path of ["/en", "/uk?city=Kyiv", "/pl", "/cs"]) {
   test(`serves a share image for ${path}`, async ({ page, request }) => {
     await page.goto(path);
     const image = await page.locator('meta[property="og:image"]').first().getAttribute("content");

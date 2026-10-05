@@ -30,16 +30,34 @@ const parseJson = (raw: string): unknown => {
   }
 };
 
+// Moves a list saved under an earlier key unless the new key is already taken
+const moveStorage = (from: string, to: string) => {
+  try {
+    const value = localStorage.getItem(from);
+    if (value === null || localStorage.getItem(to) !== null) return;
+    localStorage.setItem(to, value);
+    localStorage.removeItem(from);
+  } catch {
+    return;
+  }
+};
+
 export const createStoredList = <Item>(
   key: string,
   parse: (value: unknown) => Item | null,
   limit: number,
+  legacyKey?: string,
 ): StoredList<Item> => {
   const empty: readonly Item[] = [];
   const listeners = new Set<() => void>();
   let cached: { raw: string | null; items: readonly Item[] } = { raw: null, items: empty };
+  let migrated = legacyKey === undefined;
 
   const getSnapshot = () => {
+    if (!migrated && legacyKey !== undefined) {
+      moveStorage(legacyKey, key);
+      migrated = true;
+    }
     const raw = readStorage(key);
     if (raw === cached.raw) return cached.items;
     const parsed = raw === null ? null : parseJson(raw);

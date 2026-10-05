@@ -22,7 +22,7 @@ interface MockCity {
 const CITIES: readonly MockCity[] = [
   {
     name: "Lviv",
-    localNames: { en: "Lviv", uk: "Львів", de: "Lemberg", pl: "Lwów" },
+    localNames: { en: "Lviv", uk: "Львів", cs: "Lvov", de: "Lemberg", pl: "Lwów", pt: "Lviv" },
     state: "Lviv Oblast",
     country: "UA",
     latitude: 49.8419,
@@ -34,7 +34,7 @@ const CITIES: readonly MockCity[] = [
   },
   {
     name: "Kyiv",
-    localNames: { en: "Kyiv", uk: "Київ", de: "Kiew", pl: "Kijów" },
+    localNames: { en: "Kyiv", uk: "Київ", cs: "Kyjev", de: "Kiew", pl: "Kijów", pt: "Kiev" },
     state: "Kyiv City",
     country: "UA",
     latitude: 50.4501,
@@ -46,7 +46,7 @@ const CITIES: readonly MockCity[] = [
   },
   {
     name: "Reykjavik",
-    localNames: { en: "Reykjavik", uk: "Рейк'явік", de: "Reykjavík" },
+    localNames: { en: "Reykjavik", uk: "Рейк'явік", cs: "Reykjavík", de: "Reykjavík" },
     state: "Capital Region",
     country: "IS",
     latitude: 64.1466,
@@ -100,6 +100,16 @@ const DESCRIPTIONS: Readonly<Record<string, Readonly<Record<number, string>>>> =
     801: "ein paar Wolken",
     802: "Mäßig bewölkt",
     803: "Überwiegend bewölkt",
+  },
+  cz: {
+    211: "bouřka",
+    500: "slabý déšť",
+    501: "mírný déšť",
+    601: "sněžení",
+    800: "jasno",
+    801: "skoro jasno",
+    802: "polojasno",
+    803: "oblačno",
   },
 };
 

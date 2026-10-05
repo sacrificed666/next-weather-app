@@ -97,7 +97,7 @@ Responses are treated as untrusted input. `normalize.ts` reads them with the gua
 
 ## 🌍 Languages
 
-`lang` is the interface language, so condition descriptions arrive translated (`легкий дощ`, `Leichter Regen`) and are capitalized with `toLocaleUpperCase()`. Place names prefer `local_names[locale]` from geocoding (`Львів`, `Lemberg`) and fall back to the international name. Because the language is part of the request URL, every language is cached separately.
+`lang` is the OpenWeatherMap code of the interface language (`uk`, `de`, `cz` for Czech), so condition descriptions arrive translated (`легкий дощ`, `Leichter Regen`, `slabý déšť`) and are capitalized with `toLocaleUpperCase()`. Place names prefer `local_names[locale]` from geocoding (`Львів`, `Lemberg`) and fall back to the international name. Because the language is part of the request URL, every language is cached separately.
 
 ## 🖼️ Condition icons
 

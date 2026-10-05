@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-import { defaultLocale, isLocale } from "@/features/i18n/model/locales";
+import { DEFAULT_LOCALE, isLocale } from "@/features/i18n/model/locales";
 import { searchPlaces } from "@/features/places/model/geocoding";
 import { MAX_NAME_LENGTH } from "@/features/places/model/place";
 import type { OpenWeatherFailure } from "@/shared/api/openWeather";
@@ -28,7 +28,7 @@ export const GET = async (request: NextRequest) => {
 
   const query = request.nextUrl.searchParams.get("q")?.trim() ?? "";
   const language = request.nextUrl.searchParams.get("lang");
-  const locale = isLocale(language) ? language : defaultLocale;
+  const locale = isLocale(language) ? language : DEFAULT_LOCALE;
   if (query.length > MAX_NAME_LENGTH) return Response.json({ error: "query-too-long" }, { status: 400 });
   if (query.length < MIN_QUERY_LENGTH) return Response.json({ places: [] });
 

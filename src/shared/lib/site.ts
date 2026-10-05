@@ -1,4 +1,6 @@
-export const site = {
+import packageJson from "../../../package.json" with { type: "json" };
+
+export const SITE = {
   keywords: [
     "weather",
     "forecast",
@@ -11,7 +13,9 @@ export const site = {
     "OpenWeatherMap",
   ],
   author: { name: "Illia Movchko", url: "https://github.com/sacrificed666" },
-  repository: "https://github.com/sacrificed666/next-weather-app",
+  repository: "https://github.com/sacrificed666/weather",
+  version: packageJson.version,
+  changelog: "https://github.com/sacrificed666/weather/blob/main/CHANGELOG.md",
   themeColor: { light: "#dbe5f1", dark: "#0a1020" },
 } as const;
 
@@ -25,5 +29,8 @@ export const siteUrl = (env: Environment = process.env): URL => {
   return new URL(`http://localhost:${env.PORT ?? "3000"}`);
 };
 
-export const isIndexable = (env: Environment = process.env) =>
-  env.VERCEL_ENV === undefined || env.VERCEL_ENV === "production";
+// Only production may be indexed: APP_ENV for Docker, VERCEL_ENV on Vercel
+export const isIndexable = (env: Environment = process.env) => {
+  const environment = env.APP_ENV ?? env.VERCEL_ENV;
+  return environment === undefined || environment === "production";
+};

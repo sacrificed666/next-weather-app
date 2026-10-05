@@ -15,7 +15,8 @@ test("builds the week from the free three-hour forecast", async ({ page }) => {
   await page.goto(KYIV);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kyiv");
   const week = page.locator("section").filter({ has: page.getByRole("heading", { name: /^[5-7]-day forecast$/u }) });
-  await expect(week.getByRole("listitem").first()).toContainText("Today");
+  // Late in the evening the free forecast already starts tomorrow, like the real API
+  await expect(week.getByRole("listitem").first()).toContainText(/^(?:Today|Mon|Tue|Wed|Thu|Fri|Sat|Sun)/u);
   expect(await week.getByRole("listitem").count()).toBeGreaterThanOrEqual(5);
 });
 

@@ -12,6 +12,16 @@ describe("createStoredList", () => {
     expect(list.getSnapshot()).toBe(list.getSnapshot());
   });
 
+  it("moves a list saved under an earlier key once", () => {
+    localStorage.setItem("old-numbers", JSON.stringify([1, 2]));
+    const list = createStoredList("numbers", parseNumber, 5, "old-numbers");
+    expect(list.getSnapshot()).toEqual([1, 2]);
+    expect(localStorage.getItem("old-numbers")).toBeNull();
+
+    localStorage.setItem("old-numbers", JSON.stringify([9]));
+    expect(createStoredList("numbers", parseNumber, 5, "old-numbers").getSnapshot()).toEqual([1, 2]);
+  });
+
   it("falls back to an empty list for missing or corrupted data", () => {
     const list = createStoredList("numbers", parseNumber, 5);
     expect(list.getSnapshot()).toEqual([]);

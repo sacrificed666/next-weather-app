@@ -1,11 +1,11 @@
 import { clamp } from "@/shared/lib/guards";
 
-export const compassPoints = ["n", "ne", "e", "se", "s", "sw", "w", "nw"] as const;
+export const COMPASS_POINTS = ["n", "ne", "e", "se", "s", "sw", "w", "nw"] as const;
 
-export type CompassPoint = (typeof compassPoints)[number];
+export type CompassPoint = (typeof COMPASS_POINTS)[number];
 
 export const compassPoint = (degrees: number): CompassPoint =>
-  compassPoints[Math.round((((degrees % 360) + 360) % 360) / 45) % compassPoints.length] ?? "n";
+  COMPASS_POINTS[Math.round((((degrees % 360) + 360) % 360) / 45) % COMPASS_POINTS.length] ?? "n";
 
 export type FeelsLike = "similar" | "colder" | "warmer";
 

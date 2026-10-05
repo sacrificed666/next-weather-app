@@ -1,13 +1,13 @@
-# ⛅ Weather App
+# ⛅ Weather
 
-[![CI](https://github.com/sacrificed666/next-weather-app/actions/workflows/ci.yml/badge.svg)](https://github.com/sacrificed666/next-weather-app/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/sacrificed666/next-weather-app/actions/workflows/codeql.yml/badge.svg)](https://github.com/sacrificed666/next-weather-app/actions/workflows/codeql.yml)
+[![CI](https://github.com/sacrificed666/weather/actions/workflows/ci.yml/badge.svg)](https://github.com/sacrificed666/weather/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/sacrificed666/weather/actions/workflows/codeql.yml/badge.svg)](https://github.com/sacrificed666/weather/actions/workflows/codeql.yml)
 
-The weather for any city in the world on one calm, glassy screen: what it is like outside right now, the next 24 hours, the coming week, the air you breathe and the sun's path across the sky. Built with Next.js 16, React 19 and TypeScript 7 on top of OpenWeatherMap, rendered on the server, in eight languages, accessible, light or dark, and the sky behind the cards changes with the weather.
+The weather for any city in the world on one calm, glassy screen: what it is like outside right now, the next 24 hours, the coming week, the air you breathe and the sun's path across the sky. Built with Next.js 16, React 19 and TypeScript 7 on top of OpenWeatherMap, rendered on the server, in ten languages, accessible, light or dark, and the sky behind the cards changes with the weather.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./docs/images/desktop-dark.jpg" />
-  <img src="./docs/images/desktop-light.jpg" alt="The forecast for Lviv with saved places, the hourly outlook and the 5-day forecast" />
+  <img src="./docs/images/desktop-light.jpg" alt="The forecast for Lviv with saved places, the hourly outlook and the daily forecast" />
 </picture>
 
 ## ✨ Highlights
@@ -18,7 +18,7 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
 - 📊 **Details**: air quality with PM2.5, PM10, ozone and nitrogen dioxide, the sun's arc, wind with a compass, humidity and dew point, pressure, visibility, precipitation and cloud cover, each with a sentence that explains the number
 - 🔎 **Search and location**: suggestions in any language (`Lviv`, `Львів`, `Lemberg`), full keyboard control, recent searches and **Use my location**
 - ⭐ **Saved places**: star a city to pin it above the forecast and switch between your places in one tap
-- 🌍 **Eight languages**: English, Ukrainian, German, Spanish, French, Italian, Dutch and Polish, each under its own address, including the weather descriptions and place names
+- 🌍 **Ten languages**: English, Ukrainian, Czech, German, Spanish, French, Italian, Dutch, Polish and Portuguese, each under its own address, including the weather descriptions and place names
 - ⚙️ **Your way**: light, dark or automatic theme, metric (°C, m/s, hPa) or imperial (°F, mph, inHg) units and full or reduced effects, rendered by the server without a flash
 - ♿ **Accessible**: landmarks, a skip link, live regions, a real combobox, reflow down to 320 px and support for reduced motion, reduced transparency, more contrast and forced colours, checked with axe in every build
 - 🔎 **Search-friendly**: canonical and `hreflang` links, a share card per language, a sitemap, robots rules and JSON-LD with the place of every forecast
@@ -30,7 +30,7 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
   <img src="./docs/images/mobile-dark-uk.jpg" alt="Snow in Reykjavik on a phone in dark mode, in Ukrainian" width="260" />
 </p>
 
-![Air quality, the sun, wind, humidity, pressure, visibility, precipitation and cloud cover](./docs/images/desktop-details.jpg)
+![Air quality, the sun, wind, humidity, pressure, visibility, precipitation, cloud cover and the footer with the version](./docs/images/desktop-details.jpg)
 
 ## ⚛️ Front-end
 
@@ -44,6 +44,7 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
 ![Node.js](https://skillicons.dev/icons?i=nodejs)
 ![Vitest](https://skillicons.dev/icons?i=vitest)
 ![GitHub Actions](https://skillicons.dev/icons?i=githubactions)
+![Docker](https://skillicons.dev/icons?i=docker)
 ![Vercel](https://skillicons.dev/icons?i=vercel)
 
 TypeScript 7 · Oxlint · Oxfmt · Vitest 5 · Testing Library · Playwright · axe · Lighthouse · React Compiler · CodeQL
@@ -54,7 +55,7 @@ Requires **Node.js 24.15** or newer and a free [OpenWeatherMap API key](https://
 
 ```bash
 npm ci
-cp .env.example .env.local   # then paste your key into OPENWEATHERMAP_API_KEY
+cp .env.example .env         # then paste your key into OPENWEATHERMAP_API_KEY
 npm run dev                  # http://localhost:3000, redirects to your language
 ```
 
@@ -65,6 +66,12 @@ npm run dev                  # http://localhost:3000, redirects to your language
 npm run check                # lint, format check, type check and unit tests in one go
 npm run test:e2e             # browsers, accessibility and Lighthouse against a mock OpenWeatherMap API
 npm run build && npm start   # production build
+```
+
+🐳 The same app runs in Docker, with an overlay for every environment, see [Deployment](./docs/deployment.md#-docker):
+
+```bash
+docker compose -f compose.yaml -f docker/development.yaml up --watch
 ```
 
 > [!TIP]
@@ -84,7 +91,8 @@ npm run build && npm start   # production build
 | 🔎 [SEO](./docs/seo.md)                         | Metadata, canonical links, share cards and structured data   |
 | 🛡️ [Security](./docs/security.md)               | Content Security Policy, the API key, validation and limits  |
 | 🧪 [Testing](./docs/testing.md)                 | Unit and browser tests, the mock API, axe and Lighthouse     |
-| 🚀 [Deployment](./docs/deployment.md)           | CI, the build report, Vercel and self-hosting                |
+| 🚀 [Deployment](./docs/deployment.md)           | CI, the build report, Vercel, Docker and self-hosting        |
+| 🏷️ [Releases](./docs/releases.md)               | Versions, branches, the changelog and environments           |
 | 🤝 [Contributing](./docs/contributing.md)       | Workflow, code style and commit conventions                  |
 | ❓ [FAQ](./docs/faq.md)                         | Common questions                                             |
 
@@ -92,7 +100,7 @@ npm run build && npm start   # production build
 
 - 🔑 **A free API key is enough.** When the key does not include the daily forecast, the week is built from the free 5-day / 3-hour forecast instead.
 - 🔒 **Nothing is tracked.** Preferences are four cookies, saved places stay in your browser, and the browser only talks to the app itself.
-- 🐢 **The sky stands still on Windows and Android** by default, which keeps scrolling smooth; **Settings → Effects → Full** brings the motion back.
+- 🐢 **Effects follow the device.** Windows and Android get flat glass without blur and a still sky by default; **Settings → Effects → Full** brings the blur and the motion back.
 - 🗃️ **Weather is cached for 10 minutes** on the server, so many visitors of one city cost one request.
 
 > [!IMPORTANT]

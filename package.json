@@ -1,12 +1,13 @@
 {
-  "name": "next-weather-app",
+  "name": "weather",
+  "version": "1.0.0",
   "private": true,
   "description": "A fast, private weather dashboard built with Next.js server components and OpenWeatherMap.",
   "license": "MIT",
   "author": "Illia Movchko (https://github.com/sacrificed666)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sacrificed666/next-weather-app.git"
+    "url": "git+https://github.com/sacrificed666/weather.git"
   },
   "type": "module",
   "scripts": {

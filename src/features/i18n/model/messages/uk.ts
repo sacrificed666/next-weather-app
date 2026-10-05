@@ -146,6 +146,7 @@ export const uk: Messages = {
   "footer.data": "Погодні дані",
   "footer.icons": "Іконки",
   "footer.source": "Вихідний код",
+  "external.newTab": "відкривається в новій вкладці",
 
   "loading.forecast": "Завантажую прогноз…",
 };

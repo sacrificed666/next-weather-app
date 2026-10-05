@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "react", "jsx-a11y", "import", "unicorn", "oxc", "nextjs", "vitest"],
-  "jsPlugins": ["./lint/no-comments.js"],
+  "jsPlugins": ["./lint/comments.js"],
   "categories": {
     "correctness": "error",
     "suspicious": "error",
@@ -17,7 +17,7 @@
   },
   "ignorePatterns": [".next", "coverage", "playwright-report", "test-results", "public", "next-env.d.ts"],
   "rules": {
-    "local/no-comments": "error",
+    "local/short-comments": "error",
     "eqeqeq": "error",
     "no-console": "error",
     "prefer-const": "error",
@@ -38,6 +38,12 @@
     ],
     "react/rules-of-hooks": "error",
     "react/exhaustive-deps": "error",
+    "react/only-export-components": [
+      "error",
+      {
+        "allowConstantExport": true
+      }
+    ],
     "react/button-has-type": "error",
     "react/jsx-key": "error",
     "react/jsx-no-useless-fragment": "error",
@@ -55,10 +61,6 @@
     "react/incompatible-library": "error",
     "react/preserve-manual-memoization": "error",
     "react/no-deriving-state-in-effects": "error",
-    "react-perf/jsx-no-new-function-as-prop": "off",
-    "react-perf/jsx-no-new-object-as-prop": "off",
-    "react-perf/jsx-no-new-array-as-prop": "off",
-    "react-perf/jsx-no-jsx-as-prop": "off",
     "nextjs/no-img-element": "off",
     "typescript/consistent-type-imports": "error",
     "typescript/consistent-type-definitions": ["error", "interface"],
@@ -88,6 +90,12 @@
     "typescript/consistent-return": "off"
   },
   "overrides": [
+    {
+      "files": ["src/app/**"],
+      "rules": {
+        "react/only-export-components": "off"
+      }
+    },
     {
       "files": ["src/shared/**"],
       "rules": {

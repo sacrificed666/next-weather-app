@@ -1,6 +1,6 @@
 # 🛡️ Security
 
-Weather App is a small Next.js server with no accounts and no database. Its valuable asset is the **OpenWeatherMap API key**, and its attack surface is what reaches the server: URL parameters, the search endpoint, the preference cookies, and the data returned by OpenWeatherMap.
+Weather is a small Next.js server with no accounts and no database. Its valuable asset is the **OpenWeatherMap API key**, and its attack surface is what reaches the server: URL parameters, the search endpoint, the preference cookies, and the data returned by OpenWeatherMap.
 
 To report a vulnerability, follow the [security policy](../.github/SECURITY.md).
 
@@ -92,7 +92,7 @@ Icons and flags additionally get `Content-Security-Policy: default-src 'none'; s
 
 | Input                  | Protection                                                                                       |
 | ---------------------- | ------------------------------------------------------------------------------------------------ |
-| 🧭 Language segment    | Must be one of the eight languages; anything else is redirected or answered with a 404           |
+| 🧭 Language segment    | Must be one of the ten languages; anything else is redirected or answered with a 404             |
 | 🔗 `?lat=&lon=`        | Must both be numbers within ±90 and ±180; rounded to two decimals                                |
 | 🔗 `?city=`            | Trimmed, at most 80 characters; sent to OpenWeatherMap as a URL parameter, never interpolated    |
 | 🍪 Cookies             | Each value is checked against its allowed list; anything else falls back to the default          |
@@ -118,7 +118,8 @@ React escapes every string it renders. The only `dangerouslySetInnerHTML` is the
 - 🛡️ The dependency review action blocks pull requests that add dependencies with high-severity advisories.
 - 🔬 CodeQL scans the TypeScript code and the workflows with the `security-extended` queries on every push, pull request and weekly.
 - 🔐 Workflows run with a read-only token and do not persist credentials.
-- 🤖 Dependabot proposes npm and GitHub Actions updates every Monday.
+- 🤖 Dependabot proposes npm, GitHub Actions and Docker updates every Monday.
+- 🐳 Docker images run as the unprivileged `node` user, `.dockerignore` keeps every `.env*` file out of the build context, and the environment file reaches the build only as a BuildKit secret, so the key never lands in an image layer.
 
 ## ☑️ Checklist for contributors
 

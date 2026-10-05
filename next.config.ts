@@ -20,6 +20,8 @@ const imageHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Docker ships a self-contained server, see docker/Dockerfile
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   reactCompiler: true,
   poweredByHeader: false,
   agentRules: false,

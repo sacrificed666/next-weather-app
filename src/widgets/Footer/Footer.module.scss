@@ -11,25 +11,11 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem 1.5rem;
   max-inline-size: var(--layout-width);
   margin-inline: auto;
   padding: 1rem 1.25rem;
-}
-
-.credits {
-  display: grid;
-  gap: 0.2rem;
   font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.sources {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem 0.75rem;
-  color: var(--color-text-secondary);
-  font-weight: 500;
 
   a {
     color: var(--color-text);
@@ -40,4 +26,32 @@
       color: var(--color-accent);
     }
   }
+}
+
+.owner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-weight: 600;
+
+  > span {
+    color: var(--color-text-tertiary);
+  }
+
+  a {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.hint {
+  @include visually-hidden;
 }

@@ -17,6 +17,21 @@
   }
 }
 
+// Reduced effects trade blur for denser tints and short shadows
+:root[data-effects="reduced"] {
+  @include tokens.reduced-light;
+}
+
+:root[data-effects="reduced"][data-theme="dark"] {
+  @include tokens.reduced-dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-effects="reduced"][data-theme="system"] {
+    @include tokens.reduced-dark;
+  }
+}
+
 @include skies.sky-colors("light");
 
 :root[data-theme="dark"] {
@@ -50,12 +65,21 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
+  background-color: var(--backdrop-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Fixed backdrop layer, cheaper to scroll than background-attachment: fixed
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
   background:
     radial-gradient(120% 80% at 80% -10%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 60%),
     var(--backdrop-base);
-  background-attachment: fixed;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  pointer-events: none;
 }
 
 h1,

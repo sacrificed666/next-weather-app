@@ -36,6 +36,12 @@ body:
       description: The page address helps to reproduce forecast problems.
       placeholder: /?lat=49.84&lon=24.03
   - type: input
+    id: version
+    attributes:
+      label: 🏷️ Version
+      description: Shown in the footer of the app.
+      placeholder: v1.0.0
+  - type: input
     id: environment
     attributes:
       label: 💻 Browser and device

@@ -4,19 +4,20 @@
 
 ```mermaid
 flowchart LR
-  Branch[🌿 Branch from main] --> Code[✏️ Change + tests + docs]
+  Branch[🌿 Branch from development] --> Code[✏️ Change + tests + docs]
   Code --> Check[✅ npm run check]
   Check --> Build[📦 npm run build]
   Build --> E2E[🎭 npm run test:e2e]
-  E2E --> PR[📬 Pull request]
+  E2E --> PR[📬 Pull request into development]
   PR --> CI[🔍 CI · 🎭 E2E · 🔬 CodeQL · 🛡️ dependency review]
   CI --> Merge[🔀 Merge]
 ```
 
-1. 🌿 Create a branch from `main`.
+1. 🌿 Create a branch from `development`, named after the change: `feat/hourly-wind`, `fix/search-focus`.
 2. ✅ Make your changes, add tests and run `npm run check` (and `npm run build` when routes, server code or configuration changed). For changes a visitor can see, also run `npm run test:e2e`.
-3. 📬 Open a pull request and fill in the checklist from the template.
-4. 🔀 Merge once everything is green.
+3. 📝 Describe a user-visible change in one line under **Unreleased** in `CHANGELOG.md`.
+4. 📬 Open a pull request into `development` and fill in the checklist from the template.
+5. 🔀 Merge once everything is green. `development` reaches `staging` and `main` through the release flow in [Releases](./releases.md).
 
 Bugs and ideas go through the issue forms in `.github/ISSUE_TEMPLATE`; security problems are reported privately as described in the [security policy](../.github/SECURITY.md).
 
@@ -31,9 +32,19 @@ Formatting and linting are automated, so reviews can focus on behaviour.
 - 🧹 **Oxlint** enables the `correctness`, `suspicious` and `perf` categories with type-aware TypeScript rules, React hooks and React Compiler rules, the Next.js, `jsx-a11y`, `import`, `unicorn` and `vitest` plugins, plus the layer rules below. Run `npm run lint`.
 - 🔷 **TypeScript** runs in strict mode with `noUncheckedIndexedAccess`, `verbatimModuleSyntax` and `erasableSyntaxOnly`.
 
-### 🚫 No comments
+### 💬 Comments
 
-The codebase contains no comments: names, small functions and types carry the intent instead. A custom Oxlint plugin in `lint/no-comments.js` (`local/no-comments`) reports every comment in JavaScript and TypeScript files, including `eslint-disable`-style directives. Styles, configuration, workflows and templates follow the same convention. If something needs explanation, prefer a better name, an extracted function or a paragraph in `docs/`.
+Names, small functions and types carry the intent; a comment only names what a block or a function does, in one short line above it:
+
+```ts
+// Moves a value saved under an earlier key unless the new key is already taken
+export const moveKey = (storage: Storage, from: string, to: string) => {
+```
+
+> [!IMPORTANT]
+> A custom Oxlint plugin in `lint/comments.js` (`local/short-comments`) reports comments longer than one line or 80 characters, comments at the end of a line of code and every lint, type or coverage directive (`eslint-disable`, `@ts-expect-error`, `istanbul ignore` and the like).
+
+Styles, configuration, Dockerfiles and workflows follow the same convention. Anything that needs more than a line belongs in `docs/`.
 
 ### 🧭 Where code goes
 
@@ -85,7 +96,7 @@ const DewPointCard = ({ forecast: { current }, t, format, className }: ForecastV
 );
 ```
 
-Add the messages in all eight languages, render the card in `widgets/Forecast/Forecast.tsx`, add a skeleton entry in `ForecastSkeleton`, and keep the details grid free of holes: on wide screens it has four columns, and wide cards span two.
+Add the messages in all ten languages, render the card in `widgets/Forecast/Forecast.tsx`, add a skeleton entry in `ForecastSkeleton`, and keep the details grid free of holes: on wide screens it has four columns, and wide cards span two.
 
 > [!TIP]
 > Give a card that holds a row of values a container query instead of a page breakpoint, like `DailyForecast` and `WindCard`: cards are narrow on phones and in the side column alike.

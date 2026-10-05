@@ -6,8 +6,8 @@ import ForecastSkeleton from "@/features/forecast/ui/ForecastSkeleton/ForecastSk
 import { forecastSearch, locationKey, parseLocation } from "@/features/places/model/location";
 import { placeKey } from "@/features/places/model/place";
 import SavedPlaces from "@/features/places/ui/SavedPlaces/SavedPlaces";
-import { getLocalization } from "@/features/preferences/model/server";
 import { alternates, describeForecast, documentTitle, social } from "@/features/seo/model/seo";
+import { getLocalization } from "@/features/settings/model/server";
 import Forecast from "@/widgets/Forecast/Forecast";
 
 const hidden = { index: false, follow: true } as const;

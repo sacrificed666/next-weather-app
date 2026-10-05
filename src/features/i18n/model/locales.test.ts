@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isLocale, localeDetails, locales, matchLocale } from "./locales";
+import { isLocale, LOCALE_INFO, LOCALES, negotiateLocale } from "./locales";
 
 describe("locales", () => {
   it("recognises supported locales", () => {
@@ -10,9 +10,10 @@ describe("locales", () => {
   });
 
   it("describes every locale", () => {
-    for (const locale of locales) {
-      expect(localeDetails[locale].intl.startsWith(locale)).toBe(true);
-      expect(localeDetails[locale].flag).toMatch(/^[A-Z]{2}$/u);
+    for (const locale of LOCALES) {
+      expect(LOCALE_INFO[locale].intl.startsWith(locale)).toBe(true);
+      expect(LOCALE_INFO[locale].flag).toMatch(/^[A-Z]{2}$/u);
+      expect(LOCALE_INFO[locale].openWeather).toMatch(/^[a-z]{2}$/u);
     }
   });
 
@@ -23,9 +24,12 @@ describe("locales", () => {
     ["ru-RU,ru;q=0.9,de;q=0.7,en;q=0.5", "de"],
     ["en;q=0.2, pl;q=0.9", "pl"],
     ["fr-CA;q=0, it", "it"],
+    ["pt-BR,pt;q=0.9,en;q=0.8", "pt"],
+    ["cs-CZ,cs;q=0.9", "cs"],
+    ["sk-SK,sk;q=0.9,cs;q=0.8,en;q=0.7", "cs"],
     ["ja, zh", "en"],
     ["*", "en"],
   ])("matches %j to %s", (header, locale) => {
-    expect(matchLocale(header)).toBe(locale);
+    expect(negotiateLocale(header)).toBe(locale);
   });
 });

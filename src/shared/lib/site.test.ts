@@ -23,4 +23,10 @@ describe("isIndexable", () => {
     expect(isIndexable({ VERCEL_ENV: "preview" })).toBe(false);
     expect(isIndexable({ VERCEL_ENV: "development" })).toBe(false);
   });
+
+  it("follows APP_ENV in Docker", () => {
+    expect(isIndexable({ APP_ENV: "production" })).toBe(true);
+    expect(isIndexable({ APP_ENV: "staging" })).toBe(false);
+    expect(isIndexable({ APP_ENV: "development" })).toBe(false);
+  });
 });

@@ -144,6 +144,7 @@ export const en = {
   "footer.data": "Weather data",
   "footer.icons": "Icons",
   "footer.source": "Source code",
+  "external.newTab": "opens in a new tab",
 
   "loading.forecast": "Loading the forecast…",
 } satisfies Record<string, string>;

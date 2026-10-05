@@ -18,6 +18,19 @@ test.describe("with a Ukrainian browser", () => {
   });
 });
 
+test.describe("with a Czech browser", () => {
+  test.use({ locale: "cs-CZ" });
+
+  test("opens the forecast in Czech with local names and descriptions", async ({ page }) => {
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/cs$/u);
+    await expect(page.locator("html")).toHaveAttribute("lang", "cs");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Lvov");
+    await expect(page.getByText("Slabý déšť", { exact: true }).first()).toBeVisible();
+    await expect(page.getByRole("button", { name: "Nastavení" })).toBeVisible();
+  });
+});
+
 test("lowercases the language of an address", async ({ page }) => {
   await page.goto("/DE?city=Kyiv");
   await expect(page).toHaveURL(/\/de\?city=Kyiv$/u);
