@@ -1,22 +1,26 @@
 @use "sass:map";
 
+// Tablet and desktop widths
 $breakpoints: (
   "md": 720px,
   "lg": 1100px,
 );
 
+// Styles from a breakpoint up
 @mixin from($name) {
   @media (width >= map.get($breakpoints, $name)) {
     @content;
   }
 }
 
+// Styles below a breakpoint
 @mixin below($name) {
   @media (width < map.get($breakpoints, $name)) {
     @content;
   }
 }
 
+// Hover styles only for a mouse or a trackpad
 @mixin hover {
   @media (hover: hover) and (pointer: fine) {
     &:hover {
@@ -25,6 +29,7 @@ $breakpoints: (
   }
 }
 
+// The keyboard focus outline
 @mixin focus-ring($offset: 2px) {
   &:focus-visible {
     outline: 2px solid var(--color-focus);
@@ -32,6 +37,7 @@ $breakpoints: (
   }
 }
 
+// A springy press for buttons
 @mixin pressable {
   transition:
     scale var(--duration-fast) var(--ease-spring),
@@ -43,6 +49,7 @@ $breakpoints: (
   }
 }
 
+// Hidden on screen but read by screen readers
 @mixin visually-hidden {
   position: absolute;
   inline-size: 1px;
@@ -55,6 +62,7 @@ $breakpoints: (
   border: 0;
 }
 
+// A thin light rim along the edge of glass
 @mixin rim {
   content: "";
   position: absolute;
@@ -75,6 +83,7 @@ $breakpoints: (
   pointer-events: none;
 }
 
+// Frosted glass with its tint, blur, rim and shadow
 @mixin glass(
   $radius: var(--radius-lg),
   $tint: var(--glass-tint),
@@ -128,6 +137,7 @@ $breakpoints: (
   }
 }
 
+// The small caps label above a card
 @mixin section-label {
   display: flex;
   align-items: center;

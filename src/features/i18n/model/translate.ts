@@ -6,6 +6,7 @@ export type Translate = (key: MessageKey, params?: MessageParams) => string;
 
 const PLACEHOLDER = /\{(\w+)\}/gu;
 
+// A translate function that fills placeholders and picks plurals
 export const createTranslator =
   (messages: Messages): Translate =>
   (key, params) => {

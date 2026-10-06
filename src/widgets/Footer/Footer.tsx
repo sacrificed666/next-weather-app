@@ -4,6 +4,7 @@ import { currentYear } from "@/shared/lib/time";
 
 import styles from "./Footer.module.scss";
 
+// Author, version, data source and source code
 const Footer = ({ t }: { t: Translate }) => {
   const newTab = <span className={styles.hint}> ({t("external.newTab")})</span>;
 

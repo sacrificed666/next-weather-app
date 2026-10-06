@@ -14,8 +14,10 @@ export const DEFAULT_LOCATION = {
   longitude: 24.03,
 } as const satisfies LocationQuery;
 
+// The first value of a search parameter, trimmed
 const single = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
 
+// Coordinates or a city from the address, Lviv when both are missing
 export const parseLocation = (params: SearchParams): LocationQuery | null => {
   const city = single(params.city);
   const latitude = single(params.lat);
@@ -33,14 +35,18 @@ export const parseLocation = (params: SearchParams): LocationQuery | null => {
   return DEFAULT_LOCATION;
 };
 
+// A key that changes when the requested place changes
 export const locationKey = (query: LocationQuery | null) => {
   if (!query) return "invalid";
   return query.kind === "city" ? `city:${query.name.toLocaleLowerCase()}` : placeKey(query);
 };
 
+// Whether the address points to the default place
 export const isDefaultLocation = (query: LocationQuery) => locationKey(query) === placeKey(DEFAULT_LOCATION);
 
+// The home page for a city name
 export const cityHref = (locale: Locale, name: string) => `/${locale}?city=${encodeURIComponent(name.trim())}`;
 
+// The query of a forecast address, empty for the default place
 export const forecastSearch = (query: LocationQuery, place: Pick<Place, "latitude" | "longitude">) =>
   isDefaultLocation(query) ? "" : placeSearch(place);

@@ -4,11 +4,13 @@ export const COMPASS_POINTS = ["n", "ne", "e", "se", "s", "sw", "w", "nw"] as co
 
 export type CompassPoint = (typeof COMPASS_POINTS)[number];
 
+// One of eight compass points for a wind direction
 export const compassPoint = (degrees: number): CompassPoint =>
   COMPASS_POINTS[Math.round((((degrees % 360) + 360) % 360) / 45) % COMPASS_POINTS.length] ?? "n";
 
 export type FeelsLike = "similar" | "colder" | "warmer";
 
+// Whether it feels colder, warmer or like the real temperature
 export const feelsLike = (actual: number, apparent: number): FeelsLike => {
   if (Math.abs(apparent - actual) < 2) return "similar";
   return apparent < actual ? "colder" : "warmer";
@@ -18,6 +20,7 @@ export type PressureLevel = "low" | "normal" | "high";
 
 export const PRESSURE_SCALE = { min: 960, max: 1060 } as const;
 
+// Low, normal or high air pressure
 export const pressureLevel = (hectopascals: number): PressureLevel => {
   if (hectopascals < 1006) return "low";
   if (hectopascals > 1020) return "high";
@@ -26,6 +29,7 @@ export const pressureLevel = (hectopascals: number): PressureLevel => {
 
 export type VisibilityLevel = "clear" | "hazy" | "poor";
 
+// Clear, hazy or poor visibility
 export const visibilityLevel = (meters: number): VisibilityLevel => {
   if (meters >= 10_000) return "clear";
   if (meters >= 4000) return "hazy";
@@ -34,6 +38,7 @@ export const visibilityLevel = (meters: number): VisibilityLevel => {
 
 export type CloudLevel = "clear" | "partly" | "mostly" | "overcast";
 
+// Clear, partly, mostly cloudy or overcast
 export const cloudLevel = (percent: number): CloudLevel => {
   if (percent < 20) return "clear";
   if (percent < 60) return "partly";
@@ -41,9 +46,11 @@ export const cloudLevel = (percent: number): CloudLevel => {
   return "overcast";
 };
 
+// Where a value sits between two ends, from 0 to 1
 export const progress = (value: number, min: number, max: number) =>
   max === min ? 0.5 : clamp((value - min) / (max - min), 0, 1);
 
+// How far the sun is through the day, or null at night
 export const daylightProgress = (now: number, sunrise: number, sunset: number) =>
   now < sunrise || now > sunset ? null : progress(now, sunrise, sunset);
 

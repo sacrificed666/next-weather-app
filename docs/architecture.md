@@ -203,6 +203,8 @@ sequenceDiagram
 Saved and recent places are browser-only state in `localStorage` (`weather/saved-places`, up to 12, and `weather/recent-places`, up to 5). `createStoredList()` in `shared/lib/storedList.ts` turns a key into an external store for `useSyncExternalStore`:
 
 - 🛡️ every read goes through `parsePlace()`, so broken or edited storage falls back to an empty list;
+- 🌍 a place keeps its `local_names` for the ten languages, and `placeName()` picks the one of the page;
+- 👯 `isSamePlace()` treats places of one country within 25 km that share a name as one, so the list drops duplicates on read and the star recognises a city saved from another search or from the location button;
 - 🔄 the `storage` event keeps tabs in sync;
 - 🖥️ the server snapshot is always empty, so hydration never mismatches and the chips appear right after it;
 - 🚫 blocked storage (private modes) simply disables the feature.

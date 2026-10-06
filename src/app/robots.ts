@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { isIndexable, siteUrl } from "@/shared/lib/site";
 
+// Robots rules: open on the indexable site, closed on every other deployment
 const robots = (): MetadataRoute.Robots => {
   const base = siteUrl();
   if (!isIndexable()) return { rules: { userAgent: "*", disallow: "/" } };

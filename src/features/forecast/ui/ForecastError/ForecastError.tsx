@@ -28,6 +28,7 @@ interface ForecastErrorProps {
   onRetry?: () => void;
 }
 
+// Why the forecast is missing, with a retry or a way home
 const ForecastError = ({ kind, t, home, digest, onRetry }: ForecastErrorProps) => {
   const { icon, title, text, retry } = content[kind];
   return (

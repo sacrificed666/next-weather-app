@@ -116,6 +116,7 @@ export const forecast: Forecast = {
 
 export const t = createTranslator(en);
 
+// Props of a forecast card with fields to override
 export const view = (overrides: Partial<Forecast> = {}) => ({
   forecast: { ...forecast, ...overrides },
   t,
@@ -123,5 +124,6 @@ export const view = (overrides: Partial<Forecast> = {}) => ({
   animated: true,
 });
 
+// A fetch response with a JSON body
 export const jsonResponse = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });

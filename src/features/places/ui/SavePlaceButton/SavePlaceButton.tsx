@@ -8,6 +8,7 @@ import { canSavePlace, isSaved, savedPlaces, toggleSavedPlace, useStoredPlaces }
 
 import styles from "./SavePlaceButton.module.scss";
 
+// Saves the shown place or removes it from the saved ones
 const SavePlaceButton = ({ place }: { place: Place }) => {
   const { t } = useI18n();
   const places = useStoredPlaces(savedPlaces);

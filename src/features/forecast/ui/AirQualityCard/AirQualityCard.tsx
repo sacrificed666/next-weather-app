@@ -15,6 +15,7 @@ const POLLUTANTS = [
   { key: "nitrogenDioxide", label: "NO₂" },
 ] as const satisfies readonly { key: keyof Omit<AirQuality, "index">; label: string }[];
 
+// Air quality index with advice and a five-step scale
 const AirQualityCard = ({ forecast: { airQuality }, t, format, className }: ForecastViewProps) => (
   <Card className={cx(styles.card, className)} title={t("air.title")} icon="leaf">
     {airQuality === null ? (

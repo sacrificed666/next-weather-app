@@ -13,6 +13,7 @@ const CARDINALS = [
   { point: "w", x: 23, y: 61 },
 ] as const;
 
+// Wind speed, gusts and direction on a compass
 const WindCard = ({ forecast: { current }, t, format, className }: ForecastViewProps) => {
   const { speed, gust, direction } = current.wind;
   const calm = speed < 0.5;

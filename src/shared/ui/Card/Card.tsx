@@ -11,13 +11,15 @@ interface CardProps {
   title: string;
   icon: IconName;
   children: ReactNode;
+  compact?: boolean;
   className?: string;
 }
 
-const Card = ({ title, icon, children, className }: CardProps) => {
+// A glass card with a labelled heading; compact for the small detail tiles
+const Card = ({ title, icon, children, compact = false, className }: CardProps) => {
   const headingId = useId();
   return (
-    <section className={cx(styles.card, className)} aria-labelledby={headingId}>
+    <section className={cx(styles.card, compact && styles.compact, className)} aria-labelledby={headingId}>
       <h2 className={styles.title} id={headingId}>
         <Icon name={icon} size={15} />
         {title}

@@ -6,6 +6,7 @@ import { isPreferenceValue, PREFERENCE_COOKIES, type PreferenceName } from "./pr
 
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
+// Stores a valid setting in a cookie the server reads on every page
 export const savePreference = async (name: PreferenceName, value: string) => {
   if (!Object.hasOwn(PREFERENCE_COOKIES, name) || !isPreferenceValue(name, value)) return;
   (await cookies()).set(PREFERENCE_COOKIES[name], value, {

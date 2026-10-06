@@ -9,6 +9,7 @@ interface ErrorPageProps {
   retry: () => void;
 }
 
+// Shown when the forecast fails to render, with a way to try again
 const ErrorPage = ({ error, retry }: ErrorPageProps) => {
   const { locale, t } = useI18n();
   return <ForecastError kind="unexpected" t={t} home={homeHref(locale)} digest={error.digest} onRetry={retry} />;

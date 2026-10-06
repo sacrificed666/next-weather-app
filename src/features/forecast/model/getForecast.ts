@@ -26,6 +26,7 @@ type ResolvedLocation =
   | { ok: true; latitude: number; longitude: number; place: Place | null }
   | { ok: false; failure: ForecastFailure };
 
+// Coordinates and place for a city name or a pair of coordinates
 const resolveLocation = async (query: LocationQuery, locale: Locale): Promise<ResolvedLocation> => {
   if (query.kind === "coordinates") {
     const place = await findPlace(query.latitude, query.longitude, locale);
@@ -39,14 +40,17 @@ const resolveLocation = async (query: LocationQuery, locale: Locale): Promise<Re
     : { ok: false, failure: "not-found" };
 };
 
+// The seven-day forecast, skipped for a while when the plan lacks it
 const fetchDaily = async (coordinates: Readonly<Record<string, string | number>>): Promise<OpenWeatherResult> => {
   if (Date.now() < dailyEndpointBlockedUntil) return { ok: false, failure: "invalid-key" };
   return fetchOpenWeather("/data/2.5/forecast/daily", { ...coordinates, cnt: 7 }, WEATHER_REVALIDATE_SECONDS);
 };
 
+// The key works but the daily forecast is not part of its plan
 const isOutsidePlan = (daily: OpenWeatherResult, current: OpenWeatherResult) =>
   current.ok && !daily.ok && daily.failure === "invalid-key";
 
+// Current weather, hours, days and air quality of a place
 export const getForecast = async (query: LocationQuery, locale: Locale): Promise<ForecastResult> => {
   const location = await resolveLocation(query, locale);
   if (!location.ok) return location;

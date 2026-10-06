@@ -14,6 +14,7 @@ type Status = "idle" | "locating" | "denied" | "failed";
 
 const MESSAGE_DURATION_MS = 6000;
 
+// Opens the forecast for the visitor's position
 const LocateButton = () => {
   const { locale, t } = useI18n();
   const router = useRouter();
@@ -21,12 +22,14 @@ const LocateButton = () => {
   const [navigating, startNavigation] = useTransition();
   const failed = status === "denied" || status === "failed";
 
+  // Hides the error message again after a few seconds
   useEffect(() => {
     if (!failed) return;
     const timer = setTimeout(() => setStatus("idle"), MESSAGE_DURATION_MS);
     return () => clearTimeout(timer);
   }, [failed]);
 
+  // Asks for the position and opens its forecast
   const locate = () => {
     if (!("geolocation" in navigator)) {
       setStatus("failed");

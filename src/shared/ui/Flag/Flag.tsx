@@ -5,6 +5,7 @@ interface FlagProps {
   height?: number;
 }
 
+// A country flag served by the app
 const Flag = ({ country, height = 16 }: FlagProps) => (
   <img
     className={styles.flag}

@@ -19,7 +19,7 @@ import Flag from "@/shared/ui/Flag/Flag";
 import Icon from "@/shared/ui/Icon/Icon";
 
 import { cityHref } from "../../model/location";
-import { parsePlace, placeHref, placeKey, type Place } from "../../model/place";
+import { parsePlace, placeHref, placeKey, placeName, type Place } from "../../model/place";
 import { clearRecentPlaces, recentPlaces, rememberPlace, useStoredPlaces } from "../../model/storedPlaces";
 
 import styles from "./CitySearch.module.scss";
@@ -32,6 +32,7 @@ interface Lookup {
   places: Place[] | null;
 }
 
+// Places for a query from our API, or null when it fails
 const fetchPlaces = async (query: string, locale: Locale, signal: AbortSignal): Promise<Place[] | null> => {
   const response = await fetch(`/api/places?q=${encodeURIComponent(query)}&lang=${locale}`, { signal });
   if (!response.ok) return null;
@@ -41,6 +42,7 @@ const fetchPlaces = async (query: string, locale: Locale, signal: AbortSignal): 
     .filter((place): place is Place => place !== null);
 };
 
+// A combobox that suggests cities while typing
 const CitySearch = () => {
   const { locale, t, intlLocale } = useI18n();
   const router = useRouter();
@@ -63,6 +65,7 @@ const CitySearch = () => {
   const expanded = open && (options.length > 0 || searching);
   const countries = new Intl.DisplayNames(intlLocale, { type: "region", fallback: "code" });
 
+  // Looks the query up after a short pause and cancels outdated requests
   useEffect(() => {
     if (trimmed.length < MIN_QUERY_LENGTH) return;
     const controller = new AbortController();
@@ -79,6 +82,7 @@ const CitySearch = () => {
     };
   }, [trimmed, locale]);
 
+  // Closes the list and opens an address
   const navigate = (href: string) => {
     setOpen(false);
     setQuery("");
@@ -87,11 +91,13 @@ const CitySearch = () => {
     startNavigation(() => router.push(href));
   };
 
+  // Opens a suggested place and remembers it
   const choose = (place: Place) => {
     rememberPlace(place);
     navigate(placeHref(locale, place));
   };
 
+  // Enter opens the highlighted place or searches for the typed name
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const option = expanded ? options[active] : undefined;
@@ -99,6 +105,7 @@ const CitySearch = () => {
     else if (trimmed !== "") navigate(cityHref(locale, trimmed));
   };
 
+  // Moves the highlight through the suggestions and wraps around
   const move = (step: 1 | -1) => {
     setOpen(true);
     const count = options.length;
@@ -109,6 +116,7 @@ const CitySearch = () => {
     });
   };
 
+  // Arrows move through the suggestions; Escape closes them or clears the text
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown") {
       event.preventDefault();
@@ -123,6 +131,7 @@ const CitySearch = () => {
     }
   };
 
+  // Closes the list when the focus leaves the search
   const onBlur = (event: FocusEvent<HTMLElement>) => {
     if (!event.currentTarget.closest("search")?.contains(event.relatedTarget)) setOpen(false);
   };
@@ -209,7 +218,7 @@ const CitySearch = () => {
                   )}
                 </span>
                 <span className={styles.label}>
-                  <span className={styles.name}>{place.name}</span>
+                  <span className={styles.name}>{placeName(place, locale)}</span>
                   <span className={styles.details}>
                     {[place.region, place.country ? countries.of(place.country) : null].filter(Boolean).join(", ")}
                   </span>

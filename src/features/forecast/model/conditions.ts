@@ -2,8 +2,10 @@ import type { Condition } from "./types";
 
 export type Sky = "clear-day" | "clear-night" | "cloudy-day" | "cloudy-night" | "rain" | "storm" | "snow" | "fog";
 
+// Day or night variant of an icon
 const cycle = (daytime: boolean) => (daytime ? "day" : "night");
 
+// Icon for a thunderstorm code
 const thunderstormIcon = (code: number, daytime: boolean) => {
   if (code === 200 || code === 230) return `thunderstorms-${cycle(daytime)}-rain`;
   if (code === 201 || code === 231) return "thunderstorms-rain";
@@ -13,12 +15,14 @@ const thunderstormIcon = (code: number, daytime: boolean) => {
   return "thunderstorms";
 };
 
+// Icon for a drizzle code
 const drizzleIcon = (code: number, daytime: boolean) => {
   if (code === 300 || code === 310) return `partly-cloudy-${cycle(daytime)}-drizzle`;
   if (code === 302 || code === 312 || code === 314) return "extreme-drizzle";
   return "drizzle";
 };
 
+// Icon for a rain code
 const rainIcon = (code: number, daytime: boolean) => {
   if (code === 500 || code === 520) return `partly-cloudy-${cycle(daytime)}-rain`;
   if (code === 511) return "sleet";
@@ -26,6 +30,7 @@ const rainIcon = (code: number, daytime: boolean) => {
   return "rain";
 };
 
+// Icon for a snow code
 const snowIcon = (code: number, daytime: boolean) => {
   if (code === 600 || code === 620) return `partly-cloudy-${cycle(daytime)}-snow`;
   if (code === 602 || code === 622) return "extreme-snow";
@@ -54,6 +59,7 @@ const cloudIcons: Readonly<Record<number, (daytime: boolean) => string>> = {
   804: () => "overcast",
 };
 
+// The weather icon for an OpenWeather condition code
 export const conditionIcon = ({ code, daytime }: Pick<Condition, "code" | "daytime">): string => {
   const group = Math.floor(code / 100);
   if (group === 2) return thunderstormIcon(code, daytime);
@@ -63,6 +69,7 @@ export const conditionIcon = ({ code, daytime }: Pick<Condition, "code" | "dayti
   return (atmosphereIcons[code] ?? cloudIcons[code])?.(daytime) ?? "not-available";
 };
 
+// The sky behind the page for a condition
 export const conditionSky = ({ code, daytime }: Pick<Condition, "code" | "daytime">): Sky => {
   const group = Math.floor(code / 100);
   if (group === 2 || code === 771 || code === 781) return "storm";
@@ -73,6 +80,7 @@ export const conditionSky = ({ code, daytime }: Pick<Condition, "code" | "daytim
   return daytime ? "cloudy-day" : "cloudy-night";
 };
 
+// How bad a condition is, from clear sky to thunderstorm
 export const conditionSeverity = (code: number) => {
   const group = Math.floor(code / 100);
   if (group === 2) return 6;

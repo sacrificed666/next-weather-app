@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import { getForecast } from "@/features/forecast/model/getForecast";
 import ForecastSkeleton from "@/features/forecast/ui/ForecastSkeleton/ForecastSkeleton";
 import { forecastSearch, locationKey, parseLocation } from "@/features/places/model/location";
-import { placeKey } from "@/features/places/model/place";
 import SavedPlaces from "@/features/places/ui/SavedPlaces/SavedPlaces";
 import { alternates, describeForecast, documentTitle, social } from "@/features/seo/model/seo";
 import { getLocalization } from "@/features/settings/model/server";
@@ -12,6 +11,7 @@ import Forecast from "@/widgets/Forecast/Forecast";
 
 const hidden = { index: false, follow: true } as const;
 
+// Title, description and links for the place in the address
 export const generateMetadata = async ({ searchParams }: PageProps<"/[locale]">): Promise<Metadata> => {
   const query = parseLocation(await searchParams);
   const { locale, t, format } = await getLocalization();
@@ -32,12 +32,13 @@ export const generateMetadata = async ({ searchParams }: PageProps<"/[locale]">)
   };
 };
 
+// Saved places and the forecast for the place in the address, or for Lviv
 const Page = async ({ searchParams }: PageProps<"/[locale]">) => {
   const query = parseLocation(await searchParams);
   const { t } = await getLocalization();
   return (
     <>
-      <SavedPlaces activeKey={query?.kind === "coordinates" ? placeKey(query) : null} />
+      <SavedPlaces position={query?.kind === "coordinates" ? query : null} />
       <Suspense key={locationKey(query)} fallback={<ForecastSkeleton label={t("loading.forecast")} />}>
         <Forecast query={query} />
       </Suspense>

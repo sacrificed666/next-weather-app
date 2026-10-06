@@ -39,9 +39,10 @@
 
 .compass {
   flex: none;
-  inline-size: 7.5rem;
-  block-size: 7.5rem;
+  inline-size: 6.5rem;
+  block-size: 6.5rem;
 
+  // A smaller compass on a narrow card
   @container (width < 17rem) {
     inline-size: 5.5rem;
     block-size: 5.5rem;

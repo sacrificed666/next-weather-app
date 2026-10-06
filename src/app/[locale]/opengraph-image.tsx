@@ -9,18 +9,22 @@ export const size = OG_SIZE;
 
 export const contentType = "image/png";
 
+// One share card per language
 export const generateStaticParams = () => LOCALES.map((locale) => ({ locale }));
 
+// Translations for the language of the card
 const translatorFor = async (params: Promise<{ locale: string }>) => {
   const { locale } = await params;
   return createTranslator(getMessages(isLocale(locale) ? locale : DEFAULT_LOCALE));
 };
 
+// Alt text of the share card in the page language
 export const generateImageMetadata = async ({ params }: { params: Promise<{ locale: string }> }) => {
   const t = await translatorFor(params);
   return [{ id: "card", alt: `${t("app.name")}: ${t("app.description")}`, size, contentType }];
 };
 
+// Share card with the logo, the name and the description
 const OpenGraphImage = async ({ params }: { params: Promise<{ locale: string }> }) => {
   const t = await translatorFor(params);
   return new ImageResponse(

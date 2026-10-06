@@ -1,3 +1,4 @@
+// Colours, glass and shadows of the light theme
 @mixin light {
   color-scheme: light;
 
@@ -33,6 +34,7 @@
   --track: rgb(10 18 36 / 0.1);
 }
 
+// Colours, glass and shadows of the dark theme
 @mixin dark {
   color-scheme: dark;
 
@@ -68,6 +70,7 @@
   --track: rgb(255 255 255 / 0.14);
 }
 
+// Denser tints and short shadows without blur, light theme
 @mixin reduced-light {
   --glass-tint: rgb(255 255 255 / 0.82);
   --glass-tint-content: rgb(255 255 255 / 0.8);
@@ -76,6 +79,7 @@
   --glass-shadow-small: 0 1px 3px rgb(16 30 60 / 0.14);
 }
 
+// Denser tints and short shadows without blur, dark theme
 @mixin reduced-dark {
   --glass-tint: rgb(16 22 40 / 0.76);
   --glass-tint-content: rgb(14 20 38 / 0.8);
@@ -84,6 +88,7 @@
   --glass-shadow-small: 0 1px 3px rgb(0 0 0 / 0.35);
 }
 
+// Stronger secondary text and separators
 @mixin more-contrast {
   --color-text-secondary: color-mix(in srgb, var(--color-text) 92%, transparent);
   --color-text-tertiary: color-mix(in srgb, var(--color-text) 84%, transparent);
@@ -91,6 +96,7 @@
   --glass-rim: var(--color-separator);
 }
 
+// Font, radii, blur, motion, layout and the temperature and air colours
 @mixin shared {
   --font-sans: "Montserrat Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 

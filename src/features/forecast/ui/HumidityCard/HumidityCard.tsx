@@ -4,8 +4,9 @@ import Card from "@/shared/ui/Card/Card";
 import Metric from "../Metric/Metric";
 import type { ForecastViewProps } from "../props";
 
+// Humidity with the dew point
 const HumidityCard = ({ forecast: { current }, t, format, className }: ForecastViewProps) => (
-  <Card className={className} title={t("humidity.title")} icon="droplet">
+  <Card compact className={className} title={t("humidity.title")} icon="droplet">
     <Metric value={format.percent(current.humidity / 100)}>
       {t("humidity.dewPoint", { value: format.temperature(dewPoint(current.temperature, current.humidity)) })}
     </Metric>

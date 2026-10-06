@@ -50,6 +50,7 @@ export const currentLocale = cache(async (): Promise<Locale> => {
   return isLocale(value) ? value : DEFAULT_LOCALE;
 });
 
+// The language of a request outside the localized routes
 export const requestLocale = async (): Promise<Locale> => {
   const [requestHeaders, cookieStore] = await Promise.all([headers(), cookies()]);
   const routed = requestHeaders.get(LOCALE_HEADER);
@@ -58,6 +59,7 @@ export const requestLocale = async (): Promise<Locale> => {
   return isLocale(saved) ? saved : negotiateLocale(requestHeaders.get("accept-language"));
 };
 
+// Language, settings, messages, translator and formatter
 const localize = async (locale: Locale) => {
   const preferences = await getPreferences();
   const messages = getMessages(locale);

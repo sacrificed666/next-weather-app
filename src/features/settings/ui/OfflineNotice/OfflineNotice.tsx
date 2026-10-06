@@ -7,6 +7,7 @@ import Icon from "@/shared/ui/Icon/Icon";
 
 import styles from "./OfflineNotice.module.scss";
 
+// Shown while offline: the forecast updates once the connection is back
 const OfflineNotice = () => {
   const { t } = useI18n();
   const offline = useOffline();

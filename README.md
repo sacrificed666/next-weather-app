@@ -12,12 +12,12 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
 
 ## ✨ Highlights
 
-- 🌤️ **Current weather**: temperature, conditions, today's high and low, the apparent temperature and the city's own clock
+- 🌤️ **Current weather**: temperature, conditions, today's high and low, the apparent temperature, the city's own clock and the sun's path from sunrise to sunset
 - 🌌 **Living sky**: a clear, cloudy, rainy, stormy, snowy or foggy sky behind the cards, by day and by night
 - 🕒 **Hourly and daily**: the next 24 hours in three-hour steps with the chance of rain, and up to seven days with temperature bars on one shared scale
-- 📊 **Details**: air quality with PM2.5, PM10, ozone and nitrogen dioxide, the sun's arc, wind with a compass, humidity and dew point, pressure, visibility, precipitation and cloud cover, each with a sentence that explains the number
+- 📊 **Details**: air quality with PM2.5, PM10, ozone and nitrogen dioxide, wind with a compass, humidity and dew point, pressure, visibility, precipitation and cloud cover in compact tiles, each with a sentence that explains the number
 - 🔎 **Search and location**: suggestions in any language (`Lviv`, `Львів`, `Lemberg`), full keyboard control, recent searches and **Use my location**
-- ⭐ **Saved places**: star a city to pin it above the forecast and switch between your places in one tap
+- ⭐ **Saved places**: star a city to pin it above the forecast, named in your language and never twice, and switch between your places in one tap
 - 🌍 **Ten languages**: English, Ukrainian, Czech, German, Spanish, French, Italian, Dutch, Polish and Portuguese, each under its own address, including the weather descriptions and place names
 - ⚙️ **Your way**: light, dark or automatic theme, metric (°C, m/s, hPa) or imperial (°F, mph, inHg) units and full or reduced effects, rendered by the server without a flash
 - ♿ **Accessible**: landmarks, a skip link, live regions, a real combobox, reflow down to 320 px and support for reduced motion, reduced transparency, more contrast and forced colours, checked with axe in every build
@@ -51,7 +51,7 @@ TypeScript 7 · Oxlint · Oxfmt · Vitest 5 · Testing Library · Playwright · 
 
 ## 🚀 Quick start
 
-Requires **Node.js 24.15** or newer and a free [OpenWeatherMap API key](https://home.openweathermap.org/api_keys).
+Requires **Node.js 26.10** or newer and a free [OpenWeatherMap API key](https://home.openweathermap.org/api_keys).
 
 ```bash
 npm ci

@@ -9,11 +9,13 @@ export type OpenWeatherParams = Readonly<Record<string, string | number>>;
 const DEFAULT_BASE_URL = "https://api.openweathermap.org";
 const TIMEOUT_MS = 8000;
 
+// The OpenWeather address, which tests point to the mock API
 const baseUrl = () => {
   const configured = process.env.OPENWEATHERMAP_API_URL?.trim();
   return configured === undefined || configured === "" ? DEFAULT_BASE_URL : configured;
 };
 
+// The failure for an HTTP status
 const failureForStatus = (status: number): OpenWeatherFailure => {
   if (status === 401) return "invalid-key";
   if (status === 404) return "not-found";
@@ -21,6 +23,7 @@ const failureForStatus = (status: number): OpenWeatherFailure => {
   return "unavailable";
 };
 
+// A cached OpenWeather request that never throws
 export const fetchOpenWeather = async (
   path: string,
   params: OpenWeatherParams,

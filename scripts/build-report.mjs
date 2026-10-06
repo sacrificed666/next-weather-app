@@ -5,6 +5,7 @@ import { gzipSync } from "node:zlib";
 const root = new URL("../", import.meta.url).pathname;
 const build = join(root, ".next");
 
+// Every file below a directory
 const walk = (directory) =>
   readdirSync(directory).flatMap((name) => {
     const path = join(directory, name);
@@ -12,10 +13,12 @@ const walk = (directory) =>
   });
 
 const failures = [];
+// Collects a failed check instead of stopping at the first one
 const expect = (condition, message) => {
   if (!condition) failures.push(message);
 };
 
+// Reads a JSON manifest from the build output
 const readJson = (file) => JSON.parse(readFileSync(join(build, file), "utf8"));
 
 const localesSource = readFileSync(join(root, "src/features/i18n/model/locales.ts"), "utf8");
@@ -40,6 +43,7 @@ const proxy = readJson("server/functions-config-manifest.json").functions["/_mid
 expect(proxy !== undefined, "the proxy that sets the Content Security Policy and the language is missing");
 
 const headerRules = readJson("routes-manifest.json").headers;
+// Header names next.config.ts sets for a source pattern
 const headersFor = (source) =>
   new Set(
     headerRules
@@ -61,6 +65,7 @@ for (const source of ["/icons/:path*", "/flags/:path*"]) {
   expect(headersFor(source).has("Content-Security-Policy"), `${source} is served without a sandboxing policy`);
 }
 
+// Bytes as kilobytes for the report
 const formatSize = (bytes) => `${(bytes / 1024).toFixed(1)} kB`;
 
 const assets = walk(join(build, "static"))
@@ -71,8 +76,10 @@ const assets = walk(join(build, "static"))
   })
   .toSorted((a, b) => b.gzip - a.gzip);
 
+// Gzipped size of all assets of one kind
 const sum = (kind) =>
   assets.filter((asset) => asset.name.endsWith(kind)).reduce((total, asset) => total + asset.gzip, 0);
+// Number of assets of one kind
 const count = (kind) => assets.filter((asset) => asset.name.endsWith(kind)).length;
 
 const lines = [

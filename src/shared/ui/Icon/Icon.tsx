@@ -6,6 +6,7 @@ interface IconProps {
   className?: string;
 }
 
+// An outline icon from the shared set, hidden from screen readers
 const Icon = ({ name, size = 20, className }: IconProps) => {
   const { paths }: IconShape = icons[name];
   return (

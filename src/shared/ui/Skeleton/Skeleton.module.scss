@@ -11,6 +11,7 @@
   animation: shimmer 1.6s ease-in-out infinite;
 }
 
+// A light sweeps across the placeholder
 @keyframes shimmer {
   from {
     background-position: 100% 0;

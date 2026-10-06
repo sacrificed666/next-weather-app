@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { en } from "@/features/i18n/model/messages/en";
 import { SITE } from "@/shared/lib/site";
 
+// Web app manifest with the name, colours and icons
 const manifest = (): MetadataRoute.Manifest => ({
   id: "/",
   name: en["app.name"],

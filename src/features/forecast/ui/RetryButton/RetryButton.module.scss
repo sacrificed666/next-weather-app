@@ -29,6 +29,7 @@
   animation: spin 0.9s linear infinite;
 }
 
+// The busy icon turns
 @keyframes spin {
   to {
     rotate: 360deg;

@@ -20,6 +20,7 @@ export const OG_FONTS = await Promise.all(
   ),
 );
 
+// The app icon as a data URL for share cards
 export const readAppIcon = async () => {
   const svg = await readFile(join(process.cwd(), "src/app/icon.svg"));
   return `data:image/svg+xml;base64,${svg.toString("base64")}`;

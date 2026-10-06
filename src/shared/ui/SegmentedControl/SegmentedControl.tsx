@@ -22,6 +22,7 @@ interface SegmentedControlProps<Value extends string> {
   onChange: (value: Value) => void;
 }
 
+// A native radio group styled as segments
 const SegmentedControl = <Value extends string>({
   legend,
   name,

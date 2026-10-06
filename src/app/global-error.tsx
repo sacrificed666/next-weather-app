@@ -12,6 +12,7 @@ interface GlobalErrorProps {
 
 const t = createTranslator(en);
 
+// Last resort when even the layout fails, with its own document
 const GlobalError = ({ error, retry }: GlobalErrorProps) => (
   <html lang="en" data-theme="system">
     <body>

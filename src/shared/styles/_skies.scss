@@ -1,6 +1,7 @@
 @use "sass:list";
 @use "sass:map";
 
+// Top, middle and bottom colours of every sky, light and dark
 $skies: (
   "clear-day": (
     "light": (
@@ -116,6 +117,7 @@ $skies: (
   ),
 );
 
+// Sky colour variables for every weather in one theme
 @mixin sky-colors($mode) {
   @each $name, $modes in $skies {
     $colors: map.get($modes, $mode);

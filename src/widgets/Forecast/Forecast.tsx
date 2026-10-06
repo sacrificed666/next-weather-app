@@ -11,7 +11,6 @@ import HumidityCard from "@/features/forecast/ui/HumidityCard/HumidityCard";
 import PrecipitationCard from "@/features/forecast/ui/PrecipitationCard/PrecipitationCard";
 import PressureCard from "@/features/forecast/ui/PressureCard/PressureCard";
 import Sky from "@/features/forecast/ui/Sky/Sky";
-import SunCard from "@/features/forecast/ui/SunCard/SunCard";
 import VisibilityCard from "@/features/forecast/ui/VisibilityCard/VisibilityCard";
 import WindCard from "@/features/forecast/ui/WindCard/WindCard";
 import { homeHref } from "@/features/i18n/model/locales";
@@ -23,6 +22,7 @@ import { siteUrl } from "@/shared/lib/site";
 
 import styles from "./Forecast.module.scss";
 
+// The whole forecast of a place, or why it is missing
 const Forecast = async ({ query }: { query: LocationQuery | null }) => {
   const { locale, t, format } = await getLocalization();
   const result = query ? await getForecast(query, locale) : null;
@@ -43,19 +43,22 @@ const Forecast = async ({ query }: { query: LocationQuery | null }) => {
       <JsonLd data={forecastSchema(forecast, page, siteUrl(), locale, t)} />
       <Sky sky={conditionSky(forecast.current.condition)} />
       <div className={styles.dashboard}>
-        <CurrentConditions {...view} className={styles.current} />
-        <HourlyForecast {...view} className={styles.hourly} />
-        <DailyForecast {...view} className={styles.daily} />
-        <div className={styles.details}>
-          <AirQualityCard {...view} className={styles.wide} />
-          <SunCard {...view} className={styles.wide} />
-          <WindCard {...view} className={styles.wide} />
-          <HumidityCard {...view} />
-          <FeelsLikeCard {...view} />
-          <PressureCard {...view} />
-          <VisibilityCard {...view} />
-          <PrecipitationCard {...view} />
-          <CloudCoverCard {...view} />
+        <div className={styles.main}>
+          <CurrentConditions {...view} className={styles.current} />
+          <HourlyForecast {...view} className={styles.hourly} />
+          <div className={styles.details}>
+            <HumidityCard {...view} />
+            <FeelsLikeCard {...view} />
+            <PressureCard {...view} />
+            <VisibilityCard {...view} />
+            <PrecipitationCard {...view} />
+            <CloudCoverCard {...view} />
+          </div>
+        </div>
+        <div className={styles.side}>
+          <DailyForecast {...view} className={styles.daily} />
+          <AirQualityCard {...view} className={styles.air} />
+          <WindCard {...view} className={styles.wind} />
         </div>
       </div>
     </>

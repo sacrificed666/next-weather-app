@@ -116,9 +116,11 @@ const DESCRIPTIONS: Readonly<Record<string, Readonly<Record<number, string>>>> =
 const HOURLY_CODES = [800, 801, 803, 500, 501, 802, 800, 801];
 const DAILY_CODES = [800, 801, 500, 803, 800, 211, 802];
 
+// The condition text in the requested language
 const describe = (code: number, language: string) =>
   DESCRIPTIONS[language]?.[code] ?? DESCRIPTIONS.en?.[code] ?? "clouds";
 
+// The mock city closest to the coordinates
 const nearest = (latitude: number, longitude: number) =>
   CITIES.reduce((best, city) =>
     Math.hypot(city.latitude - latitude, city.longitude - longitude) <
@@ -127,6 +129,7 @@ const nearest = (latitude: number, longitude: number) =>
       : best,
   );
 
+// A city as the geocoding API returns it
 const geocoded = (city: MockCity) => ({
   name: city.name,
   local_names: city.localNames,
@@ -136,8 +139,10 @@ const geocoded = (city: MockCity) => ({
   state: city.state,
 });
 
+// The start of the city's current day
 const localMidnight = (city: MockCity, now: number) => Math.floor((now + city.timezone) / DAY) * DAY - city.timezone;
 
+// Current weather of a mock city
 const current = (city: MockCity, language: string, now: number) => {
   const midnight = localMidnight(city, now);
   return {
@@ -155,6 +160,7 @@ const current = (city: MockCity, language: string, now: number) => {
   };
 };
 
+// The three-hour forecast with a daily temperature wave
 const slots = (city: MockCity, language: string, now: number) => {
   const start = Math.ceil(now / (3 * HOUR)) * 3 * HOUR;
   return {
@@ -175,6 +181,7 @@ const slots = (city: MockCity, language: string, now: number) => {
   };
 };
 
+// The seven-day forecast of a mock city
 const daily = (city: MockCity, language: string, now: number) => ({
   list: DAILY_CODES.map((code, index) => ({
     dt: localMidnight(city, now) + 12 * HOUR + index * DAY,
@@ -184,10 +191,12 @@ const daily = (city: MockCity, language: string, now: number) => ({
   })),
 });
 
+// Air quality of a mock city
 const air = (city: MockCity) => ({
   list: [{ main: { aqi: city.airQuality }, components: { pm2_5: 8.4, pm10: 14.2, o3: 61.7, no2: 12.9 } }],
 });
 
+// Sends a JSON response that is never cached
 const send = (response: ServerResponse, status: number, body: unknown) => {
   response.writeHead(status, { "Content-Type": "application/json", "Cache-Control": "no-store" });
   response.end(JSON.stringify(body));

@@ -10,13 +10,16 @@ interface Window {
   resetAt: number;
 }
 
+// A fixed window limiter per key that never grows without bound
 export const createRateLimiter = ({ limit, windowMs, now = Date.now, maxKeys = 10_000 }: RateLimiterOptions) => {
   const windows = new Map<string, Window>();
 
+  // Drops the windows that have ended
   const forgetExpired = (time: number) => {
     for (const [key, window] of windows) if (window.resetAt <= time) windows.delete(key);
   };
 
+  // Frees a slot when too many visitors are tracked, oldest first
   const makeRoom = (time: number) => {
     forgetExpired(time);
     for (const key of windows.keys()) {

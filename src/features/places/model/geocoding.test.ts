@@ -27,7 +27,16 @@ describe("geocoding", () => {
     const result = await searchPlaces("Lviv", "en", 3);
     expect(result).toEqual({
       ok: true,
-      places: [{ name: "Lviv", region: "Lviv Oblast", country: "UA", latitude: 49.84, longitude: 24.03 }],
+      places: [
+        {
+          name: "Lviv",
+          names: expect.objectContaining({ uk: "Львів" }) as unknown,
+          region: "Lviv Oblast",
+          country: "UA",
+          latitude: 49.84,
+          longitude: 24.03,
+        },
+      ],
     });
     const [url] = fetchMock.mock.calls[0] ?? [];
     expect(url?.searchParams.get("limit")).toBe("3");

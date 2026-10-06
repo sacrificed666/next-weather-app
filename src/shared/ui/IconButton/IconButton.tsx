@@ -13,6 +13,7 @@ interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   busy?: boolean;
 }
 
+// A round icon button, named by its label and tooltip
 const IconButton = ({ icon, label, busy = false, className, ...props }: IconButtonProps) => (
   <button
     {...props}

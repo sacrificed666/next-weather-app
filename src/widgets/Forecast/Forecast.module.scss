@@ -1,39 +1,54 @@
 @use "@/shared/styles/dashboard";
-@use "@/shared/styles/mixins" as *;
 
 .dashboard {
   @include dashboard.grid;
 }
 
+.main,
+.side {
+  @include dashboard.column;
+}
+
 .current {
-  grid-area: current;
+  @include dashboard.full;
+
+  order: 1;
   animation: rise var(--duration-slow) var(--ease-spring) backwards;
 }
 
 .hourly {
-  grid-area: hourly;
+  @include dashboard.full;
+
+  order: 2;
   animation: rise var(--duration-slow) var(--ease-spring) 60ms backwards;
 }
 
 .daily {
-  grid-area: daily;
+  @include dashboard.full;
+
+  order: 3;
   animation: rise var(--duration-slow) var(--ease-spring) 120ms backwards;
 }
 
 .details {
   @include dashboard.details;
+  @include dashboard.full;
 
+  order: 4;
   animation: rise var(--duration-slow) var(--ease-spring) 180ms backwards;
 }
 
-.wide {
-  grid-column: 1 / -1;
-
-  @include from("md") {
-    grid-column: span 2;
-  }
+.air {
+  order: 5;
+  animation: rise var(--duration-slow) var(--ease-spring) 180ms backwards;
 }
 
+.wind {
+  order: 6;
+  animation: rise var(--duration-slow) var(--ease-spring) 240ms backwards;
+}
+
+// Cards rise into place when the forecast arrives
 @keyframes rise {
   from {
     opacity: 0;

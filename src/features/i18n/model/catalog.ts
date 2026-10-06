@@ -13,4 +13,5 @@ import { uk } from "./messages/uk";
 
 const catalog: Record<Locale, Messages> = { en, uk, cs, de, es, fr, it, nl, pl, pt };
 
+// The messages of a language
 export const getMessages = (locale: Locale): Messages => catalog[locale];

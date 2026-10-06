@@ -17,6 +17,7 @@ interface HeaderProps {
   t: Translate;
 }
 
+// Logo, city search, location and settings
 const Header = ({ locale, preferences, effects, t }: HeaderProps) => (
   <header className={styles.header}>
     <div className={styles.bar}>

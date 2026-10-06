@@ -10,18 +10,21 @@ const MIN_QUERY_LENGTH = 2;
 
 const allowRequest = createRateLimiter({ limit: 30, windowMs: 60_000 });
 
+// The HTTP status for an OpenWeather failure
 const statusFor = (failure: OpenWeatherFailure) => {
   if (failure === "rate-limited") return 429;
   if (failure === "not-found") return 404;
   return 503;
 };
 
+// The visitor's address for rate limiting
 const clientAddress = (request: NextRequest) => {
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
   if (forwarded) return forwarded;
   return request.headers.get("x-real-ip") ?? "anonymous";
 };
 
+// City search for this site only, limited per visitor
 export const GET = async (request: NextRequest) => {
   const site = request.headers.get("sec-fetch-site");
   if (site && site !== "same-origin") return Response.json({ error: "forbidden" }, { status: 403 });

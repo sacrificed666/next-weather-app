@@ -3,17 +3,20 @@ import { type NextRequest, NextResponse } from "next/server";
 import { isLocale, LOCALE_COOKIE, LOCALE_HEADER, negotiateLocale, type Locale } from "@/features/i18n/model/locales";
 import { contentSecurityPolicy } from "@/shared/lib/contentSecurityPolicy";
 
+// The saved language, or the best match for the browser
 const preferredLocale = (request: NextRequest): Locale => {
   const saved = request.cookies.get(LOCALE_COOKIE)?.value;
   return isLocale(saved) ? saved : negotiateLocale(request.headers.get("accept-language"));
 };
 
+// A redirect to other path segments
 const redirectTo = (request: NextRequest, segments: readonly string[], status: 307 | 308) => {
   const url = request.nextUrl.clone();
   url.pathname = ["", ...segments].join("/");
   return NextResponse.redirect(url, status);
 };
 
+// Passes the language and a fresh CSP nonce to the page
 const render = (request: NextRequest, locale: Locale) => {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const policy = contentSecurityPolicy(nonce, process.env.NODE_ENV === "development");
@@ -28,6 +31,7 @@ const render = (request: NextRequest, locale: Locale) => {
   return response;
 };
 
+// Adds the language to bare addresses and secures every page
 export const proxy = (request: NextRequest) => {
   const [first = "", ...rest] = request.nextUrl.pathname.split("/").filter(Boolean);
   if (isLocale(first)) return render(request, first);

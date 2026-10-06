@@ -5,20 +5,42 @@
   @include dashboard.grid;
 }
 
+.main,
+.side {
+  @include dashboard.column;
+}
+
 .current {
-  grid-area: current;
+  @include dashboard.full;
+
+  order: 1;
 }
 
 .hourly {
-  grid-area: hourly;
+  @include dashboard.full;
+
+  order: 2;
 }
 
 .daily {
-  grid-area: daily;
+  @include dashboard.full;
+
+  order: 3;
 }
 
 .details {
   @include dashboard.details;
+  @include dashboard.full;
+
+  order: 4;
+}
+
+.air {
+  order: 5;
+}
+
+.wind {
+  order: 6;
 }
 
 .card {
@@ -82,8 +104,12 @@
   block-size: 2.4rem;
 }
 
-.detail {
-  min-block-size: 10rem;
+.tile {
+  min-block-size: 7rem;
+}
+
+.block {
+  block-size: 7rem;
 }
 
 .value {

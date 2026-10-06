@@ -7,23 +7,31 @@ const parseNumber = (value: unknown) => (typeof value === "number" ? value : nul
 describe("createStoredList", () => {
   it("reads, validates and caps stored items", () => {
     localStorage.setItem("numbers", JSON.stringify([1, "two", 3, 4]));
-    const list = createStoredList("numbers", parseNumber, 2);
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 2 });
     expect(list.getSnapshot()).toEqual([1, 3]);
     expect(list.getSnapshot()).toBe(list.getSnapshot());
   });
 
   it("moves a list saved under an earlier key once", () => {
     localStorage.setItem("old-numbers", JSON.stringify([1, 2]));
-    const list = createStoredList("numbers", parseNumber, 5, "old-numbers");
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 5, legacyKey: "old-numbers" });
     expect(list.getSnapshot()).toEqual([1, 2]);
     expect(localStorage.getItem("old-numbers")).toBeNull();
 
     localStorage.setItem("old-numbers", JSON.stringify([9]));
-    expect(createStoredList("numbers", parseNumber, 5, "old-numbers").getSnapshot()).toEqual([1, 2]);
+    expect(
+      createStoredList("numbers", { parse: parseNumber, limit: 5, legacyKey: "old-numbers" }).getSnapshot(),
+    ).toEqual([1, 2]);
+  });
+
+  it("keeps the first of the entries that describe the same item", () => {
+    localStorage.setItem("numbers", JSON.stringify([1, 11, 2, 21, 3]));
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 5, isSame: (a, b) => a % 10 === b % 10 });
+    expect(list.getSnapshot()).toEqual([1, 2, 3]);
   });
 
   it("falls back to an empty list for missing or corrupted data", () => {
-    const list = createStoredList("numbers", parseNumber, 5);
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 5 });
     expect(list.getSnapshot()).toEqual([]);
     localStorage.setItem("numbers", "{not json");
     expect(list.getSnapshot()).toEqual([]);
@@ -33,7 +41,7 @@ describe("createStoredList", () => {
   });
 
   it("writes items and notifies subscribers", () => {
-    const list = createStoredList("numbers", parseNumber, 2);
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 2 });
     const listener = vi.fn<() => void>();
     const unsubscribe = list.subscribe(listener);
     list.replace([5, 6, 7]);
@@ -45,7 +53,7 @@ describe("createStoredList", () => {
   });
 
   it("follows changes made in other tabs", () => {
-    const list = createStoredList("numbers", parseNumber, 2);
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 2 });
     const listener = vi.fn<() => void>();
     const unsubscribe = list.subscribe(listener);
     window.dispatchEvent(new StorageEvent("storage", { key: "other" }));
@@ -56,7 +64,7 @@ describe("createStoredList", () => {
   });
 
   it("keeps working when storage is unavailable", () => {
-    const list = createStoredList("numbers", parseNumber, 2);
+    const list = createStoredList("numbers", { parse: parseNumber, limit: 2 });
     vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("blocked");
     });

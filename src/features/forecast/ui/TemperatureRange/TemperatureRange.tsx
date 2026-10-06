@@ -14,8 +14,10 @@ interface TemperatureRangeProps {
 
 const MIN_WIDTH = 0.04;
 
+// A share as a CSS percentage
 const percent = (value: number) => `${(value * 100).toFixed(2)}%`;
 
+// A day's low to high on the shared scale, with the current temperature
 const TemperatureRange = ({ low, high, scaleMin, scaleMax, current }: TemperatureRangeProps) => {
   const gradientId = useId();
   const span = scaleMax - scaleMin || 1;

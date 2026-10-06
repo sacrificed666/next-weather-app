@@ -38,10 +38,11 @@ Up to seven days with the weekday (**Today** for the first one), an icon, the ch
 
 ## 📊 Details
 
+The current weather card also follows the sun: sunrise, sunset, the length of the day and the sun's position on its arc, beside the temperature on larger screens and below it on phones. The detail tiles are compact and share one grid, and air quality and wind sit next to the daily forecast.
+
 | Card             | Shows                                                                                                         |
 | ---------------- | ------------------------------------------------------------------------------------------------------------- |
 | 🍃 Air quality   | The European index from 1 (good) to 5 (very poor), advice, a coloured scale, PM2.5, PM10, O₃ and NO₂ in µg/m³ |
-| 🌅 Sun           | Sunrise, sunset, the length of the day and the sun's current position on its arc                              |
 | 💨 Wind          | Speed, gusts and direction in degrees and compass points, with a compass arrow                                |
 | 💧 Humidity      | Relative humidity and the dew point                                                                           |
 | 🌡️ Feels like    | The apparent temperature and why it differs: wind makes it colder, humidity warmer                            |
@@ -66,7 +67,7 @@ The arrow button asks the browser for your position, rounds it to about a kilome
 
 ## ⭐ Saved places
 
-The star in the current weather card saves the city. Saved places appear as chips above the forecast; the open one is outlined, and the cross removes a place. They are stored in this browser only and stay in sync between tabs.
+The star in the current weather card saves the city. Saved places appear as chips above the forecast, named in the language of the page; the open one is outlined, and the cross removes a place. A city counts as saved once, whether it came from a search, a link or **Use my location**: places of one country closer than 25 km that share a name in any language are the same place. Saved places are stored in this browser only and stay in sync between tabs.
 
 > [!NOTE]
 > Up to 12 places can be saved. With a full list the star is unavailable and says _Saved places are full. Remove one to save Lviv_, instead of silently doing nothing.

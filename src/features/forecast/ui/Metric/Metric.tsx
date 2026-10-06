@@ -8,6 +8,7 @@ interface MetricProps {
   children?: ReactNode;
 }
 
+// A large value with its unit and an optional note
 const Metric = ({ value, unit, children }: MetricProps) => (
   <div className={styles.metric}>
     <p className={styles.value}>

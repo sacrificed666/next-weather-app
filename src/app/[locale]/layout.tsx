@@ -16,8 +16,10 @@ import styles from "./layout.module.scss";
 
 export const dynamicParams = false;
 
+// Prerenders the shell of every language
 export const generateStaticParams = () => LOCALES.map((locale) => ({ locale }));
 
+// Site-wide metadata in the page language
 export const generateMetadata = async (): Promise<Metadata> => {
   const { locale, t } = await getLocalization();
   const name = t("app.name");
@@ -48,6 +50,7 @@ export const viewport: Viewport = {
   ],
 };
 
+// The document shell: theme, effects, header, content and footer
 const LocaleLayout = async ({ children, params }: LayoutProps<"/[locale]">) => {
   if (!isLocale((await params).locale)) notFound();
   const [{ locale, preferences, messages, t }, effects] = await Promise.all([getLocalization(), getEffects()]);

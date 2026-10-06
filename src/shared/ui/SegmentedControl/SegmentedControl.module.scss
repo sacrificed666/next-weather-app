@@ -63,6 +63,7 @@
     outline-offset: 1px;
   }
 
+  // The chosen segment is outlined in forced colours mode
   @media (forced-colors: active) {
     &:has(:checked) {
       outline: 2px solid Highlight;

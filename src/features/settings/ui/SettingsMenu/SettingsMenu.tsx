@@ -17,6 +17,7 @@ import styles from "./SettingsMenu.module.scss";
 
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
+// Remembers the language for the next visit to the bare address
 const rememberLocale = (locale: Locale) => {
   const secure = location.protocol === "https:" ? "; secure" : "";
   document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax${secure}`;
@@ -27,6 +28,7 @@ interface SettingsMenuProps {
   deviceEffects: EffectsLevel;
 }
 
+// Settings dialog: appearance, units, effects and language
 const SettingsMenu = ({ preferences, deviceEffects }: SettingsMenuProps) => {
   const { locale, t } = useI18n();
   const pathname = usePathname();

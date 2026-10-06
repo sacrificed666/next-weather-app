@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_VERSION=24.15
+ARG NODE_VERSION=26.10
 
 # Node.js on Alpine, shared by every stage
 FROM node:${NODE_VERSION}-alpine AS base

@@ -5,6 +5,7 @@ interface LogoProps {
   className?: string;
 }
 
+// The brand mark
 const Logo = ({ size = 32, className }: LogoProps) => {
   const id = useId();
   const fill = `${id}-fill`;

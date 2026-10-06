@@ -24,8 +24,10 @@ export interface PageDescription {
   description: string;
 }
 
+// A page title that ends with the app name
 export const documentTitle = (title: string, t: Translate) => ({ absolute: `${title} · ${t("app.name")}` });
 
+// Canonical and hreflang links of a page in every language
 export const alternates = (locale: Locale, search = ""): Alternates => ({
   canonical: `${homeHref(locale)}${search}`,
   languages: {
@@ -34,6 +36,7 @@ export const alternates = (locale: Locale, search = ""): Alternates => ({
   },
 });
 
+// Open Graph and Twitter metadata of a page
 export const social = (locale: Locale, t: Translate, page: SocialPage): Pick<Metadata, "openGraph" | "twitter"> => ({
   openGraph: {
     type: "website",
@@ -47,15 +50,19 @@ export const social = (locale: Locale, t: Translate, page: SocialPage): Pick<Met
   twitter: { card: "summary_large_image", title: page.title, description: page.description },
 });
 
+// Title and description with the temperature and the sky
 export const describeForecast = ({ place, current }: Forecast, t: Translate, format: Formatter): PageDescription => {
   const summary = `${format.temperature(current.temperature)} · ${format.sentence(current.condition.description)}`;
   return { title: `${place.name} ${summary}`, description: `${place.name}: ${summary}. ${t("app.description")}` };
 };
 
+// JSON-LD that cannot close the script tag it sits in
 export const serializeJsonLd = (data: Schema) => JSON.stringify(data).replaceAll("<", "\\u003c");
 
+// The schema.org id of the site in a language
 const websiteId = (base: URL, locale: Locale) => new URL(`${homeHref(locale)}#website`, base).href;
 
+// The site as a schema.org WebSite
 const website = (base: URL, locale: Locale, t: Translate): Schema => {
   const home = new URL(homeHref(locale), base).href;
   return {
@@ -74,6 +81,7 @@ const website = (base: URL, locale: Locale, t: Translate): Schema => {
   };
 };
 
+// A place as a schema.org Place with coordinates
 const place = ({ name, region, country, latitude, longitude }: Forecast["place"]): Schema => ({
   "@type": "Place",
   name,
@@ -89,6 +97,7 @@ const place = ({ name, region, country, latitude, longitude }: Forecast["place"]
   geo: { "@type": "GeoCoordinates", latitude, longitude },
 });
 
+// Structured data of a forecast page
 export const forecastSchema = (
   forecast: Forecast,
   page: PageDescription & { path: string },

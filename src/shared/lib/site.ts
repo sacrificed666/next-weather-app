@@ -21,6 +21,7 @@ export const SITE = {
 
 type Environment = Readonly<Partial<Record<string, string>>>;
 
+// The public address: SITE_URL, the Vercel domain or localhost
 export const siteUrl = (env: Environment = process.env): URL => {
   const explicit = env.SITE_URL?.trim();
   if (explicit) return new URL(explicit);

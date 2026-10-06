@@ -4,8 +4,9 @@ import { cloudLevel } from "../../model/insights";
 import Metric from "../Metric/Metric";
 import type { ForecastViewProps } from "../props";
 
+// Cloud cover in percent with its level
 const CloudCoverCard = ({ forecast: { current }, t, format, className }: ForecastViewProps) => (
-  <Card className={className} title={t("clouds.title")} icon="cloud">
+  <Card compact className={className} title={t("clouds.title")} icon="cloud">
     <Metric value={format.percent(current.cloudiness / 100)}>{t(`clouds.${cloudLevel(current.cloudiness)}`)}</Metric>
   </Card>
 );

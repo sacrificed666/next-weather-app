@@ -13,6 +13,7 @@ interface RetryButtonProps {
   onRetry?: () => void;
 }
 
+// Reloads the forecast and shows that it is busy
 const RetryButton = ({ label, onRetry }: RetryButtonProps) => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();

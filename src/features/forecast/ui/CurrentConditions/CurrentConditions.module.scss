@@ -47,6 +47,7 @@
     color: var(--color-text-tertiary);
   }
 
+  // Details stack on phones without separators
   @include below("md") {
     flex-direction: column;
 
@@ -58,14 +59,39 @@
 
 .body {
   display: grid;
+  gap: 1rem;
+
+  // Current weather and the sun side by side
+  @include from("md") {
+    grid-template-columns: minmax(0, 1.35fr) minmax(13rem, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.now {
+  display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: clamp(0.75rem, 4vw, 2.5rem);
+  gap: clamp(0.75rem, 3vw, 1.75rem);
+}
+
+.sun {
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--color-separator);
+
+  // The separator moves from the top to the side
+  @include from("md") {
+    padding-block-start: 0;
+    padding-inline-start: 1.5rem;
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--color-separator);
+  }
 }
 
 .icon {
   flex: none;
-  inline-size: clamp(5.5rem, 22vw, 10.5rem);
+  inline-size: clamp(5rem, 18vw, 8.5rem);
   block-size: auto;
   margin-block: -0.75rem;
   filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.18));
@@ -78,7 +104,7 @@
 }
 
 .temperature {
-  font-size: clamp(4rem, 15vw, 7rem);
+  font-size: clamp(3.5rem, 12vw, 5.75rem);
   font-weight: 250;
   line-height: 0.95;
   letter-spacing: -0.04em;

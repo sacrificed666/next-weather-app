@@ -44,6 +44,7 @@ describe("getForecast", () => {
     const { forecast } = result;
     expect(forecast.place).toEqual({
       name: "Львів",
+      names: expect.objectContaining({ uk: "Львів", en: "Lviv" }) as unknown,
       region: "Lviv Oblast",
       country: "UA",
       latitude: 49.84,

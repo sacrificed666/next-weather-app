@@ -11,6 +11,7 @@ import styles from "./DailyForecast.module.scss";
 
 const VISIBLE_CHANCE = 0.1;
 
+// The next days with icons and temperature ranges on one scale
 const DailyForecast = ({ forecast, t, format, animated, className }: ForecastViewProps) => {
   const { daily, current, timezoneOffset } = forecast;
   const today = localDayKey(current.time, timezoneOffset);

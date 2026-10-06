@@ -2,9 +2,11 @@ import { expect, type Page } from "@playwright/test";
 
 export const KYIV = "/en?lat=50.45&lon=30.52";
 
+// A Mac browser, which gets the full effects by default
 export const MAC_USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
 
+// How many infinite animations are running on the page
 export const endlessAnimations = (page: Page) =>
   page.evaluate(
     () =>
@@ -15,6 +17,7 @@ export const endlessAnimations = (page: Page) =>
         ).length,
   );
 
+// Collects console errors and CSP violations, then checks there are none
 export const watchProblems = async (page: Page) => {
   const problems: string[] = [];
   page.on("console", (message) => {
@@ -34,11 +37,13 @@ export const watchProblems = async (page: Page) => {
   };
 };
 
+// Opens the settings dialog
 export const openSettings = async (page: Page, name = "Settings") => {
   await page.getByRole("button", { name, exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
 };
 
+// Picks a setting and waits until the server has saved it
 export const choosePreference = async (page: Page, label: string) => {
   const saved = page.waitForResponse(
     (response) => response.request().method() === "POST" && response.request().headers()["next-action"] !== undefined,

@@ -1,3 +1,5 @@
+import styles from "./WeatherIcon.module.scss";
+
 interface WeatherIconProps {
   name: string;
   size: number;
@@ -8,8 +10,10 @@ interface WeatherIconProps {
   className?: string;
 }
 
+// The animated or the still version of a weather icon
 const iconPath = (name: string, animated: boolean) => `/icons/${animated ? "weather" : "weather-static"}/${name}.svg`;
 
+// A weather icon, still when the effects are reduced
 const WeatherIcon = ({
   name,
   size,
@@ -34,7 +38,7 @@ const WeatherIcon = ({
   );
   if (!animated) return image;
   return (
-    <picture>
+    <picture className={styles.picture}>
       <source srcSet={iconPath(name, false)} media="(prefers-reduced-motion: reduce)" />
       {image}
     </picture>

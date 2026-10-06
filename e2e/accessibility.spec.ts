@@ -7,6 +7,7 @@ const PAGES = ["/en", "/uk?city=Kyiv", "/de?city=Reykjavik", "/pl?city=Bangkok",
 
 test.use({ reducedMotion: "reduce" });
 
+// Axe violations of the page, as rule ids and targets
 const violations = async (page: Page) => {
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   const results = await new AxeBuilder({ page })

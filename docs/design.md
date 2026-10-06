@@ -16,24 +16,29 @@ The interface is a set of translucent **glass** cards floating over a **sky** th
 flowchart LR
   subgraph Wide["🖥️ 1100 px and wider"]
     direction TB
-    W1["Current weather · · · · Daily"] --- W2["Hourly · · · · · · · · Daily"] --- W3["Details: 4 columns, Air · Sun · Wind span two"]
+    W1["Main: current weather and the sun · hourly · 6 detail tiles"] --- W2["Side: daily · air quality · wind"]
+  end
+  subgraph Tablet["💻 720 to 1100 px"]
+    direction TB
+    T1[Current weather and the sun] --- T2[Hourly] --- T3[Daily] --- T4["Detail tiles: 3 columns"] --- T5["Air quality · Wind"]
   end
   subgraph Phone["📱 Phones"]
     direction TB
-    P1[Current weather] --- P2[Hourly] --- P3[Daily] --- P4["Details: 2 columns"]
+    P1[Current weather, the sun below] --- P2[Hourly] --- P3[Daily] --- P4["Detail tiles: 2 columns"] --- P5[Air quality] --- P6[Wind]
   end
 ```
 
-| Part            | Treatment                                                                                             |
-| --------------- | ----------------------------------------------------------------------------------------------------- |
-| 🔝 Header       | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px    |
-| ⭐ Saved places | A row of glass chips that scrolls sideways and fades out at the edge                                  |
-| 🌤️ Current      | The largest card: place, local time, a 168 px icon and a light 7 rem temperature                      |
-| 📅 Daily        | Stretches to the height of the current and hourly cards on wide screens and spreads its days evenly   |
-| 📊 Details      | `auto-fill` grid with `grid-auto-flow: dense`; Air quality, Sun and Wind span two columns from 720 px |
-| 🦶 Footer       | A glass bar with the author, the version (a link to the changelog), the credits and the source code   |
+| Part            | Treatment                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| 🔝 Header       | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px   |
+| ⭐ Saved places | A row of glass chips that scrolls sideways and fades out at the edge                                 |
+| 🌤️ Current      | The largest card: place, local time, the icon and a light temperature, with the sun's path beside it |
+| 📅 Daily        | Compact rows of about 3 rem, one per day, at the top of the side column                              |
+| 📊 Details      | Six compact tiles in 2 columns on phones and 3 from 720 px, so no tile is stretched by a larger card |
+| 🍃 Air and wind | Below the daily forecast on wide screens, side by side on tablets, one after another on phones       |
+| 🦶 Footer       | A glass bar with the author, the version (a link to the changelog), the credits and the source code  |
 
-The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard grid lives in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up.
+The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard grid lives in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up. On wide screens the main and side columns are independent flex columns, so a long card in one never stretches the cards of the other, and only the last card of each column grows to even out their bottoms. Below 1100 px the columns dissolve (`display: contents`) and an explicit `order` puts the cards in reading order.
 
 ### 📱 Down to 320 px
 
@@ -42,7 +47,7 @@ Page breakpoints (`md` 720 px, `lg` 1100 px) decide the grid; **container querie
 | Card     | Container        | Under  | Change                                                        |
 | -------- | ---------------- | ------ | ------------------------------------------------------------- |
 | 📅 Daily | the list of days | 18 rem | Narrower weekday, icon and temperature columns, 0.92 rem text |
-| 💨 Wind  | the card content | 17 rem | A 5.5 rem compass instead of 7.5 rem                          |
+| 💨 Wind  | the card content | 17 rem | A 5.5 rem compass instead of 6.5 rem                          |
 
 Wind rows wrap their value under the label when a language needs it, and the hourly list scrolls inside its card.
 

@@ -10,11 +10,13 @@ import Logo from "@/shared/ui/Logo/Logo";
 
 import styles from "./not-found.module.scss";
 
+// Keeps the not found page out of search results
 export const generateMetadata = async (): Promise<Metadata> => {
   const { t } = await getRequestLocalization();
   return { title: documentTitle(t("notFound.title"), t), robots: { index: false, follow: true } };
 };
 
+// Not found page for addresses outside any language
 const GlobalNotFound = async () => {
   const [{ locale, preferences, t }, effects] = await Promise.all([getRequestLocalization(), getEffects()]);
   return (

@@ -2,15 +2,18 @@
 @use "@/shared/styles/skies";
 @use "@/shared/styles/tokens";
 
+// Shared and light tokens by default
 :root {
   @include tokens.shared;
   @include tokens.light;
 }
 
+// Dark tokens when picked in the settings
 :root[data-theme="dark"] {
   @include tokens.dark;
 }
 
+// Dark tokens when the system theme is dark
 @media (prefers-color-scheme: dark) {
   :root[data-theme="system"] {
     @include tokens.dark;
@@ -22,16 +25,19 @@
   @include tokens.reduced-light;
 }
 
+// Reduced tints for the dark theme
 :root[data-effects="reduced"][data-theme="dark"] {
   @include tokens.reduced-dark;
 }
 
+// Reduced tints for a dark system theme
 @media (prefers-color-scheme: dark) {
   :root[data-effects="reduced"][data-theme="system"] {
     @include tokens.reduced-dark;
   }
 }
 
+// Sky gradients for every weather, light and dark
 @include skies.sky-colors("light");
 
 :root[data-theme="dark"] {
@@ -44,17 +50,20 @@
   }
 }
 
+// Sizes include padding and borders
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+// No font inflation on phones
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
+// Full height column with the footer at the bottom
 body {
   display: flex;
   flex-direction: column;
@@ -146,12 +155,14 @@ svg {
   @include visually-hidden;
 }
 
+// Stronger text when the system asks for more contrast
 @media (prefers-contrast: more) {
   :root[data-theme] {
     @include tokens.more-contrast;
   }
 }
 
+// Animations and transitions stop for reduced motion
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

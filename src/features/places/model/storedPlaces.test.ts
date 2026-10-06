@@ -33,6 +33,23 @@ describe("stored places", () => {
     expect(savedPlaces.getSnapshot()).toEqual([]);
   });
 
+  it("does not save the same city twice from a search and from the location button", () => {
+    const kyiv: Place = { ...place("Kyiv", 50.45), names: { uk: "Київ" }, longitude: 30.52 };
+    toggleSavedPlace(kyiv);
+    const located: Place = { ...kyiv, name: "Київ", latitude: 50.41, longitude: 30.6 };
+    expect(isSaved(savedPlaces.getSnapshot(), located)).toBe(true);
+    toggleSavedPlace(located);
+    expect(savedPlaces.getSnapshot()).toEqual([]);
+  });
+
+  it("drops duplicates that older versions stored", () => {
+    localStorage.setItem(
+      "weather/saved-places",
+      JSON.stringify([place("Kyiv", 50.45), place("Kyiv", 50.47), place("Lviv", 49.84)]),
+    );
+    expect(savedPlaces.getSnapshot().map((entry) => entry.name)).toEqual(["Kyiv", "Lviv"]);
+  });
+
   it("refuses a new place once the list is full but still lets saved ones go", () => {
     for (let index = 0; index < SAVED_PLACES_LIMIT; index += 1) toggleSavedPlace(place(`City ${index}`, index));
     const extra = place("Extra", 80);

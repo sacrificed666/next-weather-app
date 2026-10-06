@@ -38,6 +38,7 @@
   font-weight: 800;
   letter-spacing: -0.02em;
 
+  // Only the logo on phones; the name stays for screen readers
   @include below("md") {
     @include visually-hidden;
   }

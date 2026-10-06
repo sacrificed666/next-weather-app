@@ -29,11 +29,14 @@ export const LOCALE_INFO: Record<Locale, LocaleInfo> = {
   pt: { name: "Português", intl: "pt-PT", flag: "PT", openGraph: "pt_PT", openWeather: "pt" },
 };
 
+// Whether a value is a supported language
 export const isLocale = (value: unknown): value is Locale =>
   typeof value === "string" && (LOCALES as readonly string[]).includes(value);
 
+// The home page in a language
 export const homeHref = (locale: Locale): `/${Locale}` => `/${locale}`;
 
+// The same address in another language
 export const switchLocale = (pathname: string, locale: Locale) => {
   const [, first = "", ...rest] = pathname.split("/");
   const tail = isLocale(first) ? rest : [first, ...rest];
@@ -45,6 +48,7 @@ interface WeightedLanguage {
   weight: number;
 }
 
+// Languages of an Accept-Language header with their weights
 const parseAcceptLanguage = (header: string): WeightedLanguage[] =>
   header
     .split(",")
@@ -57,6 +61,7 @@ const parseAcceptLanguage = (header: string): WeightedLanguage[] =>
     .filter((entry) => entry.language !== "" && entry.weight > 0)
     .toSorted((a, b) => b.weight - a.weight);
 
+// The best supported language for an Accept-Language header
 export const negotiateLocale = (acceptLanguage: string | null | undefined): Locale => {
   if (!acceptLanguage) return DEFAULT_LOCALE;
   const match = parseAcceptLanguage(acceptLanguage).find((entry) => isLocale(entry.language));

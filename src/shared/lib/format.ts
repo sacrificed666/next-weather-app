@@ -25,14 +25,17 @@ export interface Formatter {
   sentence: (text: string) => string;
 }
 
+// A number formatter for a unit such as km/h
 const unitFormat = (locale: string, unit: string, maximumFractionDigits = 0) =>
   new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "short", maximumFractionDigits });
 
+// A date formatter in UTC, as times are shifted to the place first
 const localFormat = (locale: string, options: Intl.DateTimeFormatOptions) => {
   const formatter = new Intl.DateTimeFormat(locale, { ...options, timeZone: "UTC" });
   return (unixSeconds: number, offsetSeconds: number) => formatter.format(toLocalDate(unixSeconds, offsetSeconds));
 };
 
+// Temperatures, speeds, times and more in a language and unit system
 export const createFormatter = (locale: string, units: UnitSystem): Formatter => {
   const imperial = units === "imperial";
   const integer = new Intl.NumberFormat(locale, { maximumFractionDigits: 0, signDisplay: "negative" });

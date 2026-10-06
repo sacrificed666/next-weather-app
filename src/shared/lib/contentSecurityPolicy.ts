@@ -1,3 +1,4 @@
+// The CSP of a page with its nonce; development also allows eval
 export const contentSecurityPolicy = (nonce: string, development: boolean) =>
   [
     "default-src 'self'",

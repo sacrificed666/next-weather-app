@@ -4,6 +4,7 @@ import { homeHref, LOCALES } from "@/features/i18n/model/locales";
 import { alternates } from "@/features/seo/model/seo";
 import { siteUrl } from "@/shared/lib/site";
 
+// Sitemap with the home page of every language
 const sitemap = (): MetadataRoute.Sitemap => {
   const base = siteUrl();
   const languages = Object.fromEntries(

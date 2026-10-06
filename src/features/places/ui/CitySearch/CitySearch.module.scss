@@ -186,12 +186,14 @@
   font-size: 0.9rem;
 }
 
+// The search spinner turns
 @keyframes spin {
   to {
     rotate: 360deg;
   }
 }
 
+// The suggestions fade in
 @keyframes appear {
   from {
     opacity: 0;

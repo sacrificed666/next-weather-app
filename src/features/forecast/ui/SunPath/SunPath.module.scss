@@ -1,5 +1,18 @@
+@use "@/shared/styles/mixins" as *;
+
+.sun {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  min-inline-size: 0;
+}
+
+.title {
+  @include section-label;
+}
+
 .arc {
-  inline-size: min(100%, 20rem);
+  inline-size: min(100%, 15rem);
   margin-inline: auto;
   overflow: visible;
 }
@@ -25,7 +38,7 @@
   stroke-width: 1.5;
 }
 
-.sun {
+.dot {
   fill: #ffc84a;
   stroke: #fff;
   stroke-width: 2;
@@ -36,37 +49,40 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+  margin: 0;
 }
 
+// The icon sits in the term, as a list allows only terms and descriptions
 .time {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-
-  img {
-    flex: none;
-    margin: -0.35rem;
-  }
-
-  dl {
-    margin: 0;
-  }
+  position: relative;
+  min-inline-size: 0;
+  padding-inline-start: 2rem;
 
   dt {
     color: var(--color-text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
+    line-height: 1.2;
   }
 
   dd {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 600;
+    line-height: 1.2;
   }
+}
+
+// Centred on the term and the time together
+.icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: -0.25rem;
+  translate: 0 -50%;
 }
 
 .note {
   color: var(--color-text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
 }

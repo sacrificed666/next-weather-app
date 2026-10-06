@@ -16,8 +16,10 @@ export interface ParsedCurrent {
   place: Place | null;
 }
 
+// Removes missing entries from a list
 const isPresent = <Value>(value: Value | null): value is Value => value !== null;
 
+// A condition with code, text and icon, or null
 const readCondition = (entry: unknown, daytime: boolean): Condition | null => {
   const weather = readArray(entry, "weather")[0];
   const code = readNumber(weather, "id");
@@ -30,10 +32,13 @@ const readCondition = (entry: unknown, daytime: boolean): Condition | null => {
   };
 };
 
+// A time that is set, or null
 const positiveTime = (value: number | null) => (value !== null && value > 0 ? value : null);
 
+// A share between 0 and 1
 const fraction = (value: number | null) => clamp(value ?? 0, 0, 1);
 
+// Current weather and the place from the OpenWeather response
 export const parseCurrent = (data: unknown): ParsedCurrent | null => {
   const main = readRecord(data, "main");
   const system = readRecord(data, "sys");
@@ -79,6 +84,7 @@ export const parseCurrent = (data: unknown): ParsedCurrent | null => {
   };
 };
 
+// Three-hour forecast slots
 export const parseSlots = (data: unknown): ForecastSlot[] =>
   readArray(data, "list")
     .map((entry): ForecastSlot | null => {
@@ -99,6 +105,7 @@ export const parseSlots = (data: unknown): ForecastSlot[] =>
     .filter(isPresent)
     .toSorted((a, b) => a.time - b.time);
 
+// Days of the daily forecast
 export const parseDaily = (data: unknown): DailyForecast[] =>
   readArray(data, "list")
     .map((entry): DailyForecast | null => {
@@ -119,9 +126,11 @@ export const parseDaily = (data: unknown): DailyForecast[] =>
     .filter(isPresent)
     .toSorted((a, b) => a.time - b.time);
 
+// Whether a value is an index from 1 to 5
 const isAirQualityIndex = (value: number | null): value is AirQualityIndex =>
   value === 1 || value === 2 || value === 3 || value === 4 || value === 5;
 
+// Air quality index and pollutants
 export const parseAirQuality = (data: unknown): AirQuality | null => {
   const [entry] = readArray(data, "list");
   const index = readNumber(readRecord(entry, "main"), "aqi");
@@ -140,6 +149,7 @@ const MIN_SLOTS_PER_DAY = 4;
 const MAX_DAYS = 7;
 const DAYTIME_HOURS = { from: 6, to: 21 };
 
+// The worst condition of the daytime hours describes the day
 const representativeCondition = (slots: readonly ForecastSlot[], timezoneOffset: number): Condition => {
   const daytime = slots.filter((slot) => {
     const hour = localHour(slot.time, timezoneOffset);
@@ -155,6 +165,7 @@ const representativeCondition = (slots: readonly ForecastSlot[], timezoneOffset:
   return { ...worst.condition, daytime: true };
 };
 
+// Days built from three-hour slots when the daily forecast is missing
 export const aggregateDaily = (slots: readonly ForecastSlot[], timezoneOffset: number): DailyForecast[] => {
   const days = Map.groupBy(slots, (slot) => localDayKey(slot.time, timezoneOffset));
   return [...days.values()]
@@ -169,6 +180,7 @@ export const aggregateDaily = (slots: readonly ForecastSlot[], timezoneOffset: n
     }));
 };
 
+// Today's range widened by the current temperature
 export const includeCurrent = (
   days: readonly DailyForecast[],
   current: CurrentWeather,
@@ -183,6 +195,7 @@ export const includeCurrent = (
   return [{ ...first, low, high }, ...rest];
 };
 
+// Today's entry of the daily forecast
 export const todayForecast = (
   days: readonly DailyForecast[],
   current: CurrentWeather,
@@ -192,6 +205,7 @@ export const todayForecast = (
   return days.find((day) => localDayKey(day.time, timezoneOffset) === today) ?? null;
 };
 
+// The next forecast slots
 export const upcomingHours = (slots: readonly ForecastSlot[], now: number, count = 8): HourlyForecast[] =>
   slots
     .filter((slot) => slot.time > now)

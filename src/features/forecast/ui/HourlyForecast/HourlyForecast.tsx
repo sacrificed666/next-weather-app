@@ -18,6 +18,7 @@ interface Hour {
   precipitationChance: number | null;
 }
 
+// Now and the next hours with icons, temperatures and chances of rain
 const HourlyForecast = ({ forecast, t, format, animated, className }: ForecastViewProps) => {
   const { current, hourly, timezoneOffset } = forecast;
   const hours: Hour[] = [

@@ -4,6 +4,7 @@ export const THEMES = ["system", "light", "dark"] as const;
 
 export type Theme = (typeof THEMES)[number];
 
+// Whether a value is a valid theme
 export const isTheme = (value: unknown): value is Theme =>
   typeof value === "string" && (THEMES as readonly string[]).includes(value);
 
@@ -13,11 +14,13 @@ export type Effects = (typeof EFFECTS)[number];
 
 export type EffectsLevel = Exclude<Effects, "auto">;
 
+// Whether a value is a valid effects choice
 export const isEffects = (value: unknown): value is Effects =>
   typeof value === "string" && (EFFECTS as readonly string[]).includes(value);
 
 const RICH_EFFECTS_DEVICES = /Mac|iPhone|iPad|iPod/u;
 
+// Auto becomes full on Apple devices and reduced elsewhere
 export const resolveEffects = (effects: Effects, userAgent: string | null): EffectsLevel => {
   if (effects !== "auto") return effects;
   return RICH_EFFECTS_DEVICES.test(userAgent ?? "") ? "full" : "reduced";
@@ -44,6 +47,7 @@ export const PREFERENCE_COOKIES: Record<PreferenceName, string> = {
 
 export const DEFAULT_PREFERENCES: Preferences = { theme: "system", units: "metric", effects: "auto" };
 
+// Whether a value is valid for the named setting
 export const isPreferenceValue = <Name extends PreferenceName>(
   name: Name,
   value: unknown,
