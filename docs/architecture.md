@@ -232,8 +232,9 @@ LocaleLayout                 app/[locale]/layout.tsx, <html lang data-theme>
 │               ├── CurrentConditions    Place, LocalClock, SavePlaceButton, temperature
 │               ├── HourlyForecast
 │               ├── DailyForecast        TemperatureRange per day
-│               └── Details              AirQuality, Sun, Wind, Humidity, FeelsLike, Pressure,
-│                                        Visibility, Precipitation, CloudCover
+│               ├── SunPath              Sunrise, sunset and the arc of the day
+│               ├── WindCard, AirQualityCard
+│               └── Details              Humidity, Pressure, Visibility, Precipitation, CloudCover
 ├── Footer                   Author, version, credits and the source code
 └── OfflineNotice            next/offline
 ```

@@ -38,14 +38,13 @@ Up to seven days with the weekday (**Today** for the first one), an icon, the ch
 
 ## 📊 Details
 
-The current weather card also follows the sun: sunrise, sunset, the length of the day and the sun's position on its arc, beside the temperature on larger screens and below it on phones. The detail tiles are compact and share one grid, and air quality and wind sit next to the daily forecast.
+The sun has its own card: sunrise, sunset, the length of the day and the sun's position on its arc. On wide screens it shares a row with the wind and air quality, and the five small tiles below fill one row.
 
 | Card             | Shows                                                                                                         |
 | ---------------- | ------------------------------------------------------------------------------------------------------------- |
 | 🍃 Air quality   | The European index from 1 (good) to 5 (very poor), advice, a coloured scale, PM2.5, PM10, O₃ and NO₂ in µg/m³ |
 | 💨 Wind          | Speed, gusts and direction in degrees and compass points, with a compass arrow                                |
 | 💧 Humidity      | Relative humidity and the dew point                                                                           |
-| 🌡️ Feels like    | The apparent temperature and why it differs: wind makes it colder, humidity warmer                            |
 | 🧭 Pressure      | Pressure in hPa or inHg on a gauge, rated low, normal or high                                                 |
 | 👁️ Visibility    | Distance in km or mi, rated clear, hazy or poor                                                               |
 | ☔ Precipitation | Rain and snow of the last hour in mm or in                                                                    |

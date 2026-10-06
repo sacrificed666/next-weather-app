@@ -1,7 +1,5 @@
-import { useId } from "react";
-
 import { cx } from "@/shared/lib/cx";
-import Icon from "@/shared/ui/Icon/Icon";
+import Card from "@/shared/ui/Card/Card";
 import WeatherIcon from "@/shared/ui/WeatherIcon/WeatherIcon";
 
 import { daylightProgress } from "../../model/insights";
@@ -21,7 +19,7 @@ const sunPosition = (share: number) => {
   };
 };
 
-// Sunrise, sunset and the sun's path over the day, part of the current conditions
+// Sunrise, sunset and the sun's path over the day
 const SunPath = ({
   forecast: { current, timezoneOffset, generatedAt },
   t,
@@ -29,17 +27,12 @@ const SunPath = ({
   animated,
   className,
 }: ForecastViewProps) => {
-  const headingId = useId();
   const { sunrise, sunset } = current;
   const share = sunrise !== null && sunset !== null ? daylightProgress(generatedAt, sunrise, sunset) : null;
   const sun = share === null ? null : sunPosition(share);
 
   return (
-    <section className={cx(styles.sun, className)} aria-labelledby={headingId}>
-      <h2 className={styles.title} id={headingId}>
-        <Icon name="sunrise" size={15} />
-        {t("sun.title")}
-      </h2>
+    <Card className={cx(styles.sun, className)} title={t("sun.title")} icon="sunrise">
       {sunrise === null || sunset === null ? (
         <p className={styles.note}>{t("sun.unavailable")}</p>
       ) : (
@@ -71,7 +64,7 @@ const SunPath = ({
           <p className={styles.note}>{t("sun.daylight", { duration: format.duration(sunset - sunrise) })}</p>
         </>
       )}
-    </section>
+    </Card>
   );
 };
 

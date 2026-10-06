@@ -1,18 +1,10 @@
-@use "@/shared/styles/mixins" as *;
-
+// The arc in the middle, the times and the daylight below it
 .sun {
-  display: grid;
-  align-content: start;
-  gap: 0.5rem;
-  min-inline-size: 0;
-}
-
-.title {
-  @include section-label;
+  justify-content: space-between;
 }
 
 .arc {
-  inline-size: min(100%, 15rem);
+  inline-size: min(100%, 14rem);
   margin-inline: auto;
   overflow: visible;
 }

@@ -8,14 +8,6 @@ export type CompassPoint = (typeof COMPASS_POINTS)[number];
 export const compassPoint = (degrees: number): CompassPoint =>
   COMPASS_POINTS[Math.round((((degrees % 360) + 360) % 360) / 45) % COMPASS_POINTS.length] ?? "n";
 
-export type FeelsLike = "similar" | "colder" | "warmer";
-
-// Whether it feels colder, warmer or like the real temperature
-export const feelsLike = (actual: number, apparent: number): FeelsLike => {
-  if (Math.abs(apparent - actual) < 2) return "similar";
-  return apparent < actual ? "colder" : "warmer";
-};
-
 export type PressureLevel = "low" | "normal" | "high";
 
 export const PRESSURE_SCALE = { min: 960, max: 1060 } as const;

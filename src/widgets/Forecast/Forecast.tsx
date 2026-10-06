@@ -4,13 +4,13 @@ import AirQualityCard from "@/features/forecast/ui/AirQualityCard/AirQualityCard
 import CloudCoverCard from "@/features/forecast/ui/CloudCoverCard/CloudCoverCard";
 import CurrentConditions from "@/features/forecast/ui/CurrentConditions/CurrentConditions";
 import DailyForecast from "@/features/forecast/ui/DailyForecast/DailyForecast";
-import FeelsLikeCard from "@/features/forecast/ui/FeelsLikeCard/FeelsLikeCard";
 import ForecastError from "@/features/forecast/ui/ForecastError/ForecastError";
 import HourlyForecast from "@/features/forecast/ui/HourlyForecast/HourlyForecast";
 import HumidityCard from "@/features/forecast/ui/HumidityCard/HumidityCard";
 import PrecipitationCard from "@/features/forecast/ui/PrecipitationCard/PrecipitationCard";
 import PressureCard from "@/features/forecast/ui/PressureCard/PressureCard";
 import Sky from "@/features/forecast/ui/Sky/Sky";
+import SunPath from "@/features/forecast/ui/SunPath/SunPath";
 import VisibilityCard from "@/features/forecast/ui/VisibilityCard/VisibilityCard";
 import WindCard from "@/features/forecast/ui/WindCard/WindCard";
 import { homeHref } from "@/features/i18n/model/locales";
@@ -43,22 +43,18 @@ const Forecast = async ({ query }: { query: LocationQuery | null }) => {
       <JsonLd data={forecastSchema(forecast, page, siteUrl(), locale, t)} />
       <Sky sky={conditionSky(forecast.current.condition)} />
       <div className={styles.dashboard}>
-        <div className={styles.main}>
-          <CurrentConditions {...view} className={styles.current} />
-          <HourlyForecast {...view} className={styles.hourly} />
-          <div className={styles.details}>
-            <HumidityCard {...view} />
-            <FeelsLikeCard {...view} />
-            <PressureCard {...view} />
-            <VisibilityCard {...view} />
-            <PrecipitationCard {...view} />
-            <CloudCoverCard {...view} />
-          </div>
-        </div>
-        <div className={styles.side}>
-          <DailyForecast {...view} className={styles.daily} />
-          <AirQualityCard {...view} className={styles.air} />
-          <WindCard {...view} className={styles.wind} />
+        <CurrentConditions {...view} className={styles.current} />
+        <HourlyForecast {...view} className={styles.hourly} />
+        <DailyForecast {...view} className={styles.daily} />
+        <SunPath {...view} className={styles.sun} />
+        <WindCard {...view} className={styles.wind} />
+        <AirQualityCard {...view} className={styles.air} />
+        <div className={styles.details}>
+          <HumidityCard {...view} />
+          <PressureCard {...view} />
+          <VisibilityCard {...view} />
+          <PrecipitationCard {...view} />
+          <CloudCoverCard {...view} />
         </div>
       </div>
     </>

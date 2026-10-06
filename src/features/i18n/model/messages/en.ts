@@ -74,11 +74,6 @@ export const en = {
   "humidity.title": "Humidity",
   "humidity.dewPoint": "The dew point is {value} right now.",
 
-  "feelsLike.title": "Feels like",
-  "feelsLike.similar": "Similar to the actual temperature.",
-  "feelsLike.colder": "The wind makes it feel colder.",
-  "feelsLike.warmer": "Humidity makes it feel warmer.",
-
   "pressure.title": "Pressure",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",

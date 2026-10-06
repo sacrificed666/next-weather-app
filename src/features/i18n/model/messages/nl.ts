@@ -76,11 +76,6 @@ export const nl: Messages = {
   "humidity.title": "Luchtvochtigheid",
   "humidity.dewPoint": "Het dauwpunt is nu {value}.",
 
-  "feelsLike.title": "Gevoelstemperatuur",
-  "feelsLike.similar": "Vergelijkbaar met de echte temperatuur.",
-  "feelsLike.colder": "Door de wind voelt het kouder aan.",
-  "feelsLike.warmer": "Door de vochtigheid voelt het warmer aan.",
-
   "pressure.title": "Luchtdruk",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",

@@ -80,8 +80,8 @@ $levels: var(--air-1), var(--air-2), var(--air-3), var(--air-4), var(--air-5);
   gap: 0.5rem;
   margin: 0;
 
-  // Four pollutants in a row on a wide card
-  @container (width >= 28rem) {
+  // Four pollutants in a row from a medium card
+  @container (width >= 21rem) {
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -89,7 +89,8 @@ $levels: var(--air-1), var(--air-2), var(--air-3), var(--air-4), var(--air-5);
 .pollutant {
   display: grid;
   gap: 0.1rem;
-  padding: 0.55rem 0.7rem;
+  min-inline-size: 0;
+  padding: 0.5rem 0.6rem;
   border-radius: var(--radius-sm);
   background: var(--color-fill);
 
@@ -102,11 +103,12 @@ $levels: var(--air-1), var(--air-2), var(--air-3), var(--air-4), var(--air-5);
   dd {
     margin: 0;
     font-weight: 600;
+    white-space: nowrap;
   }
 }
 
 .unit {
   color: var(--color-text-tertiary);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
 }

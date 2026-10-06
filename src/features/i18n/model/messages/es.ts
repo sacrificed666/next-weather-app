@@ -76,11 +76,6 @@ export const es: Messages = {
   "humidity.title": "Humedad",
   "humidity.dewPoint": "El punto de rocío es de {value} ahora mismo.",
 
-  "feelsLike.title": "Sensación térmica",
-  "feelsLike.similar": "Similar a la temperatura real.",
-  "feelsLike.colder": "El viento hace que parezca más frío.",
-  "feelsLike.warmer": "La humedad hace que parezca más cálido.",
-
   "pressure.title": "Presión",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",

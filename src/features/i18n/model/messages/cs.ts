@@ -76,11 +76,6 @@ export const cs: Messages = {
   "humidity.title": "Vlhkost",
   "humidity.dewPoint": "Rosný bod je teď {value}.",
 
-  "feelsLike.title": "Pocitová teplota",
-  "feelsLike.similar": "Podobná skutečné teplotě.",
-  "feelsLike.colder": "Kvůli větru je pocitově chladněji.",
-  "feelsLike.warmer": "Kvůli vlhkosti je pocitově tepleji.",
-
   "pressure.title": "Tlak",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",

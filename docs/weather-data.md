@@ -140,7 +140,6 @@ The animated icons are copied from `@meteocons/svg` to `public/icons/weather/` a
 
 | Helper               | Rule                                                                         |
 | -------------------- | ---------------------------------------------------------------------------- |
-| `feelsLike()`        | Within 2° → similar; colder → the wind; warmer → humidity                    |
 | `pressureLevel()`    | Below 1006 hPa low, above 1020 hPa high, normal in between                   |
 | `visibilityLevel()`  | 10 km and more clear, from 4 km hazy, below that poor                        |
 | `cloudLevel()`       | Below 20 % clear, below 60 % partly, below 90 % mostly cloudy, else overcast |

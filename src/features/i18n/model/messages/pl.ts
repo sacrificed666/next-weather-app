@@ -76,11 +76,6 @@ export const pl: Messages = {
   "humidity.title": "Wilgotność",
   "humidity.dewPoint": "Punkt rosy wynosi teraz {value}.",
 
-  "feelsLike.title": "Odczuwalna",
-  "feelsLike.similar": "Podobna do rzeczywistej temperatury.",
-  "feelsLike.colder": "Przez wiatr wydaje się chłodniej.",
-  "feelsLike.warmer": "Przez wilgotność wydaje się cieplej.",
-
   "pressure.title": "Ciśnienie",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",

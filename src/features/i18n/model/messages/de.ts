@@ -76,11 +76,6 @@ export const de: Messages = {
   "humidity.title": "Luftfeuchtigkeit",
   "humidity.dewPoint": "Der Taupunkt liegt gerade bei {value}.",
 
-  "feelsLike.title": "Gefühlt",
-  "feelsLike.similar": "Ähnlich wie die tatsächliche Temperatur.",
-  "feelsLike.colder": "Durch den Wind fühlt es sich kälter an.",
-  "feelsLike.warmer": "Durch die Feuchtigkeit fühlt es sich wärmer an.",
-
   "pressure.title": "Luftdruck",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",

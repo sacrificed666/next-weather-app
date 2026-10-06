@@ -5,42 +5,34 @@
   @include dashboard.grid;
 }
 
-.main,
-.side {
-  @include dashboard.column;
-}
-
 .current {
-  @include dashboard.full;
-
-  order: 1;
+  grid-area: current;
 }
 
 .hourly {
-  @include dashboard.full;
-
-  order: 2;
+  grid-area: hourly;
 }
 
 .daily {
-  @include dashboard.full;
+  grid-area: daily;
+}
 
-  order: 3;
+.sun {
+  grid-area: sun;
+}
+
+.wind {
+  grid-area: wind;
+}
+
+.air {
+  grid-area: air;
 }
 
 .details {
   @include dashboard.details;
-  @include dashboard.full;
 
-  order: 4;
-}
-
-.air {
-  order: 5;
-}
-
-.wind {
-  order: 6;
+  grid-area: details;
 }
 
 .card {

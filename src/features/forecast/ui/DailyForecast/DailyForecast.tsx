@@ -37,14 +37,16 @@ const DailyForecast = ({ forecast, t, format, animated, className }: ForecastVie
                   label={format.sentence(day.condition.description)}
                   animated={animated}
                 />
+              </span>
+              <span className={styles.chance}>
                 {day.precipitationChance >= VISIBLE_CHANCE && (
-                  <span className={styles.chance}>
+                  <>
                     <Icon name="droplet" size={10} />
                     <span className="visually-hidden">
                       {t("hourly.precipitation", { value: format.percent(day.precipitationChance) })}
                     </span>
                     <span aria-hidden="true">{format.percent(day.precipitationChance)}</span>
-                  </span>
+                  </>
                 )}
               </span>
               <span className="visually-hidden">{t("daily.range", { low, high })}</span>

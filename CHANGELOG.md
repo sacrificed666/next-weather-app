@@ -12,7 +12,7 @@ The first release.
 
 - 🌤️ Current weather with today's high and low, the apparent temperature and the city's own clock.
 - 🕒 The next 24 hours in three-hour steps and up to seven days with temperature bars on one shared scale, built from the free 5-day forecast when the API key has no daily plan.
-- 📊 A compact dashboard: the sun's path inside the current weather, and air quality, wind, humidity, the apparent temperature, pressure, visibility, precipitation and cloud cover, each with a sentence that explains the number.
+- 📊 A compact dashboard on one grid: the current weather with the apparent temperature, the week beside it, the sun's path, wind and air quality in one row, and humidity, pressure, visibility, precipitation and cloud cover, each with a sentence that explains the number.
 - 🔎 City search with suggestions in any language, recent searches, full keyboard control and **Use my location**.
 - ⭐ Up to 12 saved places, named in the language of the page, never saved twice, kept in the browser and in sync between tabs.
 - 🌌 A sky behind the cards that follows the weather, the time of day and the theme.

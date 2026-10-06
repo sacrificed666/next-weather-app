@@ -1,49 +1,48 @@
 @use "mixins" as *;
 
-// One column on phones, two on tablets, a main and a side column on wide screens
+// One column on phones, two on tablets and three on wide screens
 @mixin grid {
   display: grid;
+  grid-template-areas: "current" "hourly" "daily" "sun" "wind" "air" "details";
   grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 
   @include from("md") {
+    grid-template-areas:
+      "current current"
+      "hourly hourly"
+      "daily sun"
+      "daily wind"
+      "air air"
+      "details details";
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @include from("lg") {
-    grid-template-columns: minmax(0, 1.75fr) minmax(20rem, 1fr);
+    grid-template-areas:
+      "current current daily"
+      "hourly hourly daily"
+      "sun wind air"
+      "details details details";
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-// A column on wide screens; below that its cards join the grid in their own order
-@mixin column {
-  display: contents;
-
-  @include from("lg") {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-inline-size: 0;
-
-    > :last-child {
-      flex: 1;
-    }
-  }
-}
-
-// A card across the whole grid
-@mixin full {
-  grid-column: 1 / -1;
-}
-
-// Small tiles, two in a row on phones and three from tablets
+// Small tiles that wrap and grow, so the last row never leaves a gap
 @mixin details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
 
+  > * {
+    flex: 1 1 9rem;
+  }
+
   @include from("md") {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+
+    > * {
+      flex-basis: 13rem;
+    }
   }
 }

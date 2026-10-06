@@ -9,11 +9,10 @@ import { conditionIcon } from "../../model/conditions";
 import { todayForecast } from "../../model/normalize";
 import LocalClock from "../LocalClock/LocalClock";
 import type { ForecastViewProps } from "../props";
-import SunPath from "../SunPath/SunPath";
 
 import styles from "./CurrentConditions.module.scss";
 
-// The hero card: the place, the weather right now and the path of the sun today
+// The hero card: the place and the weather right now
 const CurrentConditions = ({ forecast, t, format, animated, className }: ForecastViewProps) => {
   const headingId = useId();
   const { place, current, daily, timezoneOffset, generatedAt } = forecast;
@@ -38,35 +37,31 @@ const CurrentConditions = ({ forecast, t, format, animated, className }: Forecas
       </div>
 
       <div className={styles.body}>
-        <div className={styles.now}>
-          <WeatherIcon
-            className={styles.icon}
-            name={conditionIcon(current.condition)}
-            size={168}
-            animated={animated}
-            priority
-          />
-          <div className={styles.reading}>
-            <p className={styles.temperature}>
-              <span className="visually-hidden">{t("current.title")}: </span>
-              {format.temperature(current.temperature)}
-            </p>
-            <p className={styles.description}>{description}</p>
-            <p className={styles.range}>
-              {today && (
-                <>
-                  <span>{t("current.high", { value: format.temperature(today.high) })}</span>
-                  <span>{t("current.low", { value: format.temperature(today.low) })}</span>
-                </>
-              )}
-              <span>{t("current.feelsLike", { value: format.temperature(current.feelsLike) })}</span>
-            </p>
-          </div>
+        <WeatherIcon
+          className={styles.icon}
+          name={conditionIcon(current.condition)}
+          size={168}
+          animated={animated}
+          priority
+        />
+        <p className={styles.temperature}>
+          <span className="visually-hidden">{t("current.title")}: </span>
+          {format.temperature(current.temperature)}
+        </p>
+        <div className={styles.facts}>
+          <p className={styles.description}>{description}</p>
+          <p className={styles.range}>
+            {today && (
+              <>
+                <span>{t("current.high", { value: format.temperature(today.high) })}</span>
+                <span>{t("current.low", { value: format.temperature(today.low) })}</span>
+              </>
+            )}
+            <span>{t("current.feelsLike", { value: format.temperature(current.feelsLike) })}</span>
+          </p>
+          <p className={styles.updated}>{t("current.updated", { time: format.time(current.time, timezoneOffset) })}</p>
         </div>
-        <SunPath forecast={forecast} t={t} format={format} animated={animated} className={styles.sun} />
       </div>
-
-      <p className={styles.updated}>{t("current.updated", { time: format.time(current.time, timezoneOffset) })}</p>
     </section>
   );
 };

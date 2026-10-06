@@ -4,48 +4,41 @@
   @include dashboard.grid;
 }
 
-.main,
-.side {
-  @include dashboard.column;
-}
-
 .current {
-  @include dashboard.full;
-
-  order: 1;
+  grid-area: current;
   animation: rise var(--duration-slow) var(--ease-spring) backwards;
 }
 
 .hourly {
-  @include dashboard.full;
-
-  order: 2;
+  grid-area: hourly;
   animation: rise var(--duration-slow) var(--ease-spring) 60ms backwards;
 }
 
 .daily {
-  @include dashboard.full;
-
-  order: 3;
+  grid-area: daily;
   animation: rise var(--duration-slow) var(--ease-spring) 120ms backwards;
 }
 
-.details {
-  @include dashboard.details;
-  @include dashboard.full;
-
-  order: 4;
-  animation: rise var(--duration-slow) var(--ease-spring) 180ms backwards;
-}
-
-.air {
-  order: 5;
+.sun {
+  grid-area: sun;
   animation: rise var(--duration-slow) var(--ease-spring) 180ms backwards;
 }
 
 .wind {
-  order: 6;
+  grid-area: wind;
+  animation: rise var(--duration-slow) var(--ease-spring) 210ms backwards;
+}
+
+.air {
+  grid-area: air;
   animation: rise var(--duration-slow) var(--ease-spring) 240ms backwards;
+}
+
+.details {
+  @include dashboard.details;
+
+  grid-area: details;
+  animation: rise var(--duration-slow) var(--ease-spring) 270ms backwards;
 }
 
 // Cards rise into place when the forecast arrives

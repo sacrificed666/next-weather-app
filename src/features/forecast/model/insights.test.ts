@@ -4,7 +4,6 @@ import {
   cloudLevel,
   compassPoint,
   daylightProgress,
-  feelsLike,
   pressureLevel,
   progress,
   TEMPERATURE_SCALE,
@@ -24,12 +23,6 @@ describe("insights", () => {
     [720, "n"],
   ] as const)("names %i° as %s", (degrees, point) => {
     expect(compassPoint(degrees)).toBe(point);
-  });
-
-  it("explains the apparent temperature", () => {
-    expect(feelsLike(10, 11)).toBe("similar");
-    expect(feelsLike(10, 6)).toBe("colder");
-    expect(feelsLike(25, 29)).toBe("warmer");
   });
 
   it("classifies pressure, visibility and cloud cover", () => {

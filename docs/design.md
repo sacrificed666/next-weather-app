@@ -16,29 +16,29 @@ The interface is a set of translucent **glass** cards floating over a **sky** th
 flowchart LR
   subgraph Wide["🖥️ 1100 px and wider"]
     direction TB
-    W1["Main: current weather and the sun · hourly · 6 detail tiles"] --- W2["Side: daily · air quality · wind"]
+    W1["Current weather · daily, beside it"] --- W2["Hourly · daily continues"] --- W3["Sun · Wind · Air quality"] --- W4["Five detail tiles in a row"]
   end
   subgraph Tablet["💻 720 to 1100 px"]
     direction TB
-    T1[Current weather and the sun] --- T2[Hourly] --- T3[Daily] --- T4["Detail tiles: 3 columns"] --- T5["Air quality · Wind"]
+    T1[Current weather] --- T2[Hourly] --- T3["Daily · Sun and Wind"] --- T4[Air quality] --- T5["Detail tiles: 3 and 2"]
   end
   subgraph Phone["📱 Phones"]
     direction TB
-    P1[Current weather, the sun below] --- P2[Hourly] --- P3[Daily] --- P4["Detail tiles: 2 columns"] --- P5[Air quality] --- P6[Wind]
+    P1[Current weather] --- P2[Hourly] --- P3[Daily] --- P4[Sun] --- P5[Wind] --- P6[Air quality] --- P7["Detail tiles: 2 columns"]
   end
 ```
 
-| Part            | Treatment                                                                                            |
-| --------------- | ---------------------------------------------------------------------------------------------------- |
-| 🔝 Header       | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px   |
-| ⭐ Saved places | A row of glass chips that scrolls sideways and fades out at the edge                                 |
-| 🌤️ Current      | The largest card: place, local time, the icon and a light temperature, with the sun's path beside it |
-| 📅 Daily        | Compact rows of about 3 rem, one per day, at the top of the side column                              |
-| 📊 Details      | Six compact tiles in 2 columns on phones and 3 from 720 px, so no tile is stretched by a larger card |
-| 🍃 Air and wind | Below the daily forecast on wide screens, side by side on tablets, one after another on phones       |
-| 🦶 Footer       | A glass bar with the author, the version (a link to the changelog), the credits and the source code  |
+| Part              | Treatment                                                                                           |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| 🔝 Header         | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px  |
+| ⭐ Saved places   | A row of glass chips that scrolls sideways and fades out at the edge                                |
+| 🌤️ Current        | Place and local time, then the icon, a light temperature and the facts behind a separator           |
+| 📅 Daily          | One line per day of the same height; on wide screens it spans the current weather and the hours     |
+| 🌅 Sun, wind, air | A row of three equal cards on wide screens; on tablets the sun and the wind sit beside the days     |
+| 📊 Details        | Five small tiles that wrap and grow, so the last row is always full: one row on wide screens        |
+| 🦶 Footer         | A glass bar with the author, the version (a link to the changelog), the credits and the source code |
 
-The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard grid lives in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up. On wide screens the main and side columns are independent flex columns, so a long card in one never stretches the cards of the other, and only the last card of each column grows to even out their bottoms. Below 1100 px the columns dissolve (`display: contents`) and an explicit `order` puts the cards in reading order.
+The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard is one grid with named areas in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up. Cards in a row share its height, which is why each row pairs cards of a similar size: the daily forecast spreads its days evenly over the height of the current weather and the hours, and the sun, the wind and air quality fill one row. The detail tiles wrap and grow instead of sitting in fixed columns, so an odd number never leaves a hole.
 
 ### 📱 Down to 320 px
 

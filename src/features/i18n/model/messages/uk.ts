@@ -76,11 +76,6 @@ export const uk: Messages = {
   "humidity.title": "Вологість",
   "humidity.dewPoint": "Точка роси зараз {value}.",
 
-  "feelsLike.title": "Відчувається",
-  "feelsLike.similar": "Майже як фактична температура.",
-  "feelsLike.colder": "Через вітер здається холодніше.",
-  "feelsLike.warmer": "Через вологість здається тепліше.",
-
   "pressure.title": "Тиск",
   "pressure.hpa": "гПа",
   "pressure.inhg": "дюйм рт. ст.",

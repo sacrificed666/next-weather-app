@@ -76,11 +76,6 @@ export const pt: Messages = {
   "humidity.title": "Humidade",
   "humidity.dewPoint": "O ponto de orvalho está agora nos {value}.",
 
-  "feelsLike.title": "Sensação térmica",
-  "feelsLike.similar": "Semelhante à temperatura real.",
-  "feelsLike.colder": "O vento faz parecer mais frio.",
-  "feelsLike.warmer": "A humidade faz parecer mais quente.",
-
   "pressure.title": "Pressão",
   "pressure.hpa": "hPa",
   "pressure.inhg": "inHg",
