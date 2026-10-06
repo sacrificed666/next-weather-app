@@ -89,6 +89,9 @@ The build report is written to the workflow summary:
 
 Without `SITE_URL` the production domain from `VERCEL_PROJECT_PRODUCTION_URL` is used for canonical links, the sitemap and share cards.
 
+> [!IMPORTANT]
+> Vercel takes the Node.js version from `engines.node` in `package.json`. `>=24` lets it build with the newest major it supports, 24 today, and move to 26 on its own once Vercel offers it. A range that only allows a newer line than Vercel supports, such as `>=26`, fails the build with "invalid or discontinued Node.js Version".
+
 > [!NOTE]
 > Preview deployments are kept out of search engines automatically: robots disallow everything and pages are marked `noindex`.
 

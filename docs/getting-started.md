@@ -4,7 +4,7 @@
 
 | Tool              | Version                                                                      |
 | ----------------- | ---------------------------------------------------------------------------- |
-| 🟢 Node.js        | **26.10 or newer** (`.nvmrc` pins the `26` line)                             |
+| 🟢 Node.js        | **24 or newer**; `.nvmrc` pins `26`, the newest line                         |
 | 📦 npm            | 11 or newer (ships with Node 24)                                             |
 | 🔑 OpenWeatherMap | A free account and an [API key](https://home.openweathermap.org/api_keys)    |
 | 🌐 Browser        | Chrome, Edge or Firefox 111+, Safari 16.4+ (the Next.js 16 browser baseline) |
