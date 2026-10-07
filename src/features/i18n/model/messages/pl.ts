@@ -74,7 +74,14 @@ export const pl: Messages = {
   "direction.nw": "NW",
 
   "humidity.title": "Wilgotność",
-  "humidity.dewPoint": "Punkt rosy wynosi teraz {value}.",
+  "humidity.low": "Niska",
+  "humidity.normal": "Normalna",
+  "humidity.high": "Wysoka",
+
+  "dewPoint.title": "Punkt rosy",
+  "dewPoint.comfortable": "Komfortowo",
+  "dewPoint.sticky": "Wilgotno",
+  "dewPoint.muggy": "Duszno",
 
   "pressure.title": "Ciśnienie",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const pl: Messages = {
   "pressure.high": "Wysokie",
 
   "visibility.title": "Widoczność",
-  "visibility.clear": "Doskonała widoczność.",
-  "visibility.hazy": "Zamglenie ogranicza widoczność.",
-  "visibility.poor": "Widoczność jest słaba.",
+  "visibility.clear": "Doskonała",
+  "visibility.hazy": "Zamglenie",
+  "visibility.poor": "Słaba",
 
   "precipitation.title": "Opady",
-  "precipitation.lastHour": "W ostatniej godzinie",
+  "precipitation.lastHour": "Ostatnia godzina",
 
   "clouds.title": "Zachmurzenie",
-  "clouds.clear": "Bezchmurnie.",
-  "clouds.partly": "Częściowe zachmurzenie.",
-  "clouds.mostly": "Przeważnie pochmurno.",
-  "clouds.overcast": "Całkowite zachmurzenie.",
+  "clouds.clear": "Bezchmurnie",
+  "clouds.partly": "Małe zachmurzenie",
+  "clouds.mostly": "Duże zachmurzenie",
+  "clouds.overcast": "Pochmurno",
 
   "sun.title": "Słońce",
   "sun.sunrise": "Wschód",

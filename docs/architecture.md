@@ -234,7 +234,7 @@ LocaleLayout                 app/[locale]/layout.tsx, <html lang data-theme>
 │               ├── DailyForecast        TemperatureRange per day
 │               ├── SunPath              Sunrise, sunset and the arc of the day
 │               ├── WindCard, AirQualityCard
-│               └── Details              Humidity, Pressure, Visibility, Precipitation, CloudCover
+│               └── Details              Humidity, DewPoint, Pressure, Visibility, Precipitation, CloudCover
 ├── Footer                   Author, version, credits and the source code
 └── OfflineNotice            next/offline
 ```

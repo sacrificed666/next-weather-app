@@ -38,14 +38,15 @@ Up to seven days with the weekday (**Today** for the first one), an icon, the ch
 
 ## 📊 Details
 
-The sun has its own card: sunrise, sunset, the length of the day and the sun's position on its arc. On wide screens it shares a row with the wind and air quality, and the five small tiles below fill one row.
+The sun has its own card: sunrise and sunset under the ends of a wide arc, the length of the day and the sun's position on the arc. On wide screens it shares a row with the wind and air quality. Six small tiles follow, all built the same way: a title, the value, one word that rates it and a bar on its scale. They fill one row on wide screens, two rows of three on tablets and three rows of two on phones.
 
 | Card             | Shows                                                                                                         |
 | ---------------- | ------------------------------------------------------------------------------------------------------------- |
 | 🍃 Air quality   | The European index from 1 (good) to 5 (very poor), advice, a coloured scale, PM2.5, PM10, O₃ and NO₂ in µg/m³ |
 | 💨 Wind          | Speed, gusts and direction in degrees and compass points, with a compass arrow                                |
-| 💧 Humidity      | Relative humidity and the dew point                                                                           |
-| 🧭 Pressure      | Pressure in hPa or inHg on a gauge, rated low, normal or high                                                 |
+| 💧 Humidity      | Relative humidity, rated low, normal or high                                                                  |
+| 🌡️ Dew point     | The temperature at which dew forms, rated comfortable, sticky or muggy                                        |
+| 🧭 Pressure      | Pressure in hPa or inHg on a scale from 960 to 1060 hPa, rated low, normal or high                            |
 | 👁️ Visibility    | Distance in km or mi, rated clear, hazy or poor                                                               |
 | ☔ Precipitation | Rain and snow of the last hour in mm or in                                                                    |
 | ☁️ Cloud cover   | The share of the sky covered by clouds, from clear skies to overcast                                          |

@@ -74,7 +74,14 @@ export const fr: Messages = {
   "direction.nw": "NO",
 
   "humidity.title": "Humidité",
-  "humidity.dewPoint": "Le point de rosée est de {value} en ce moment.",
+  "humidity.low": "Faible",
+  "humidity.normal": "Normale",
+  "humidity.high": "Élevée",
+
+  "dewPoint.title": "Point de rosée",
+  "dewPoint.comfortable": "Agréable",
+  "dewPoint.sticky": "Lourd",
+  "dewPoint.muggy": "Étouffant",
 
   "pressure.title": "Pression",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const fr: Messages = {
   "pressure.high": "Haute",
 
   "visibility.title": "Visibilité",
-  "visibility.clear": "Visibilité parfaite.",
-  "visibility.hazy": "La brume réduit la visibilité.",
-  "visibility.poor": "La visibilité est mauvaise.",
+  "visibility.clear": "Excellente",
+  "visibility.hazy": "Brumeuse",
+  "visibility.poor": "Mauvaise",
 
   "precipitation.title": "Précipitations",
-  "precipitation.lastHour": "Durant la dernière heure",
+  "precipitation.lastHour": "Dernière heure",
 
-  "clouds.title": "Couverture nuageuse",
-  "clouds.clear": "Ciel dégagé.",
-  "clouds.partly": "Partiellement nuageux.",
-  "clouds.mostly": "Plutôt nuageux.",
-  "clouds.overcast": "Couvert.",
+  "clouds.title": "Nébulosité",
+  "clouds.clear": "Ciel dégagé",
+  "clouds.partly": "Peu nuageux",
+  "clouds.mostly": "Très nuageux",
+  "clouds.overcast": "Couvert",
 
   "sun.title": "Soleil",
   "sun.sunrise": "Lever",

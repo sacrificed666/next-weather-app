@@ -1,11 +1,11 @@
-// The arc in the middle, the times and the daylight below it
+// The arc on top, the times under its ends and the daylight below
 .sun {
   justify-content: space-between;
 }
 
 .arc {
-  inline-size: min(100%, 14rem);
-  margin-inline: auto;
+  inline-size: 100%;
+  block-size: auto;
   overflow: visible;
 }
 
@@ -38,8 +38,8 @@
 }
 
 .times {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   gap: 0.5rem;
   margin: 0;
 }
@@ -63,6 +63,16 @@
     font-weight: 600;
     line-height: 1.2;
   }
+
+  // Sunset mirrors sunrise at the other end of the arc
+  & + & {
+    padding-inline: 0 2rem;
+    text-align: end;
+
+    .icon {
+      inset-inline: auto -0.25rem;
+    }
+  }
 }
 
 // Centred on the term and the time together
@@ -77,4 +87,5 @@
   color: var(--color-text-secondary);
   font-size: 0.85rem;
   font-weight: 500;
+  text-align: center;
 }

@@ -74,7 +74,14 @@ export const pt: Messages = {
   "direction.nw": "NO",
 
   "humidity.title": "Humidade",
-  "humidity.dewPoint": "O ponto de orvalho está agora nos {value}.",
+  "humidity.low": "Baixa",
+  "humidity.normal": "Normal",
+  "humidity.high": "Alta",
+
+  "dewPoint.title": "Ponto de orvalho",
+  "dewPoint.comfortable": "Agradável",
+  "dewPoint.sticky": "Húmido",
+  "dewPoint.muggy": "Abafado",
 
   "pressure.title": "Pressão",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const pt: Messages = {
   "pressure.high": "Alta",
 
   "visibility.title": "Visibilidade",
-  "visibility.clear": "Visibilidade perfeita.",
-  "visibility.hazy": "A neblina reduz a visibilidade.",
-  "visibility.poor": "A visibilidade é fraca.",
+  "visibility.clear": "Excelente",
+  "visibility.hazy": "Neblina",
+  "visibility.poor": "Fraca",
 
   "precipitation.title": "Precipitação",
   "precipitation.lastHour": "Na última hora",
 
   "clouds.title": "Nebulosidade",
-  "clouds.clear": "Céu limpo.",
-  "clouds.partly": "Parcialmente nublado.",
-  "clouds.mostly": "Muito nublado.",
-  "clouds.overcast": "Céu encoberto.",
+  "clouds.clear": "Céu limpo",
+  "clouds.partly": "Pouco nublado",
+  "clouds.mostly": "Muito nublado",
+  "clouds.overcast": "Encoberto",
 
   "sun.title": "Sol",
   "sun.sunrise": "Nascer do sol",

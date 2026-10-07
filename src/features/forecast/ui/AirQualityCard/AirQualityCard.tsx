@@ -21,7 +21,7 @@ const AirQualityCard = ({ forecast: { airQuality }, t, format, className }: Fore
     {airQuality === null ? (
       <p className={styles.advice}>{t("air.unavailable")}</p>
     ) : (
-      <>
+      <div className={styles.body}>
         <div className={styles.summary}>
           <p className={styles.level} data-level={airQuality.index}>
             {t(`air.level.${airQuality.index}`)}
@@ -53,7 +53,7 @@ const AirQualityCard = ({ forecast: { airQuality }, t, format, className }: Fore
             );
           })}
         </dl>
-      </>
+      </div>
     )}
   </Card>
 );

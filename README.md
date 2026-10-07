@@ -15,7 +15,7 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
 - 🌤️ **Current weather**: temperature, conditions, today's high and low, the apparent temperature and the city's own clock
 - 🌌 **Living sky**: a clear, cloudy, rainy, stormy, snowy or foggy sky behind the cards, by day and by night
 - 🕒 **Hourly and daily**: the next 24 hours in three-hour steps with the chance of rain, and up to seven days with temperature bars on one shared scale
-- 📊 **Details**: the sun's path from sunrise to sunset, air quality with PM2.5, PM10, ozone and nitrogen dioxide, wind with a compass, humidity and dew point, pressure, visibility, precipitation and cloud cover in compact tiles, each with a sentence that explains the number
+- 📊 **Details**: the sun's path from sunrise to sunset, air quality with PM2.5, PM10, ozone and nitrogen dioxide, wind with a compass, and six even tiles for humidity, dew point, pressure, visibility, precipitation and cloud cover, each with a word that rates the number and a bar on its scale
 - 🔎 **Search and location**: suggestions in any language (`Lviv`, `Львів`, `Lemberg`), full keyboard control, recent searches and **Use my location**
 - ⭐ **Saved places**: star a city to pin it above the forecast, named in your language and never twice, and switch between your places in one tap
 - 🌍 **Ten languages**: English, Ukrainian, Czech, German, Spanish, French, Italian, Dutch, Polish and Portuguese, each under its own address, including the weather descriptions and place names
@@ -30,7 +30,7 @@ The weather for any city in the world on one calm, glassy screen: what it is lik
   <img src="./docs/images/mobile-dark-uk.jpg" alt="Snow in Reykjavik on a phone in dark mode, in Ukrainian" width="260" />
 </p>
 
-![Air quality, the sun, wind, humidity, pressure, visibility, precipitation, cloud cover and the footer with the version](./docs/images/desktop-details.jpg)
+![The sun, wind, air quality, six tiles from humidity to cloud cover and the footer with the version](./docs/images/desktop-details.jpg)
 
 ## ⚛️ Front-end
 

@@ -10,6 +10,6 @@ describe("CloudCoverCard", () => {
   it("shows the cloud cover with a short description", () => {
     renderWithI18n(<CloudCoverCard {...view()} />);
     expect(screen.getByText("75%")).toBeInTheDocument();
-    expect(screen.getByText("Mostly cloudy.")).toBeInTheDocument();
+    expect(screen.getByText("Mostly cloudy")).toBeInTheDocument();
   });
 });

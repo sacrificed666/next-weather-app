@@ -74,7 +74,14 @@ export const es: Messages = {
   "direction.nw": "NO",
 
   "humidity.title": "Humedad",
-  "humidity.dewPoint": "El punto de rocío es de {value} ahora mismo.",
+  "humidity.low": "Baja",
+  "humidity.normal": "Normal",
+  "humidity.high": "Alta",
+
+  "dewPoint.title": "Punto de rocío",
+  "dewPoint.comfortable": "Agradable",
+  "dewPoint.sticky": "Húmedo",
+  "dewPoint.muggy": "Bochornoso",
 
   "pressure.title": "Presión",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const es: Messages = {
   "pressure.high": "Alta",
 
   "visibility.title": "Visibilidad",
-  "visibility.clear": "Visibilidad perfecta.",
-  "visibility.hazy": "La calima reduce la visibilidad.",
-  "visibility.poor": "La visibilidad es mala.",
+  "visibility.clear": "Despejada",
+  "visibility.hazy": "Calima",
+  "visibility.poor": "Mala",
 
   "precipitation.title": "Precipitación",
-  "precipitation.lastHour": "En la última hora",
+  "precipitation.lastHour": "Última hora",
 
   "clouds.title": "Nubosidad",
-  "clouds.clear": "Cielo despejado.",
-  "clouds.partly": "Parcialmente nublado.",
-  "clouds.mostly": "Mayormente nublado.",
-  "clouds.overcast": "Cubierto.",
+  "clouds.clear": "Despejado",
+  "clouds.partly": "Algo nublado",
+  "clouds.mostly": "Muy nublado",
+  "clouds.overcast": "Cubierto",
 
   "sun.title": "Sol",
   "sun.sunrise": "Amanecer",

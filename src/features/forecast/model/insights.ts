@@ -19,6 +19,28 @@ export const pressureLevel = (hectopascals: number): PressureLevel => {
   return "normal";
 };
 
+export type HumidityLevel = "low" | "normal" | "high";
+
+// Low, normal or high relative humidity
+export const humidityLevel = (percent: number): HumidityLevel => {
+  if (percent < 30) return "low";
+  if (percent > 70) return "high";
+  return "normal";
+};
+
+export type DewPointLevel = "comfortable" | "sticky" | "muggy";
+
+export const DEW_POINT_SCALE = { min: -10, max: 25 } as const;
+
+// How the moisture in the air feels, from the dew point in Celsius
+export const dewPointLevel = (celsius: number): DewPointLevel => {
+  if (celsius >= 18) return "muggy";
+  if (celsius >= 13) return "sticky";
+  return "comfortable";
+};
+
+export const VISIBILITY_SCALE = { min: 0, max: 10_000 } as const;
+
 export type VisibilityLevel = "clear" | "hazy" | "poor";
 
 // Clear, hazy or poor visibility
@@ -37,6 +59,8 @@ export const cloudLevel = (percent: number): CloudLevel => {
   if (percent < 90) return "mostly";
   return "overcast";
 };
+
+export const PRECIPITATION_SCALE = { min: 0, max: 8 } as const;
 
 // Where a value sits between two ends, from 0 to 1
 export const progress = (value: number, min: number, max: number) =>

@@ -7,15 +7,15 @@ import type { ForecastViewProps } from "../props";
 
 import styles from "./SunPath.module.scss";
 
-// The arc peaks at y 31.5, so the view starts at 18 with room for the sun
-const ARC = "M16 84C40 14 160 14 184 84";
+// A wide, low arc over the horizon at y 68; it peaks at y 12.5
+const ARC = "M14 68C70 -6 230 -6 286 68";
 
 // Point on the arc for the share of daylight that has passed
 const sunPosition = (share: number) => {
   const inverse = 1 - share;
   return {
-    x: inverse ** 3 * 16 + 3 * inverse ** 2 * share * 40 + 3 * inverse * share ** 2 * 160 + share ** 3 * 184,
-    y: inverse ** 3 * 84 + 3 * inverse ** 2 * share * 14 + 3 * inverse * share ** 2 * 14 + share ** 3 * 84,
+    x: inverse ** 3 * 14 + 3 * inverse ** 2 * share * 70 + 3 * inverse * share ** 2 * 230 + share ** 3 * 286,
+    y: inverse ** 3 * 68 + 3 * inverse ** 2 * share * -6 + 3 * inverse * share ** 2 * -6 + share ** 3 * 68,
   };
 };
 
@@ -37,12 +37,12 @@ const SunPath = ({
         <p className={styles.note}>{t("sun.unavailable")}</p>
       ) : (
         <>
-          <svg className={styles.arc} viewBox="0 18 200 74" aria-hidden="true">
+          <svg className={styles.arc} viewBox="0 0 300 76" aria-hidden="true">
             <path className={styles.path} d={ARC} />
             {share !== null && (
               <path className={styles.travelled} d={ARC} pathLength={1} strokeDasharray={`${share} 1`} />
             )}
-            <line className={styles.horizon} x1="4" y1="84" x2="196" y2="84" />
+            <line className={styles.horizon} x1="4" y1="68" x2="296" y2="68" />
             {sun && <circle className={styles.dot} cx={sun.x.toFixed(2)} cy={sun.y.toFixed(2)} r="7" />}
           </svg>
           <dl className={styles.times}>

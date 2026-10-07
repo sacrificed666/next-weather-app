@@ -2,7 +2,7 @@ import Skeleton from "@/shared/ui/Skeleton/Skeleton";
 
 import styles from "./ForecastSkeleton.module.scss";
 
-const DETAIL_TILES = ["humidity", "pressure", "visibility", "precipitation", "clouds"];
+const DETAIL_TILES = ["humidity", "dewPoint", "pressure", "visibility", "precipitation", "clouds"];
 
 // Placeholder in the shape of the dashboard while the forecast streams in
 const ForecastSkeleton = ({ label }: { label: string }) => (

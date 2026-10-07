@@ -73,8 +73,15 @@ export const de: Messages = {
   "direction.w": "W",
   "direction.nw": "NW",
 
-  "humidity.title": "Luftfeuchtigkeit",
-  "humidity.dewPoint": "Der Taupunkt liegt gerade bei {value}.",
+  "humidity.title": "Luftfeuchte",
+  "humidity.low": "Niedrig",
+  "humidity.normal": "Normal",
+  "humidity.high": "Hoch",
+
+  "dewPoint.title": "Taupunkt",
+  "dewPoint.comfortable": "Angenehm",
+  "dewPoint.sticky": "Leicht schwül",
+  "dewPoint.muggy": "Schwül",
 
   "pressure.title": "Luftdruck",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const de: Messages = {
   "pressure.high": "Hoch",
 
   "visibility.title": "Sichtweite",
-  "visibility.clear": "Perfekte Sicht.",
-  "visibility.hazy": "Dunst schränkt die Sicht ein.",
-  "visibility.poor": "Die Sicht ist schlecht.",
+  "visibility.clear": "Klare Sicht",
+  "visibility.hazy": "Dunstig",
+  "visibility.poor": "Schlecht",
 
   "precipitation.title": "Niederschlag",
-  "precipitation.lastHour": "In der letzten Stunde",
+  "precipitation.lastHour": "Letzte Stunde",
 
   "clouds.title": "Bewölkung",
-  "clouds.clear": "Klarer Himmel.",
-  "clouds.partly": "Teilweise bewölkt.",
-  "clouds.mostly": "Überwiegend bewölkt.",
-  "clouds.overcast": "Bedeckt.",
+  "clouds.clear": "Klarer Himmel",
+  "clouds.partly": "Teils bewölkt",
+  "clouds.mostly": "Meist bewölkt",
+  "clouds.overcast": "Bedeckt",
 
   "sun.title": "Sonne",
   "sun.sunrise": "Aufgang",

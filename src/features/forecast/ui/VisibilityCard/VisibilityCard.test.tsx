@@ -15,6 +15,6 @@ describe("VisibilityCard", () => {
     expect(container).toBeEmptyDOMElement();
     renderWithI18n(<VisibilityCard {...view()} />);
     expect(screen.getByText("10 km")).toBeInTheDocument();
-    expect(screen.getByText("Perfectly clear view.")).toBeInTheDocument();
+    expect(screen.getByText("Clear view")).toBeInTheDocument();
   });
 });

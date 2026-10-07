@@ -132,14 +132,16 @@ The animated icons are copied from `@meteocons/svg` to `public/icons/weather/` a
 | Visibility    | m         | `3.2 km`       | `2 mi`           |
 | Precipitation | mm        | `0.4 mm`       | `0.02 in`        |
 
-`createFormatter(locale, units)` in `shared/lib/format.ts` converts and formats with `Intl.NumberFormat` units, so separators and unit names follow the language (`1 009 гПа`, `5 м/с`). Temperatures are rounded to whole degrees, and a value just below zero such as `-0.4 °C` is shown as `0°`, never as `-0°`. The dew point is computed from the temperature and humidity with the Magnus formula.
+`createFormatter(locale, units)` in `shared/lib/format.ts` converts and formats with `Intl.NumberFormat` units, so separators and unit names follow the language (`1 009 гПа`, `5 м/с`). Temperatures are rounded to whole degrees, and a value just below zero such as `-0.4 °C` is shown as `0°`, never as `-0°`. The dew point has its own tile and is computed from the temperature and humidity with the Magnus formula.
 
 ## 🧠 Insights
 
-`features/forecast/model/insights.ts` turns numbers into sentences:
+`features/forecast/model/insights.ts` turns numbers into words and scales:
 
 | Helper               | Rule                                                                         |
 | -------------------- | ---------------------------------------------------------------------------- |
+| `humidityLevel()`    | Below 30 % low, above 70 % high, normal in between                           |
+| `dewPointLevel()`    | Below 13 °C comfortable, from 13 °C sticky, from 18 °C muggy                 |
 | `pressureLevel()`    | Below 1006 hPa low, above 1020 hPa high, normal in between                   |
 | `visibilityLevel()`  | 10 km and more clear, from 4 km hazy, below that poor                        |
 | `cloudLevel()`       | Below 20 % clear, below 60 % partly, below 90 % mostly cloudy, else overcast |

@@ -78,7 +78,7 @@
 .icon {
   grid-area: icon;
   flex: none;
-  inline-size: clamp(5rem, 16vw, 8rem);
+  inline-size: clamp(5rem, 16vw, 9.5rem);
   block-size: auto;
   margin-block: -0.75rem;
   filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.18));
@@ -86,16 +86,19 @@
 
 .temperature {
   grid-area: temperature;
-  font-size: clamp(3.5rem, 12vw, 5.75rem);
+  font-size: clamp(3.5rem, 12vw, 7rem);
   font-weight: 250;
   line-height: 0.95;
   letter-spacing: -0.04em;
 }
 
+// The description and the range share a line when the card is wide enough
 .facts {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.25rem;
   grid-area: facts;
-  gap: 0.35rem;
   min-inline-size: 0;
 
   @include from("md") {
@@ -105,7 +108,7 @@
 }
 
 .description {
-  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
   font-weight: 600;
 }
 
@@ -114,11 +117,12 @@
   flex-wrap: wrap;
   gap: 0.25rem 0.9rem;
   color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   font-weight: 500;
 }
 
 .updated {
+  flex-basis: 100%;
   color: var(--color-text-tertiary);
-  font-size: 0.8rem;
+  font-size: clamp(0.8rem, 1.3vw, 0.875rem);
 }

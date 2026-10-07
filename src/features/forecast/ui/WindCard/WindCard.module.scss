@@ -37,16 +37,12 @@
   }
 }
 
+// The compass grows with the card, so a tall card has no empty band
 .compass {
   flex: none;
-  inline-size: 6.5rem;
-  block-size: 6.5rem;
-
-  // A smaller compass on a narrow card
-  @container (width < 17rem) {
-    inline-size: 5.5rem;
-    block-size: 5.5rem;
-  }
+  inline-size: clamp(5.5rem, 36cqi, 8.5rem);
+  block-size: auto;
+  aspect-ratio: 1;
 }
 
 .dial {

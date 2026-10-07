@@ -83,20 +83,25 @@ Imports only point downwards: `app → widgets → features → shared`. Oxlint 
 ### 🃏 Adding a detail card
 
 ```tsx
-import { dewPoint } from "@/shared/lib/units";
 import Card from "@/shared/ui/Card/Card";
 
+import { progress } from "../../model/insights";
 import Metric from "../Metric/Metric";
 import type { ForecastViewProps } from "../props";
 
-const DewPointCard = ({ forecast: { current }, t, format, className }: ForecastViewProps) => (
-  <Card className={className} title={t("dewPoint.title")} icon="droplet">
-    <Metric value={format.temperature(dewPoint(current.temperature, current.humidity))}>{t("dewPoint.note")}</Metric>
-  </Card>
-);
+const GustsCard = ({ forecast: { current }, t, format, className }: ForecastViewProps) => {
+  if (current.wind.gust === null) return null;
+  return (
+    <Card compact className={className} title={t("gusts.title")} icon="wind">
+      <Metric value={format.speed(current.wind.gust)} share={progress(current.wind.gust, 0, 30)}>
+        {t("gusts.note")}
+      </Metric>
+    </Card>
+  );
+};
 ```
 
-Add the messages in all ten languages, render the card in `widgets/Forecast/Forecast.tsx`, add a skeleton entry in `ForecastSkeleton`, and keep the details grid free of holes: on wide screens it has four columns, and wide cards span two.
+A compact card is a tile: `Metric` gives it the value, one short word and a bar, and the tile shares its four rows with its neighbours. Add the messages in all ten languages, render the card in `widgets/Forecast/Forecast.tsx` and add a skeleton entry in `ForecastSkeleton`. Keep the number of tiles at six, so rows of six, three and two stay full; replace a tile rather than adding a seventh.
 
 > [!TIP]
 > Give a card that holds a row of values a container query instead of a page breakpoint, like `DailyForecast` and `WindCard`: cards are narrow on phones and in the side column alike.

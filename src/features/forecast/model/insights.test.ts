@@ -4,6 +4,8 @@ import {
   cloudLevel,
   compassPoint,
   daylightProgress,
+  dewPointLevel,
+  humidityLevel,
   pressureLevel,
   progress,
   TEMPERATURE_SCALE,
@@ -25,7 +27,9 @@ describe("insights", () => {
     expect(compassPoint(degrees)).toBe(point);
   });
 
-  it("classifies pressure, visibility and cloud cover", () => {
+  it("classifies humidity, dew point, pressure, visibility and cloud cover", () => {
+    expect([20, 50, 78].map(humidityLevel)).toEqual(["low", "normal", "high"]);
+    expect([-5, 9, 15, 21].map(dewPointLevel)).toEqual(["comfortable", "comfortable", "sticky", "muggy"]);
     expect([990, 1013, 1030].map(pressureLevel)).toEqual(["low", "normal", "high"]);
     expect([10_000, 5000, 800].map(visibilityLevel)).toEqual(["clear", "hazy", "poor"]);
     expect([5, 40, 75, 100].map(cloudLevel)).toEqual(["clear", "partly", "mostly", "overcast"]);

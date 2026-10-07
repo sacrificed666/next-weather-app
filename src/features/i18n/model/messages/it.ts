@@ -74,7 +74,14 @@ export const it: Messages = {
   "direction.nw": "NO",
 
   "humidity.title": "Umidità",
-  "humidity.dewPoint": "Il punto di rugiada è ora di {value}.",
+  "humidity.low": "Bassa",
+  "humidity.normal": "Normale",
+  "humidity.high": "Alta",
+
+  "dewPoint.title": "Punto di rugiada",
+  "dewPoint.comfortable": "Gradevole",
+  "dewPoint.sticky": "Umido",
+  "dewPoint.muggy": "Afoso",
 
   "pressure.title": "Pressione",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const it: Messages = {
   "pressure.high": "Alta",
 
   "visibility.title": "Visibilità",
-  "visibility.clear": "Visibilità perfetta.",
-  "visibility.hazy": "La foschia riduce la visibilità.",
-  "visibility.poor": "La visibilità è scarsa.",
+  "visibility.clear": "Ottima",
+  "visibility.hazy": "Foschia",
+  "visibility.poor": "Scarsa",
 
   "precipitation.title": "Precipitazioni",
   "precipitation.lastHour": "Nell’ultima ora",
 
-  "clouds.title": "Copertura nuvolosa",
-  "clouds.clear": "Cielo sereno.",
-  "clouds.partly": "Parzialmente nuvoloso.",
-  "clouds.mostly": "Prevalentemente nuvoloso.",
-  "clouds.overcast": "Coperto.",
+  "clouds.title": "Nuvolosità",
+  "clouds.clear": "Sereno",
+  "clouds.partly": "Poco nuvoloso",
+  "clouds.mostly": "Molto nuvoloso",
+  "clouds.overcast": "Coperto",
 
   "sun.title": "Sole",
   "sun.sunrise": "Alba",

@@ -72,7 +72,14 @@ export const en = {
   "direction.nw": "NW",
 
   "humidity.title": "Humidity",
-  "humidity.dewPoint": "The dew point is {value} right now.",
+  "humidity.low": "Low",
+  "humidity.normal": "Normal",
+  "humidity.high": "High",
+
+  "dewPoint.title": "Dew point",
+  "dewPoint.comfortable": "Comfortable",
+  "dewPoint.sticky": "Sticky",
+  "dewPoint.muggy": "Muggy",
 
   "pressure.title": "Pressure",
   "pressure.hpa": "hPa",
@@ -82,18 +89,18 @@ export const en = {
   "pressure.high": "High",
 
   "visibility.title": "Visibility",
-  "visibility.clear": "Perfectly clear view.",
-  "visibility.hazy": "Haze is reducing visibility.",
-  "visibility.poor": "Visibility is poor.",
+  "visibility.clear": "Clear view",
+  "visibility.hazy": "Hazy",
+  "visibility.poor": "Poor",
 
   "precipitation.title": "Precipitation",
   "precipitation.lastHour": "In the last hour",
 
   "clouds.title": "Cloud cover",
-  "clouds.clear": "Clear skies.",
-  "clouds.partly": "Partly cloudy.",
-  "clouds.mostly": "Mostly cloudy.",
-  "clouds.overcast": "Overcast.",
+  "clouds.clear": "Clear skies",
+  "clouds.partly": "Partly cloudy",
+  "clouds.mostly": "Mostly cloudy",
+  "clouds.overcast": "Overcast",
 
   "sun.title": "Sun",
   "sun.sunrise": "Sunrise",

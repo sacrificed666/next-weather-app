@@ -74,7 +74,14 @@ export const uk: Messages = {
   "direction.nw": "ПнЗх",
 
   "humidity.title": "Вологість",
-  "humidity.dewPoint": "Точка роси зараз {value}.",
+  "humidity.low": "Низька",
+  "humidity.normal": "Нормальна",
+  "humidity.high": "Висока",
+
+  "dewPoint.title": "Точка роси",
+  "dewPoint.comfortable": "Комфортно",
+  "dewPoint.sticky": "Волого",
+  "dewPoint.muggy": "Душно",
 
   "pressure.title": "Тиск",
   "pressure.hpa": "гПа",
@@ -84,18 +91,18 @@ export const uk: Messages = {
   "pressure.high": "Високий",
 
   "visibility.title": "Видимість",
-  "visibility.clear": "Чудова видимість.",
-  "visibility.hazy": "Серпанок погіршує видимість.",
-  "visibility.poor": "Погана видимість.",
+  "visibility.clear": "Чудова",
+  "visibility.hazy": "Серпанок",
+  "visibility.poor": "Погана",
 
   "precipitation.title": "Опади",
-  "precipitation.lastHour": "За останню годину",
+  "precipitation.lastHour": "Остання година",
 
   "clouds.title": "Хмарність",
-  "clouds.clear": "Ясне небо.",
-  "clouds.partly": "Мінлива хмарність.",
-  "clouds.mostly": "Переважно хмарно.",
-  "clouds.overcast": "Суцільна хмарність.",
+  "clouds.clear": "Ясне небо",
+  "clouds.partly": "Мінлива хмарність",
+  "clouds.mostly": "Хмарно",
+  "clouds.overcast": "Похмуро",
 
   "sun.title": "Сонце",
   "sun.sunrise": "Схід",

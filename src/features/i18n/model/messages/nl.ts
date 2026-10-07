@@ -73,8 +73,15 @@ export const nl: Messages = {
   "direction.w": "W",
   "direction.nw": "NW",
 
-  "humidity.title": "Luchtvochtigheid",
-  "humidity.dewPoint": "Het dauwpunt is nu {value}.",
+  "humidity.title": "Vochtigheid",
+  "humidity.low": "Laag",
+  "humidity.normal": "Normaal",
+  "humidity.high": "Hoog",
+
+  "dewPoint.title": "Dauwpunt",
+  "dewPoint.comfortable": "Aangenaam",
+  "dewPoint.sticky": "Klam",
+  "dewPoint.muggy": "Benauwd",
 
   "pressure.title": "Luchtdruk",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const nl: Messages = {
   "pressure.high": "Hoog",
 
   "visibility.title": "Zicht",
-  "visibility.clear": "Perfect zicht.",
-  "visibility.hazy": "Nevel beperkt het zicht.",
-  "visibility.poor": "Het zicht is slecht.",
+  "visibility.clear": "Helder",
+  "visibility.hazy": "Nevelig",
+  "visibility.poor": "Slecht",
 
   "precipitation.title": "Neerslag",
-  "precipitation.lastHour": "In het afgelopen uur",
+  "precipitation.lastHour": "Afgelopen uur",
 
   "clouds.title": "Bewolking",
-  "clouds.clear": "Onbewolkt.",
-  "clouds.partly": "Half bewolkt.",
-  "clouds.mostly": "Overwegend bewolkt.",
-  "clouds.overcast": "Zwaar bewolkt.",
+  "clouds.clear": "Onbewolkt",
+  "clouds.partly": "Half bewolkt",
+  "clouds.mostly": "Bewolkt",
+  "clouds.overcast": "Zwaar bewolkt",
 
   "sun.title": "Zon",
   "sun.sunrise": "Opkomst",

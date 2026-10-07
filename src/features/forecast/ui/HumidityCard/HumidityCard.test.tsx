@@ -7,9 +7,9 @@ import { renderWithI18n } from "@/test/render";
 import HumidityCard from "./HumidityCard";
 
 describe("HumidityCard", () => {
-  it("shows the humidity with the dew point", () => {
+  it("shows the humidity with its level", () => {
     renderWithI18n(<HumidityCard {...view()} />);
     expect(screen.getByText("78%")).toBeInTheDocument();
-    expect(screen.getByText("The dew point is 9° right now.")).toBeInTheDocument();
+    expect(screen.getByText("High")).toBeInTheDocument();
   });
 });

@@ -6,8 +6,8 @@ The interface is a set of translucent **glass** cards floating over a **sky** th
 
 - 🌌 **The sky is the content's mood.** The background is not decoration chosen once; it is part of the forecast.
 - 🫧 **Glass carries information, not chrome.** Every card is glass; the header, the footer and overlays use the same material, so the page reads as one surface.
-- 🔢 **Numbers first, sentences second.** Each detail card leads with one big value and explains it in a short sentence underneath.
-- 📏 **One scale per question.** Daily temperature bars share the week's scale, the gauge and the sun arc are drawn to scale, colours follow absolute temperatures.
+- 🔢 **Numbers first, words second.** Each detail tile leads with one big value, rates it in one word and shows it on a bar.
+- 📏 **One scale per question.** Daily temperature bars share the week's scale, the detail bars and the sun arc are drawn to scale, colours follow absolute temperatures.
 - 🧘 **Calm by default.** Motion is slow and subtle and disappears completely when the system asks for less motion.
 
 ## 🧭 Layout
@@ -16,38 +16,41 @@ The interface is a set of translucent **glass** cards floating over a **sky** th
 flowchart LR
   subgraph Wide["🖥️ 1100 px and wider"]
     direction TB
-    W1["Current weather · daily, beside it"] --- W2["Hourly · daily continues"] --- W3["Sun · Wind · Air quality"] --- W4["Five detail tiles in a row"]
+    W1["Current weather · daily, beside it"] --- W2["Hourly · daily continues"] --- W3["Sun · Wind · Air quality"] --- W4["Six detail tiles in a row, or 3 and 3 below 70 rem"]
   end
   subgraph Tablet["💻 720 to 1100 px"]
     direction TB
-    T1[Current weather] --- T2[Hourly] --- T3["Daily · Sun and Wind"] --- T4[Air quality] --- T5["Detail tiles: 3 and 2"]
+    T1[Current weather] --- T2[Hourly] --- T3["Daily · Sun and Wind"] --- T4[Air quality] --- T5["Detail tiles: 3 and 3"]
   end
   subgraph Phone["📱 Phones"]
     direction TB
-    P1[Current weather] --- P2[Hourly] --- P3[Daily] --- P4[Sun] --- P5[Wind] --- P6[Air quality] --- P7["Detail tiles: 2 columns"]
+    P1[Current weather] --- P2[Hourly] --- P3[Daily] --- P4[Sun] --- P5[Wind] --- P6[Air quality] --- P7["Detail tiles: 2, 2 and 2"]
   end
 ```
 
-| Part              | Treatment                                                                                           |
-| ----------------- | --------------------------------------------------------------------------------------------------- |
-| 🔝 Header         | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px  |
-| ⭐ Saved places   | A row of glass chips that scrolls sideways and fades out at the edge                                |
-| 🌤️ Current        | Place and local time, then the icon, a light temperature and the facts behind a separator           |
-| 📅 Daily          | One line per day of the same height; on wide screens it spans the current weather and the hours     |
-| 🌅 Sun, wind, air | A row of three equal cards on wide screens; on tablets the sun and the wind sit beside the days     |
-| 📊 Details        | Five small tiles that wrap and grow, so the last row is always full: one row on wide screens        |
-| 🦶 Footer         | A glass bar with the author, the version (a link to the changelog), the credits and the source code |
+| Part              | Treatment                                                                                                                                                |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔝 Header         | The logo and name, a capsule search field and two round glass buttons. The name hides below 720 px                                                       |
+| ⭐ Saved places   | A row of glass chips that scrolls sideways and fades out at the edge                                                                                     |
+| 🌤️ Current        | Place and local time, then the icon, a light temperature and the facts behind a separator; the description and the range share a line when there is room |
+| 📅 Daily          | One line per day of the same height; on wide screens it spans the current weather and the hours                                                          |
+| 🌅 Sun, wind, air | A row of three equal cards on wide screens; on tablets the sun and the wind sit beside the days                                                          |
+| 📊 Details        | Six tiles with the same four rows (title, value, word, bar), so every row of tiles is full                                                               |
+| 🦶 Footer         | A glass bar with the author, the version (a link to the changelog), the credits and the source code                                                      |
 
-The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard is one grid with named areas in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up. Cards in a row share its height, which is why each row pairs cards of a similar size: the daily forecast spreads its days evenly over the height of the current weather and the hours, and the sun, the wind and air quality fill one row. The detail tiles wrap and grow instead of sitting in fixed columns, so an odd number never leaves a hole.
+The content is 76 rem wide with a fluid gutter of `clamp(1rem, 3vw, 1.5rem)`. The dashboard is one grid with named areas in `shared/styles/_dashboard.scss`, so the skeleton and the real dashboard always line up. Cards in a row share its height, which is why each row pairs cards of a similar size: the daily forecast spreads its days evenly over the height of the current weather and the hours, and the sun, the wind and air quality fill one row. Six detail tiles divide evenly into rows of six, three or two, chosen by a container query on the dashboard. Each tile is a subgrid of four rows, so the titles, values, words and bars of one row line up even when a long word wraps. When a place has no visibility the five tiles still close every row: the last two share the second row of three, and on phones the last one is wide.
 
 ### 📱 Down to 320 px
 
 Page breakpoints (`md` 720 px, `lg` 1100 px) decide the grid; **container queries** decide what happens inside a card, because the same card is narrow both on a phone and in the right column of a wide screen:
 
-| Card     | Container        | Under  | Change                                                        |
-| -------- | ---------------- | ------ | ------------------------------------------------------------- |
-| 📅 Daily | the list of days | 18 rem | Narrower weekday, icon and temperature columns, 0.92 rem text |
-| 💨 Wind  | the card content | 17 rem | A 5.5 rem compass instead of 6.5 rem                          |
+| Card     | Container        | Width        | Change                                                        |
+| -------- | ---------------- | ------------ | ------------------------------------------------------------- |
+| 📅 Daily | the list of days | under 18 rem | Narrower weekday, icon and temperature columns, 0.92 rem text |
+| 💨 Wind  | the card content | any          | A compass of 36 % of the card, from 5.5 to 8.5 rem            |
+| 🍃 Air   | the card         | under 17 rem | The pollutants in two rows of two instead of one row of four  |
+| 🍃 Air   | the card         | from 40 rem  | The pollutants beside the summary instead of below it         |
+| 📊 Tiles | the dashboard    | from 40 rem  | Three tiles in a row instead of two, six from 70 rem          |
 
 Wind rows wrap their value under the label when a language needs it, and the hourly list scrolls inside its card.
 
@@ -159,8 +162,8 @@ Every chart is a few lines of SVG drawn on the server with attributes only (no i
 
 - 🌡️ **Temperature bars** (`TemperatureRange`): a track and a range on the week's scale, filled by a gradient whose stops are pinned to −10 °C, 5 °C, 15 °C, 25 °C and 35 °C in user space. A cold week is blue-green, a hot one yellow-orange.
 - 🧭 **Compass** (`WindCard`): 36 ticks, localized cardinal letters and an arrow rotated to where the wind blows.
-- ⏲️ **Pressure gauge**: a half circle from 960 to 1060 hPa, filled with `pathLength="1"` and `stroke-dasharray`.
-- 🌅 **Sun arc**: a cubic Bézier from sunrise to sunset, the travelled part drawn solid, and the sun placed on the curve.
+- 📊 **Detail bars** (`Metric`): a track and a filled part as SVG rectangles with a width in percent, so they stretch with the tile; pressure runs from 960 to 1060 hPa, the dew point from −10 °C to 25 °C, visibility to 10 km and precipitation to 8 mm.
+- 🌅 **Sun arc**: a wide, low cubic Bézier across the card from sunrise to sunset, the travelled part drawn solid, and the sun placed on the curve; the times sit under its ends.
 - 🍃 **Air quality scale**: five segments in the index colours, the current one lit.
 
 ## 🌊 Motion

@@ -4,6 +4,7 @@ import AirQualityCard from "@/features/forecast/ui/AirQualityCard/AirQualityCard
 import CloudCoverCard from "@/features/forecast/ui/CloudCoverCard/CloudCoverCard";
 import CurrentConditions from "@/features/forecast/ui/CurrentConditions/CurrentConditions";
 import DailyForecast from "@/features/forecast/ui/DailyForecast/DailyForecast";
+import DewPointCard from "@/features/forecast/ui/DewPointCard/DewPointCard";
 import ForecastError from "@/features/forecast/ui/ForecastError/ForecastError";
 import HourlyForecast from "@/features/forecast/ui/HourlyForecast/HourlyForecast";
 import HumidityCard from "@/features/forecast/ui/HumidityCard/HumidityCard";
@@ -51,6 +52,7 @@ const Forecast = async ({ query }: { query: LocationQuery | null }) => {
         <AirQualityCard {...view} className={styles.air} />
         <div className={styles.details}>
           <HumidityCard {...view} />
+          <DewPointCard {...view} />
           <PressureCard {...view} />
           <VisibilityCard {...view} />
           <PrecipitationCard {...view} />

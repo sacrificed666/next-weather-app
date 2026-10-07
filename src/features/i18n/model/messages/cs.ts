@@ -74,7 +74,14 @@ export const cs: Messages = {
   "direction.nw": "SZ",
 
   "humidity.title": "Vlhkost",
-  "humidity.dewPoint": "Rosný bod je teď {value}.",
+  "humidity.low": "Nízká",
+  "humidity.normal": "Normální",
+  "humidity.high": "Vysoká",
+
+  "dewPoint.title": "Rosný bod",
+  "dewPoint.comfortable": "Příjemně",
+  "dewPoint.sticky": "Vlhko",
+  "dewPoint.muggy": "Dusno",
 
   "pressure.title": "Tlak",
   "pressure.hpa": "hPa",
@@ -84,18 +91,18 @@ export const cs: Messages = {
   "pressure.high": "Vysoký",
 
   "visibility.title": "Viditelnost",
-  "visibility.clear": "Dokonale čistý výhled.",
-  "visibility.hazy": "Opar snižuje viditelnost.",
-  "visibility.poor": "Viditelnost je špatná.",
+  "visibility.clear": "Výborná",
+  "visibility.hazy": "Opar",
+  "visibility.poor": "Špatná",
 
   "precipitation.title": "Srážky",
-  "precipitation.lastHour": "Za poslední hodinu",
+  "precipitation.lastHour": "Poslední hodina",
 
   "clouds.title": "Oblačnost",
-  "clouds.clear": "Jasná obloha.",
-  "clouds.partly": "Polojasno.",
-  "clouds.mostly": "Oblačno.",
-  "clouds.overcast": "Zataženo.",
+  "clouds.clear": "Jasno",
+  "clouds.partly": "Polojasno",
+  "clouds.mostly": "Oblačno",
+  "clouds.overcast": "Zataženo",
 
   "sun.title": "Slunce",
   "sun.sunrise": "Východ slunce",

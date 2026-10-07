@@ -47,7 +47,7 @@ Focus is always visible: a 2 px ring in `--color-focus` with an offset, drawn in
 ## 🎨 Colour and contrast
 
 - 📏 Text reaches **4.5:1** and large values and graphical marks **3:1** against the glass in both themes, over the brightest and the darkest sky. Secondary text is 74-78 % and tertiary text 62-64 % of the text colour, tuned with axe on every sky.
-- 🌡️ Colour never carries meaning alone: temperature bars print their low and high, the air quality scale prints the level in words, the pressure gauge prints its value and _Low_, _Normal_ or _High_.
+- 🌡️ Colour never carries meaning alone: temperature bars print their low and high, the air quality scale prints the level in words, every detail tile prints its value and a word such as _Low_, _Normal_ or _High_, and its bar only repeats them.
 - 🧪 The accessibility tests run axe on pages with clear, rainy, snowy and stormy skies in light and dark mode.
 
 ## 🌊 Motion and preferences
@@ -68,7 +68,7 @@ Focus is always visible: a 2 px ring in `--color-focus` with an offset, drawn in
 The layout reflows down to **320 px**, the width of a 1280 px window zoomed to 400 %, without horizontal page scrolling (WCAG 1.4.10):
 
 - 📅 The daily rows use a container query and switch to narrower columns when their card is under 18 rem wide.
-- 🧭 The compass shrinks under 17 rem, and the wind rows wrap their value under the label when a language needs more room (`Напрямок 235° ПдЗх`).
+- 🧭 The compass grows and shrinks with its card, and the wind rows wrap their value under the label when a language needs more room (`Напрямок 235° ПдЗх`).
 - 🕒 The hourly list scrolls inside its card, and it is `position: relative`, so the visually hidden texts inside it cannot widen the page.
 
 > [!WARNING]
