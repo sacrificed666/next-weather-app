@@ -35,6 +35,16 @@
   fill: var(--track);
 }
 
+// The bar fills from the left once the tiles have risen into place
 .fill {
   fill: var(--color-accent);
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: fill 0.9s var(--ease-out) 0.35s backwards;
+}
+
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
 }

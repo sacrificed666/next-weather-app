@@ -21,8 +21,16 @@
   stroke-dasharray: 4 6;
 }
 
+// The travelled part draws itself, then the sun appears where it ends
 .travelled {
   stroke: #ffb938;
+  animation: travel 1.2s var(--ease-out) 0.3s backwards;
+}
+
+@keyframes travel {
+  from {
+    stroke-dasharray: 0 1;
+  }
 }
 
 .horizon {
@@ -35,6 +43,13 @@
   stroke: #fff;
   stroke-width: 2;
   filter: drop-shadow(0 0 6px rgb(255 200 74 / 0.8));
+  animation: rise-sun 0.5s var(--ease-out) 1.3s backwards;
+}
+
+@keyframes rise-sun {
+  from {
+    opacity: 0;
+  }
 }
 
 .times {

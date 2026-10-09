@@ -8,7 +8,7 @@ const circle = (cx: number, cy: number, r: number) =>
 
 export const icons = {
   search: { paths: [circle(11, 11, 7.5), "m20.5 20.5-4.2-4.2"] },
-  locate: { paths: ["M3 11 22 2l-9 19-2-8-8-2Z"] },
+  locate: { paths: ["M1.5 12.5 20.5 3.5l-9 19-2-8-8-2Z"] },
   sliders: {
     paths: ["M21 4h-7", "M10 4H3", "M21 12h-9", "M8 12H3", "M21 20h-5", "M12 20H3", "M14 2v4", "M8 10v4", "M16 18v4"],
   },

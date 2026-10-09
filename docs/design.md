@@ -171,6 +171,8 @@ Every chart is a few lines of SVG drawn on the server with attributes only (no i
 | Interaction           | Motion                                                                    |
 | --------------------- | ------------------------------------------------------------------------- |
 | Dashboard appears     | Cards rise 12 px and fade in, staggered by 60 ms                          |
+| Detail bars           | Fill from the left once the tiles are in place                            |
+| Sun path              | The travelled part of the arc draws itself, then the sun fades in         |
 | Sky changes           | The new sky fades in over 600 ms                                          |
 | Buttons and chips     | Shrink to 94 % while pressed, on the spring curve                         |
 | Saving a place        | The star pops in                                                          |
