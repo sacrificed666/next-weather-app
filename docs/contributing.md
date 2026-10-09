@@ -37,8 +37,8 @@ Formatting and linting are automated, so reviews can focus on behaviour.
 Names, small functions and types carry the intent, and every function, component, hook and effect, and every block that is not obvious, gets one short line above it that says what it does:
 
 ```ts
-// Moves a value saved under an earlier key unless the new key is already taken
-export const moveKey = (storage: Storage, from: string, to: string) => {
+// Drops later entries that describe an item already in the list
+const unique = <Item>(items: readonly Item[], isSame: (a: Item, b: Item) => boolean) =>
 ```
 
 > [!IMPORTANT]

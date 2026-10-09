@@ -23,6 +23,7 @@ The first release.
 - 🛡️ A nonce-based Content Security Policy, a server-only API key, validated input and a rate-limited search endpoint.
 - 🧪 Unit tests, end-to-end tests against a mock OpenWeatherMap API, axe checks and a Lighthouse budget in CI.
 - 🐳 Docker images for development, staging and production: a multi-stage Dockerfile, a Compose overlay per environment, a non-root standalone server and environment files passed to the build as secrets.
+- 🛠️ A Makefile with a coloured, grouped `make help`: setup that creates `.env` from `.env.example`, the dev server, checks, end-to-end tests and every Docker environment.
 
 [Unreleased]: https://github.com/sacrificed666/weather/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/sacrificed666/weather/releases/tag/v1.0.0

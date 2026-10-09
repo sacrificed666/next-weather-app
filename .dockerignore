@@ -10,6 +10,7 @@ blob-report
 docs
 docker
 compose.yaml
+Makefile
 .env
 .env.*
 !.env.example

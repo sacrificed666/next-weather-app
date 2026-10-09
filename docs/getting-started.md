@@ -72,6 +72,27 @@ The same dev server runs in a container on port 3000 with the variables from `.e
 | `npm run icons`         | 🌦️ Copies the animated and the still Meteocons the app uses into `public/icons`    |
 | `npm run check`         | ✅ Lint, format check, type check and tests in one go, run it before pushing       |
 
+## 🛠️ make
+
+Every common task has a short `make` command with a coloured summary of what it is doing:
+
+| Command                                              | What it does                                                                                     |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `make` or `make help`                                | 📖 Every command, grouped and coloured                                                           |
+| `make setup`                                         | 🧰 Installs the packages, creates `.env` from `.env.example` and installs Chromium for the tests |
+| `make env`                                           | 🔐 Creates the env file from `.env.example` if it is missing, never overwrites one               |
+| `make doctor`                                        | 🩺 Checks Node.js, npm, Docker, the packages and the env file                                    |
+| `make dev`                                           | 🚀 Starts the dev server                                                                         |
+| `make dev-mock`                                      | 🧪 Starts the dev server against the mock OpenWeatherMap API, so no key is needed                |
+| `make check` / `make ci`                             | ✅ The checks before pushing / everything CI runs, including the build and the end-to-end tests  |
+| `make fix`                                           | 🪄 Applies the lint fixes and formats every file                                                 |
+| `make up ENV=…`                                      | 🐳 Starts `development` (hot reload, the default), `staging` or `production` in Docker           |
+| `make logs` · `make ps` · `make shell` · `make down` | 📜 Follows, lists, enters or stops the containers of `ENV`                                       |
+| `make clean` · `make reset`                          | 🧹 Removes build output and reports / also reinstalls the packages                               |
+
+> [!NOTE]
+> The Makefile needs GNU Make and Bash, which macOS and Linux ship with; on Windows use WSL or the npm scripts above. Colours switch off in pipes and with `NO_COLOR=1`.
+
 ## 🗂️ Project layout
 
 ```text
@@ -112,6 +133,7 @@ weather/
 │   │   └── styles/                  Design tokens, skies, mixins and the dashboard grid
 │   └── test/                        Test setup, fixtures and render helpers
 ├── CHANGELOG.md                     Every release, newest first
+├── Makefile                         make help, setup, dev, checks and Docker commands
 ├── compose.yaml                     The Docker Compose service shared by every environment
 ├── next.config.ts                   React Compiler, security headers and experiments
 ├── playwright.config.ts             Browsers, the mock API and the production server for end-to-end tests

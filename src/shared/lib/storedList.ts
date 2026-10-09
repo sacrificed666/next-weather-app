@@ -33,22 +33,9 @@ const parseJson = (raw: string): unknown => {
   }
 };
 
-// Moves a list saved under an earlier key unless the new key is already taken
-const moveStorage = (from: string, to: string) => {
-  try {
-    const value = localStorage.getItem(from);
-    if (value === null || localStorage.getItem(to) !== null) return;
-    localStorage.setItem(to, value);
-    localStorage.removeItem(from);
-  } catch {
-    return;
-  }
-};
-
 interface StoredListOptions<Item> {
   parse: (value: unknown) => Item | null;
   limit: number;
-  legacyKey?: string;
   isSame?: (a: Item, b: Item) => boolean;
 }
 
@@ -59,19 +46,14 @@ const unique = <Item>(items: readonly Item[], isSame: (a: Item, b: Item) => bool
 // A list in local storage shared by every component and tab
 export const createStoredList = <Item>(
   key: string,
-  { parse, limit, legacyKey, isSame }: StoredListOptions<Item>,
+  { parse, limit, isSame }: StoredListOptions<Item>,
 ): StoredList<Item> => {
   const empty: readonly Item[] = [];
   const listeners = new Set<() => void>();
   let cached: { raw: string | null; items: readonly Item[] } = { raw: null, items: empty };
-  let migrated = legacyKey === undefined;
 
   // The parsed list, reused while the stored text is unchanged
   const getSnapshot = () => {
-    if (!migrated && legacyKey !== undefined) {
-      moveStorage(legacyKey, key);
-      migrated = true;
-    }
     const raw = readStorage(key);
     if (raw === cached.raw) return cached.items;
     const parsed = raw === null ? null : parseJson(raw);

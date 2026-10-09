@@ -1,6 +1,7 @@
+// A container can set --skeleton-radius so the blocks stay concentric with it
 .skeleton {
   display: block;
-  border-radius: var(--radius-sm);
+  border-radius: var(--skeleton-radius, var(--radius-sm));
   background: linear-gradient(
     100deg,
     var(--skeleton) 30%,

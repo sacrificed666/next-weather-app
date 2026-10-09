@@ -113,6 +113,15 @@ docker compose -f compose.yaml -f docker/staging.yaml up --build -d
 docker compose -f compose.yaml -f docker/production.yaml up --build -d
 ```
 
+The same with `make`, which also creates `.env.staging` or `.env.production` from `.env.example` on the first run and stops so you can fill it in:
+
+```bash
+make up                      # development with hot reload
+make up ENV=staging          # staging in the background
+make logs ENV=staging        # follow its logs
+make down ENV=staging        # stop it
+```
+
 - 🔐 **Secrets never enter the image.** The environment file is read at run time through `env_file` and mounted during the build as a BuildKit secret, so `SITE_URL` reaches the prerendered sitemap and robots rules without landing in a layer.
 - 🧭 **`APP_ENV` decides indexing.** Every value except `production` turns on `noindex` and a `Disallow: /` robots file, the same as a Vercel preview.
 - 📦 **The runtime stage is small.** `NEXT_OUTPUT=standalone` switches on the [standalone output](https://nextjs.org/docs/app/api-reference/config/next-config-js/output) only for Docker; the image keeps `server.js`, the traced dependencies, `public` and the static files, runs as the `node` user and reports its health through `/robots.txt`.

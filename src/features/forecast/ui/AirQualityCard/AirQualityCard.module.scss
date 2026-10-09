@@ -110,7 +110,7 @@ $levels: var(--air-1), var(--air-2), var(--air-3), var(--air-4), var(--air-5);
   gap: 0.1rem;
   min-inline-size: 0;
   padding: 0.45rem 0.5rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-in-card);
   background: var(--color-fill);
 
   dt {

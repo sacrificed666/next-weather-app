@@ -37,6 +37,7 @@
 
 .card {
   @include glass($content: true);
+  --skeleton-radius: calc(var(--radius-lg) - 1.25rem);
 
   display: grid;
   align-content: start;

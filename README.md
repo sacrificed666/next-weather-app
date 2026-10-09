@@ -59,6 +59,14 @@ cp .env.example .env         # then paste your key into OPENWEATHERMAP_API_KEY
 npm run dev                  # http://localhost:3000, redirects to your language
 ```
 
+🛠️ Or with `make`, which lists every command with `make help`:
+
+```bash
+make setup                   # packages, .env from .env.example and the test browser
+make dev                     # the dev server
+make dev-mock                # the dev server against the mock API, no key needed
+```
+
 > [!NOTE]
 > OpenWeatherMap can take up to two hours to activate a new key. Until then the app explains that the key was rejected.
 
@@ -71,11 +79,11 @@ npm run build && npm start   # production build
 🐳 The same app runs in Docker, with an overlay for every environment, see [Deployment](./docs/deployment.md#-docker):
 
 ```bash
-docker compose -f compose.yaml -f docker/development.yaml up --watch
+docker compose -f compose.yaml -f docker/development.yaml up --watch   # or: make up
 ```
 
 > [!TIP]
-> No key yet? `node e2e/openweather-api.ts` starts the mock API from the end-to-end tests; see [Getting started](./docs/getting-started.md#-install-and-run).
+> No key yet? `make dev-mock` runs the app against the mock API from the end-to-end tests; see [Getting started](./docs/getting-started.md#-install-and-run).
 
 ## 📚 Documentation
 

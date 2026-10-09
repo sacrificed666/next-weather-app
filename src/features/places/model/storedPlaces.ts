@@ -9,14 +9,12 @@ export const SAVED_PLACES_LIMIT = 12;
 export const savedPlaces = createStoredList("weather/saved-places", {
   parse: parsePlace,
   limit: SAVED_PLACES_LIMIT,
-  legacyKey: "next-weather-app/saved-places",
   isSame: isSamePlace,
 });
 
 export const recentPlaces = createStoredList("weather/recent-places", {
   parse: parsePlace,
   limit: 5,
-  legacyKey: "next-weather-app/recent-places",
   isSame: isSamePlace,
 });
 

@@ -9,6 +9,7 @@ The interface is a set of translucent **glass** cards floating over a **sky** th
 - 🔢 **Numbers first, words second.** Each detail tile leads with one big value, rates it in one word and shows it on a bar.
 - 📏 **One scale per question.** Daily temperature bars share the week's scale, the detail bars and the sun arc are drawn to scale, colours follow absolute temperatures.
 - 🧘 **Calm by default.** Motion is slow and subtle and disappears completely when the system asks for less motion.
+- ⭕ **Concentric corners.** An inner radius is the outer radius minus the padding between them: the pollutant tiles and the current hour in a 24 px card are rounded about 6 px, the suggestions in a 16 px popup 10 px, and the settings panel is as round as its language rows plus the space around them. Round buttons and capsules stay round.
 
 ## 🧭 Layout
 
@@ -144,17 +145,17 @@ All digits are tabular (`font-variant-numeric: tabular-nums`), so the clock and 
 
 Tokens live in `shared/styles/_tokens.scss` as CSS custom properties, defined by three mixins: `shared`, `light` and `dark`. `<html data-theme>` is `system`, `light` or `dark`; `system` switches with `prefers-color-scheme`.
 
-| Group          | Tokens                                                                                                                                                                                                                               |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 🖋️ Text        | `--color-text`, `--color-text-secondary`, `--color-text-tertiary`                                                                                                                                                                    |
-| 🎨 Accent      | `--color-accent`, `--color-accent-soft`, `--color-on-accent`, `--color-focus`                                                                                                                                                        |
-| 🧱 Surfaces    | `--color-fill`, `--color-fill-strong`, `--color-separator`, `--track`, `--skeleton`, `--backdrop-base`                                                                                                                               |
-| 🫧 Glass       | `--glass-tint`, `--glass-tint-strong`, `--glass-tint-overlay`, `--glass-solid`, `--glass-sheen`, `--glass-rim`, `--glass-rim-shade`, `--glass-highlight`, `--glass-shadow`, `--glass-saturate`, `--glass-blur`, `--glass-blur-thick` |
-| 🌡️ Temperature | `--temperature-cold` … `--temperature-hot`                                                                                                                                                                                           |
-| 🍃 Air quality | `--air-1` (good, green) … `--air-5` (very poor, violet)                                                                                                                                                                              |
-| ⭕ Shape       | `--radius-sm` 12 px, `--radius-md` 16 px, `--radius-lg` 24 px, `--radius-full`                                                                                                                                                       |
-| 🌊 Motion      | `--ease-out`, `--ease-spring`, `--duration-fast` 160 ms, `--duration-base` 280 ms, `--duration-slow` 600 ms                                                                                                                          |
-| 📐 Layout      | `--layout-width` 76 rem, `--gutter`, `--header-height`                                                                                                                                                                               |
+| Group          | Tokens                                                                                                                                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 🖋️ Text        | `--color-text`, `--color-text-secondary`, `--color-text-tertiary`                                                                                                                                                                                |
+| 🎨 Accent      | `--color-accent`, `--color-accent-soft`, `--color-on-accent`, `--color-focus`                                                                                                                                                                    |
+| 🧱 Surfaces    | `--color-fill`, `--color-fill-strong`, `--color-separator`, `--track`, `--skeleton`, `--backdrop-base`                                                                                                                                           |
+| 🫧 Glass       | `--glass-tint`, `--glass-tint-strong`, `--glass-tint-overlay`, `--glass-solid`, `--glass-sheen`, `--glass-rim`, `--glass-rim-shade`, `--glass-highlight`, `--glass-shadow`, `--glass-saturate`, `--glass-blur`, `--glass-blur-thick`             |
+| 🌡️ Temperature | `--temperature-cold` … `--temperature-hot`                                                                                                                                                                                                       |
+| 🍃 Air quality | `--air-1` (good, green) … `--air-5` (very poor, violet)                                                                                                                                                                                          |
+| ⭕ Shape       | `--radius-sm` 12 px, `--radius-md` 16 px, `--radius-lg` 24 px, `--radius-full`; inner radii `--radius-in-card` (24 px minus the 1.15 rem padding), `--radius-in-popup`, and `--radius-settings` (the language rows plus the padding around them) |
+| 🌊 Motion      | `--ease-out`, `--ease-spring`, `--duration-fast` 160 ms, `--duration-base` 280 ms, `--duration-slow` 600 ms                                                                                                                                      |
+| 📐 Layout      | `--layout-width` 76 rem, `--gutter`, `--header-height`                                                                                                                                                                                           |
 
 ## 📈 Charts
 

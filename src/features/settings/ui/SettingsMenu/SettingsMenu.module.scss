@@ -1,7 +1,8 @@
 @use "@/shared/styles/mixins" as *;
 
+// Corners = the language rows' radius + the 1.1rem padding around them
 .panel {
-  @include glass(var(--radius-lg), var(--glass-tint-overlay), var(--glass-blur-thick));
+  @include glass(var(--radius-settings), var(--glass-tint-overlay), var(--glass-blur-thick));
 
   position: fixed;
   inset: calc(var(--header-height) + 0.25rem)

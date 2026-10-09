@@ -108,7 +108,7 @@
 .textButton {
   padding: 0.2rem 0.4rem;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-in-popup);
   background: none;
   color: var(--color-accent);
   font-size: 0.8rem;
@@ -136,7 +136,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.55rem 0.65rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-in-popup);
   cursor: pointer;
 
   @include hover {

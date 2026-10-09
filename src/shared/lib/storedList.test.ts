@@ -12,18 +12,6 @@ describe("createStoredList", () => {
     expect(list.getSnapshot()).toBe(list.getSnapshot());
   });
 
-  it("moves a list saved under an earlier key once", () => {
-    localStorage.setItem("old-numbers", JSON.stringify([1, 2]));
-    const list = createStoredList("numbers", { parse: parseNumber, limit: 5, legacyKey: "old-numbers" });
-    expect(list.getSnapshot()).toEqual([1, 2]);
-    expect(localStorage.getItem("old-numbers")).toBeNull();
-
-    localStorage.setItem("old-numbers", JSON.stringify([9]));
-    expect(
-      createStoredList("numbers", { parse: parseNumber, limit: 5, legacyKey: "old-numbers" }).getSnapshot(),
-    ).toEqual([1, 2]);
-  });
-
   it("keeps the first of the entries that describe the same item", () => {
     localStorage.setItem("numbers", JSON.stringify([1, 11, 2, 21, 3]));
     const list = createStoredList("numbers", { parse: parseNumber, limit: 5, isSame: (a, b) => a % 10 === b % 10 });

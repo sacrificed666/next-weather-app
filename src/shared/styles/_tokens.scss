@@ -105,6 +105,11 @@
   --radius-lg: 1.5rem;
   --radius-full: 999px;
 
+  // Inner radius = outer radius - the padding between them
+  --radius-in-card: calc(var(--radius-lg) - 1.15rem);
+  --radius-in-popup: calc(var(--radius-md) - 0.4rem);
+  --radius-settings: calc(var(--radius-sm) + 1.1rem);
+
   --glass-blur: 22px;
   --glass-blur-thick: 32px;
 
